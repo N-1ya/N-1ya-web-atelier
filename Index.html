@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RE：FLECT</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: #111;
+      color: #fff;
+      font-family: 'Helvetica Neue', sans-serif;
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 4vh 6vw;
+      box-sizing: border-box;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transition: opacity 1.8s ease-in-out;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+    }
+
+    .title {
+      font-size: 6vw;
+      margin: 5vh 0 1vh;
+      text-align: center;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      font-size: 4.5vw;
+      margin-bottom: 6vh;
+      text-align: center;
+      color: #ccc;
+    }
+
+    .message {
+      font-size: 4.8vw;
+      line-height: 1.6;
+      margin: 4vh auto;
+      text-align: center;
+      max-width: 90%;
+      word-wrap: break-word;
+    }
+  </style>
+</head>
+<body>
+  <div id="intro" class="fade-in visible">
+    <h1 class="title">RE：FLECT</h1>
+    <h2 class="subtitle">― 絵のタイトル ―</h2>
+  </div>
+
+  <div id="messages"></div>
+
+  <script>
+    const intro = document.getElementById('intro');
+    const messages = [
+      "その目には”なにが”映っていましたか？",
+      "猫は”あなた”を見ています",
+      "”あなた”が”あなた”であることを　猫は知っています",
+      "では、”あなた自身”はどうでしょうか",
+      "”あなた”が”あなた”であることを<br>”あなた”は定義できますか？",
+      "”自分とはなにか”",
+      "”あなた”は答えられますか？",
+      "”誰かの目”を借りることなく"
+    ];
+
+    const messagesContainer = document.getElementById('messages');
+
+    // 最初のタイトルをフェードアウトさせる
+    setTimeout(() => {
+      intro.classList.remove('visible');
+      setTimeout(showMessages, 1800); // フェードアウト完了後に開始
+    }, 2500); // タイトル表示時間
+
+    function showMessages() {
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i >= messages.length) {
+          clearInterval(interval);
+          return;
+        }
+        const p = document.createElement('p');
+        p.className = 'message fade-in';
+        p.innerHTML = messages[i];
+        messagesContainer.appendChild(p);
+        setTimeout(() => {
+          p.classList.add('visible');
+        }, 50);
+        i++;
+      }, 2800); // 約2.8秒ごとに表示
+    }
+  </script>
+</body>
+</html>
