@@ -12,6 +12,8 @@
       height: 100%;
       overflow: hidden;
       font-family: 'M PLUS 1p', sans-serif;
+      color: #fff;
+      text-align: center; /* 全体中央揃え */
     }
 
     /* 猫の目演出（イントロ） */
@@ -48,97 +50,5 @@
     #main {
       display: none;
       padding: 2rem;
-      color: #fff;
       background-color: #264b75;
-      min-height: 100vh;
-      overflow-y: auto;
-    }
-
-    /* 作品ギャラリー */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-
-    .gallery-item {
-      text-align: center;
-      background: rgba(255 255 255 / 0.1);
-      border-radius: 8px;
-      padding: 0.5rem;
-    }
-
-    .gallery-item img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-
-    .gallery-item p {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      color: #eee;
-    }
-
-    a {
-      color: #fff;
-      text-decoration: underline;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- 猫の目イントロ -->
-  <div id="intro">
-    <img id="catEye" src="猫の目.jpg" alt="Cat Eye">
-  </div>
-
-  <!-- メインページ -->
-  <div id="main">
-    <h1>市屋 凪</h1>
-
-    <section class="gallery">
-      <div class="gallery-item">
-        <img src="作品画像1.jpg" alt="作品タイトル1">
-        <p>作品タイトル1</p>
-      </div>
-      <div class="gallery-item">
-        <img src="作品画像2.jpg" alt="作品タイトル2">
-        <p>作品タイトル2</p>
-      </div>
-
-      <!-- ここに作品を追加していく -->
-      <div class="gallery-item">
-        <img src="作品画像のパス.jpg" alt="作品タイトル">
-        <p>作品タイトル</p>
-      </div>
-    </section>
-
-    <nav style="margin-top:1rem;">
-      <a href="/profile/">プロフィールへ</a> | <a href="/works/">作品一覧へ</a>
-    </nav>
-  </div>
-
-  <script>
-    const intro = document.getElementById('intro');
-    const catEye = document.getElementById('catEye');
-    const main = document.getElementById('main');
-
-    // 1. 猫の目をフェードイン
-    setTimeout(() => {
-      catEye.classList.add('visible');
-    }, 200);
-
-    // 2. しばらく表示したあとフェードアウト
-    setTimeout(() => {
-      intro.classList.add('fade-out');
-      setTimeout(() => {
-        intro.style.display = 'none';
-        main.style.display = 'block';
-      }, 1500);
-    }, 3000);
-  </script>
-
-</body>
-</html>
+      min-height: 10
