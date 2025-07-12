@@ -1,172 +1,143 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>市屋 凪</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      background: black;
-      height: 100%;
-      overflow: hidden;
-      font-family: 'M PLUS 1p', sans-serif;
-      color: #fff;
-      text-align: center;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>市屋 凪 | ホームページ</title>
+<style>
+  body, html {
+    margin: 0; padding: 0;
+    background: black;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'M PLUS 1p', sans-serif;
+    color: #fff;
+    text-align: center;
+  }
 
-    /* 猫の目演出（イントロ） */
-    #intro {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background-color: black;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 1.5s ease;
-    }
+  /* 猫の目イントロ */
+  #intro {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000; /* イントロは高いけどメニューより下にする */
+    transition: opacity 1.5s ease;
+  }
 
-    #intro.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
+  #intro.fade-out {
+    opacity: 0;
+    pointer-events: none;
+  }
 
-    #intro img {
-      max-width: 80%;
-      max-height: 80%;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-    }
+  #intro img {
+    max-width: 80%;
+    max-height: 80%;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+  }
 
-    #intro img.visible {
-      opacity: 1;
-    }
+  #intro img.visible {
+    opacity: 1;
+  }
 
-    /* メインコンテンツ */
-    #main {
-      display: none;
-      padding: 2rem;
-      min-height: 100vh;
-      background-color: #000;
-      overflow-y: auto;
-      position: relative;
-    }
+  /* 三本線メニューアイコン */
+  #menuButton {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1100; /* イントロより上に表示 */
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+  }
+  #menuButton div {
+    background-color: white;
+    height: 4px;
+    margin: 4px 0;
+    border-radius: 2px;
+  }
 
-    #main h1 {
-      margin-bottom: 0.5rem;
-      font-size: 2.5rem;
-    }
+  /* サイドバー */
+  #sidebar {
+    position: fixed;
+    top: 0; right: 0;
+    width: 250px;
+    height: 100vh;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1150;
+    padding: 2rem;
+    box-sizing: border-box;
+  }
+  #sidebar.open {
+    transform: translateX(0);
+  }
 
-    /* メニューリンク */
-    .main-menu {
-      margin-bottom: 2rem;
-    }
-    .main-menu a {
-      color: #eee;
-      text-decoration: none;
-      margin: 0 15px;
-      font-size: 1.2rem;
-      border-bottom: 1px solid transparent;
-      transition: border-color 0.3s;
-    }
-    .main-menu a:hover {
-      border-color: #66aaff;
-    }
+  /* メインコンテンツ */
+  #main {
+    display: none;
+    padding: 2rem;
+    min-height: 100vh;
+    background-color: #264b75;
+    overflow-y: auto;
+  }
 
-    /* 作品ギャラリー */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .gallery-item {
-      text-align: center;
-      background: rgba(255 255 255 / 0.1);
-      border-radius: 8px;
-      padding: 0.5rem;
-    }
-    .gallery-item img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-    .gallery-item p {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      color: #eee;
-    }
+  h1 {
+    background-color: transparent !important;
+    margin-bottom: 1rem;
+    font-size: 3rem;
+    color: #fff;
+  }
 
-    /* ハンバーガーメニューアイコン */
-    #hamburger {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      width: 30px;
-      height: 25px;
-      cursor: pointer;
-      z-index: 10000;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    #hamburger div {
-      height: 4px;
-      background: #fff;
-      border-radius: 2px;
-    }
+  nav {
+    margin-bottom: 2rem;
+  }
+  nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  nav a:hover {
+    text-decoration: underline;
+  }
 
-    /* サイドバー */
-    #sidebar {
-      position: fixed;
-      top: 0; right: 0;
-      width: 250px;
-      height: 100vh;
-      background: rgba(0,0,0,0.85);
-      box-shadow: -2px 0 8px rgba(0,0,0,0.7);
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      z-index: 9998;
-      padding: 2rem 1rem;
-      text-align: left;
-    }
-    #sidebar.open {
-      transform: translateX(0);
-    }
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    justify-items: center;
+  }
 
-    #sidebar nav a {
-      display: block;
-      color: #eee;
-      text-decoration: none;
-      font-size: 1.3rem;
-      margin: 1rem 0;
-    }
-    #sidebar nav a:hover {
-      color: #66aaff;
-    }
+  .gallery-item {
+    background: rgba(255 255 255 / 0.1);
+    border-radius: 8px;
+    padding: 0.5rem;
+    width: 90%;
+    max-width: 300px;
+    box-sizing: border-box;
+    text-align: center;
+    color: #eee;
+  }
 
-    /* サイドバーの背景の半透明オーバーレイ */
-    #overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(0,0,0,0.5);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease;
-      z-index: 9997;
-    }
-    #overlay.visible {
-      opacity: 1;
-      visibility: visible;
-    }
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
 
-  </style>
+  .gallery-item p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+  }
+</style>
 </head>
 <body>
 
@@ -175,32 +146,30 @@
     <img id="catEye" src="猫の目.jpg" alt="Cat Eye" />
   </div>
 
-  <!-- ハンバーガーメニューアイコン -->
-  <div id="hamburger" aria-label="メニューを開く" role="button" tabindex="0">
+  <!-- 三本線メニュー -->
+  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0" title="メニュー">
     <div></div>
     <div></div>
     <div></div>
   </div>
 
   <!-- サイドバー -->
-  <div id="sidebar" aria-hidden="true">
+  <aside id="sidebar" aria-hidden="true">
     <nav>
-      <a href="/profile/">プロフィール</a>
-      <a href="/works/">ギャラリー</a>
+      <a href="/">ホーム</a><br />
+      <a href="/profile/">プロフィール</a><br />
+      <a href="/works/">作品一覧</a><br />
       <a href="/contact/">お問い合わせ</a>
     </nav>
-  </div>
-
-  <!-- 背景オーバーレイ -->
-  <div id="overlay"></div>
+  </aside>
 
   <!-- メインページ -->
   <div id="main">
     <h1>市屋 凪</h1>
 
-    <nav class="main-menu" aria-label="メインメニュー">
+    <nav>
       <a href="/profile/">プロフィール</a>
-      <a href="/works/">ギャラリー</a>
+      <a href="/works/">作品一覧</a>
       <a href="/contact/">お問い合わせ</a>
     </nav>
 
@@ -217,7 +186,6 @@
         <img src="作品画像3.jpg" alt="作品タイトル3" />
         <p>作品タイトル3</p>
       </div>
-      <!-- 追加したい作品をここに -->
     </section>
   </div>
 
@@ -225,16 +193,30 @@
     const intro = document.getElementById('intro');
     const catEye = document.getElementById('catEye');
     const main = document.getElementById('main');
-    const hamburger = document.getElementById('hamburger');
-    const sidebar = document.getElementById('sidebar');
-    const overlay = document.getElementById('overlay');
 
-    // 猫の目のフェードイン
+    // メニュー関連
+    const menuButton = document.getElementById('menuButton');
+    const sidebar = document.getElementById('sidebar');
+
+    menuButton.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
+    });
+
+    // キーボード対応（Enterキーでメニュー開閉）
+    menuButton.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        sidebar.classList.toggle('open');
+        sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
+      }
+    });
+
+    // イントロのアニメーション
     setTimeout(() => {
       catEye.classList.add('visible');
     }, 200);
 
-    // 猫の目のフェードアウト＆メイン表示
     setTimeout(() => {
       intro.classList.add('fade-out');
       setTimeout(() => {
@@ -242,39 +224,6 @@
         main.style.display = 'block';
       }, 1500);
     }, 3000);
-
-    // ハンバーガーメニュー開閉処理
-    function openMenu() {
-      sidebar.classList.add('open');
-      overlay.classList.add('visible');
-      sidebar.setAttribute('aria-hidden', 'false');
-    }
-    function closeMenu() {
-      sidebar.classList.remove('open');
-      overlay.classList.remove('visible');
-      sidebar.setAttribute('aria-hidden', 'true');
-    }
-
-    hamburger.addEventListener('click', () => {
-      if (sidebar.classList.contains('open')) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
-    });
-    overlay.addEventListener('click', closeMenu);
-
-    // キーボード操作でもメニュー開閉可能に（Enter, Space）
-    hamburger.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        if (sidebar.classList.contains('open')) {
-          closeMenu();
-        } else {
-          openMenu();
-        }
-      }
-    });
   </script>
 
 </body>
