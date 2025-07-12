@@ -10,10 +10,8 @@
       padding: 0;
       background: black;
       height: 100%;
-      overflow: hidden;
       font-family: 'M PLUS 1p', sans-serif;
       color: #fff;
-      text-align: center; /* 全体のテキストを中央揃え */
     }
 
     /* 猫の目演出（イントロ） */
@@ -50,40 +48,37 @@
     #main {
       display: none;
       padding: 2rem;
-      background-color: #264b75;
       min-height: 100vh;
+      background-color: #264b75;
       overflow-y: auto;
+      text-align: center;
     }
 
-    h1 {
+    /* 名前 */
+    #main h1 {
       margin-bottom: 0.5rem;
-      font-size: 2.5rem;
+      font-size: 3rem;
     }
 
+    /* メニュー */
     nav {
-      margin: 1rem 0 2rem 0;
-      font-size: 1.1rem;
+      margin-bottom: 1.5rem;
     }
-
     nav a {
       color: #fff;
       text-decoration: underline;
-      margin: 0 0.5rem;
-      display: inline-block;
-    }
-
-    nav span.separator {
-      margin: 0 0.5rem;
-      color: #aaa;
-      user-select: none;
+      margin: 0 1rem;
+      font-size: 1.1rem;
     }
 
     /* 作品ギャラリー */
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
-      justify-items: center; /* 中央寄せ */
+      max-width: 900px;
+      margin: 0 auto;
+      justify-content: center;
     }
 
     .gallery-item {
@@ -91,7 +86,6 @@
       background: rgba(255 255 255 / 0.1);
       border-radius: 8px;
       padding: 0.5rem;
-      width: 150px;
     }
 
     .gallery-item img {
@@ -121,20 +115,22 @@
 
     <nav>
       <a href="/profile/">プロフィールへ</a>
-      <span class="separator">|</span>
       <a href="/works/">作品一覧へ</a>
     </nav>
 
     <section class="gallery">
       <div class="gallery-item">
         <img src="作品画像1.jpg" alt="作品タイトル1">
-        <p>作品タイトル1</p>
+        <p>準備中</p>
       </div>
       <div class="gallery-item">
         <img src="作品画像2.jpg" alt="作品タイトル2">
-        <p>作品タイトル2</p>
+        <p>準備中</p>
       </div>
-      <!-- ここに作品を追加していく -->
+      <div class="gallery-item">
+        <img src="作品画像3.jpg" alt="作品タイトル3">
+        <p>準備中</p>
+      </div>
     </section>
   </div>
 
@@ -143,12 +139,12 @@
     const catEye = document.getElementById('catEye');
     const main = document.getElementById('main');
 
-    // 猫の目フェードイン
+    // 猫の目をフェードイン
     setTimeout(() => {
       catEye.classList.add('visible');
     }, 200);
 
-    // 3秒後にフェードアウトしてメイン表示
+    // 3秒後にフェードアウトし、メイン表示
     setTimeout(() => {
       intro.classList.add('fade-out');
       setTimeout(() => {
