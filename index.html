@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>市屋 凪 | ホームページ</title>
+  <title>市屋 凪</title>
   <style>
     body, html {
       margin: 0;
@@ -12,8 +12,8 @@
       height: 100%;
       overflow: hidden;
       font-family: 'M PLUS 1p', sans-serif;
-      text-align: center;
       color: #fff;
+      text-align: center;
     }
 
     /* 猫の目演出（イントロ） */
@@ -51,17 +51,17 @@
       display: none;
       padding: 2rem;
       min-height: 100vh;
-      background-color: #000; /* 黒背景 */
+      background-color: #000;
       overflow-y: auto;
+      position: relative;
     }
 
-    /* 名前 */
     #main h1 {
       margin-bottom: 0.5rem;
       font-size: 2.5rem;
     }
 
-    /* リンクメニュー */
+    /* メニューリンク */
     .main-menu {
       margin-bottom: 2rem;
     }
@@ -84,40 +84,121 @@
       gap: 1rem;
       margin-top: 1rem;
     }
-
     .gallery-item {
       text-align: center;
       background: rgba(255 255 255 / 0.1);
       border-radius: 8px;
       padding: 0.5rem;
     }
-
     .gallery-item img {
       width: 100%;
       height: auto;
       border-radius: 8px;
     }
-
     .gallery-item p {
       margin-top: 0.5rem;
       font-size: 1rem;
       color: #eee;
     }
+
+    /* ハンバーガーメニューアイコン */
+    #hamburger {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      width: 30px;
+      height: 25px;
+      cursor: pointer;
+      z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    #hamburger div {
+      height: 4px;
+      background: #fff;
+      border-radius: 2px;
+    }
+
+    /* サイドバー */
+    #sidebar {
+      position: fixed;
+      top: 0; right: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      box-shadow: -2px 0 8px rgba(0,0,0,0.7);
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 9998;
+      padding: 2rem 1rem;
+      text-align: left;
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+
+    #sidebar nav a {
+      display: block;
+      color: #eee;
+      text-decoration: none;
+      font-size: 1.3rem;
+      margin: 1rem 0;
+    }
+    #sidebar nav a:hover {
+      color: #66aaff;
+    }
+
+    /* サイドバーの背景の半透明オーバーレイ */
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: 9997;
+    }
+    #overlay.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
   </style>
 </head>
 <body>
 
   <!-- 猫の目イントロ -->
   <div id="intro">
-    <img id="catEye" src="猫の目.jpg" alt="Cat Eye">
+    <img id="catEye" src="猫の目.jpg" alt="Cat Eye" />
   </div>
+
+  <!-- ハンバーガーメニューアイコン -->
+  <div id="hamburger" aria-label="メニューを開く" role="button" tabindex="0">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- サイドバー -->
+  <div id="sidebar" aria-hidden="true">
+    <nav>
+      <a href="/profile/">プロフィール</a>
+      <a href="/works/">ギャラリー</a>
+      <a href="/contact/">お問い合わせ</a>
+    </nav>
+  </div>
+
+  <!-- 背景オーバーレイ -->
+  <div id="overlay"></div>
 
   <!-- メインページ -->
   <div id="main">
     <h1>市屋 凪</h1>
 
-    <!-- 追加するリンクメニュー -->
-    <nav class="main-menu">
+    <nav class="main-menu" aria-label="メインメニュー">
       <a href="/profile/">プロフィール</a>
       <a href="/works/">ギャラリー</a>
       <a href="/contact/">お問い合わせ</a>
@@ -125,18 +206,18 @@
 
     <section class="gallery">
       <div class="gallery-item">
-        <img src="作品画像1.jpg" alt="作品タイトル1">
+        <img src="作品画像1.jpg" alt="作品タイトル1" />
         <p>作品タイトル1</p>
       </div>
       <div class="gallery-item">
-        <img src="作品画像2.jpg" alt="作品タイトル2">
+        <img src="作品画像2.jpg" alt="作品タイトル2" />
         <p>作品タイトル2</p>
       </div>
       <div class="gallery-item">
-        <img src="作品画像3.jpg" alt="作品タイトル3">
+        <img src="作品画像3.jpg" alt="作品タイトル3" />
         <p>作品タイトル3</p>
       </div>
-      <!-- ここに作品を追加 -->
+      <!-- 追加したい作品をここに -->
     </section>
   </div>
 
@@ -144,13 +225,16 @@
     const intro = document.getElementById('intro');
     const catEye = document.getElementById('catEye');
     const main = document.getElementById('main');
+    const hamburger = document.getElementById('hamburger');
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
 
-    // 猫の目をフェードイン
+    // 猫の目のフェードイン
     setTimeout(() => {
       catEye.classList.add('visible');
     }, 200);
 
-    // しばらく表示したあとフェードアウト
+    // 猫の目のフェードアウト＆メイン表示
     setTimeout(() => {
       intro.classList.add('fade-out');
       setTimeout(() => {
@@ -158,6 +242,39 @@
         main.style.display = 'block';
       }, 1500);
     }, 3000);
+
+    // ハンバーガーメニュー開閉処理
+    function openMenu() {
+      sidebar.classList.add('open');
+      overlay.classList.add('visible');
+      sidebar.setAttribute('aria-hidden', 'false');
+    }
+    function closeMenu() {
+      sidebar.classList.remove('open');
+      overlay.classList.remove('visible');
+      sidebar.setAttribute('aria-hidden', 'true');
+    }
+
+    hamburger.addEventListener('click', () => {
+      if (sidebar.classList.contains('open')) {
+        closeMenu();
+      } else {
+        openMenu();
+      }
+    });
+    overlay.addEventListener('click', closeMenu);
+
+    // キーボード操作でもメニュー開閉可能に（Enter, Space）
+    hamburger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        if (sidebar.classList.contains('open')) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      }
+    });
   </script>
 
 </body>
