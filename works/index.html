@@ -3,34 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>作品一覧 | 市屋 凪</title>
+  <title>市屋 凪 | ホームページ</title>
   <style>
-    body {
+    body, html {
       margin: 0;
-      padding: 2rem;
-      background: #000;
+      padding: 0;
+      background-color: #000;
       color: #fff;
       font-family: 'M PLUS 1p', sans-serif;
     }
 
-    h1 {
+    header {
+      position: relative;
+      background-color: #111;
+      padding: 1rem;
       text-align: center;
-      margin-bottom: 2rem;
     }
 
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+
+    /* ハンバーガーメニュー */
+    .menu-button {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 30px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .menu-button div {
+      background-color: #fff;
+      height: 4px;
+      margin: 4px 0;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+
+    /* サイドメニュー */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100vh;
+      background-color: rgba(0, 0, 0, 0.9);
+      color: #fff;
+      padding: 2rem;
+      box-sizing: border-box;
+      transition: right 0.3s ease;
+      z-index: 1000;
+    }
+
+    .side-menu.open {
+      right: 0;
+    }
+
+    .side-menu a {
+      display: block;
+      color: #fff;
+      margin-bottom: 1rem;
+      text-decoration: none;
+    }
+
+    /* ギャラリー */
     .gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
-      max-width: 1000px;
-      margin: auto;
+      padding: 2rem;
     }
 
     .gallery-item {
       text-align: center;
-      background-color: rgba(255, 255, 255, 0.05);
-      border-radius: 8px;
-      padding: 1rem;
     }
 
     .gallery-item img {
@@ -41,28 +89,51 @@
 
     .gallery-item p {
       margin-top: 0.5rem;
-      font-size: 0.9rem;
     }
   </style>
 </head>
 <body>
-  <h1>作品一覧</h1>
-  <section class="gallery">
-    <!-- 以下のブロックを必要な数だけ追加（全30個まで） -->
-    <div class="gallery-item">
-      <img src="sample1.jpg" alt="作品1">
-      <p>作品タイトル1</p>
+
+  <header>
+    <h1>市屋 凪</h1>
+    <div class="menu-button" onclick="toggleMenu()">
+      <div></div>
+      <div></div>
+      <div></div>
     </div>
-    <div class="gallery-item">
-      <img src="sample2.jpg" alt="作品2">
-      <p>作品タイトル2</p>
-    </div>
-    <div class="gallery-item">
-      <img src="sample3.jpg" alt="作品3">
-      <p>作品タイトル3</p>
-    </div>
-    <!-- ... 合計30個まで続けてください -->
-  </section>
+  </header>
+
+  <!-- サイドメニュー -->
+  <div id="sideMenu" class="side-menu">
+    <a href="/">ホーム</a>
+    <a href="/profile/">プロフィール</a>
+    <a href="/works/">作品一覧</a>
+  </div>
+
+  <!-- メイン -->
+  <main>
+    <section class="gallery">
+      <div class="gallery-item">
+        <img src="作品1.jpg" alt="作品1">
+        <p>作品タイトル1</p>
+      </div>
+      <div class="gallery-item">
+        <img src="作品2.jpg" alt="作品2">
+        <p>作品タイトル2</p>
+      </div>
+      <div class="gallery-item">
+        <img src="作品3.jpg" alt="作品3">
+        <p>作品タイトル3</p>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      const menu = document.getElementById('sideMenu');
+      menu.classList.toggle('open');
+    }
+  </script>
+
 </body>
 </html>
-
