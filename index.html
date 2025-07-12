@@ -9,7 +9,6 @@
     margin: 0; padding: 0;
     background: black;
     height: 100%;
-    overflow: hidden;
     font-family: 'M PLUS 1p', sans-serif;
     color: #fff;
     text-align: center;
@@ -24,35 +23,43 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    z-index: 1000; /* イントロは高いけどメニューより下にする */
+    z-index: 9999;
     transition: opacity 1.5s ease;
   }
-
   #intro.fade-out {
     opacity: 0;
     pointer-events: none;
   }
-
   #intro img {
     max-width: 80%;
     max-height: 80%;
     opacity: 0;
     transition: opacity 1.5s ease;
   }
-
   #intro img.visible {
     opacity: 1;
   }
 
-  /* 三本線メニューアイコン */
+  /* メインコンテンツ */
+  #main {
+    display: none;
+    padding: 2rem;
+    min-height: 100vh;
+    background-color: #000;
+    overflow-y: auto;
+    text-align: center;
+  }
+
+  /* 三本線メニュー */
   #menuButton {
     position: fixed;
-    top: 15px;
-    right: 15px;
-    z-index: 1100; /* イントロより上に表示 */
-    width: 30px;
-    height: 25px;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 24px;
     cursor: pointer;
+    z-index: 10000;
+    display: none; /* 最初は非表示、アニメーション終了後に表示 */
   }
   #menuButton div {
     background-color: white;
@@ -67,75 +74,47 @@
     top: 0; right: 0;
     width: 250px;
     height: 100vh;
-    background: rgba(0,0,0,0.8);
-    color: white;
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
     transform: translateX(100%);
     transition: transform 0.3s ease;
-    z-index: 1150;
-    padding: 2rem;
-    box-sizing: border-box;
+    z-index: 10001;
   }
   #sidebar.open {
     transform: translateX(0);
   }
-
-  /* メインコンテンツ */
-  #main {
-    display: none;
-    padding: 2rem;
-    min-height: 100vh;
-    background-color: black;
-    overflow-y: auto;
-  }
-
-  h1 {
-    background-color: transparent !important;
-    margin-bottom: 1rem;
-    font-size: 3rem;
-    color: #fff;
-  }
-
-  nav {
-    margin-bottom: 2rem;
-  }
-  nav a {
-    color: #fff;
+  #sidebar a {
+    display: block;
+    color: white;
     text-decoration: none;
-    margin: 0 1rem;
-    font-weight: bold;
-    font-size: 1.1rem;
-  }
-  nav a:hover {
-    text-decoration: underline;
+    margin: 1rem 0;
+    font-size: 1.2rem;
   }
 
+  /* 作品ギャラリー */
   .gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
-    justify-items: center;
+    max-width: 900px;
+    margin: 2rem auto 0;
   }
-
   .gallery-item {
     background: rgba(255 255 255 / 0.1);
     border-radius: 8px;
     padding: 0.5rem;
-    width: 90%;
-    max-width: 300px;
-    box-sizing: border-box;
-    text-align: center;
-    color: #eee;
   }
-
   .gallery-item img {
     width: 100%;
     height: auto;
     border-radius: 8px;
   }
-
   .gallery-item p {
     margin-top: 0.5rem;
     font-size: 1rem;
+    color: #eee;
   }
 </style>
 </head>
@@ -143,76 +122,78 @@
 
   <!-- 猫の目イントロ -->
   <div id="intro">
-    <img id="catEye" src="猫の目.jpg" alt="Cat Eye" />
+    <img id="catEye" src="猫の目.jpg" alt="Cat Eye">
   </div>
-
-  <!-- 三本線メニュー -->
-  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0" title="メニュー">
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-
-  <!-- サイドバー -->
-  <aside id="sidebar" aria-hidden="true">
-    <nav>
-      <a href="/">ホーム</a><br />
-      <a href="/profile/">プロフィール</a><br />
-      <a href="/works/">ギャラリー</a><br />
-      <a href="/contact/">お問い合わせ</a>
-    </nav>
-  </aside>
 
   <!-- メインページ -->
   <div id="main">
     <h1>市屋 凪</h1>
 
     <nav>
-      <a href="/profile/">プロフィール</a>
-      <a href="/works/">ギャラリー</a>
-      <a href="/contact/">お問い合わせ</a>
+      <a href="/profile/">プロフィールへ</a> | <a href="/works/">作品一覧へ</a>
     </nav>
 
     <section class="gallery">
       <div class="gallery-item">
-        <img src="作品画像1.jpg" alt="作品タイトル1" />
+        <img src="作品画像1.jpg" alt="作品タイトル1">
         <p>作品タイトル1</p>
       </div>
       <div class="gallery-item">
-        <img src="作品画像2.jpg" alt="作品タイトル2" />
+        <img src="作品画像2.jpg" alt="作品タイトル2">
         <p>作品タイトル2</p>
       </div>
       <div class="gallery-item">
-        <img src="作品画像3.jpg" alt="作品タイトル3" />
+        <img src="作品画像3.jpg" alt="作品タイトル3">
         <p>作品タイトル3</p>
       </div>
     </section>
   </div>
 
-  <script>
-    const intro = document.getElementById('intro');
-    const catEye = document.getElementById('catEye');
-    const main = document.getElementById('main');
+  <!-- 三本線メニュー -->
+  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
 
-    // メニュー関連
-    const menuButton = document.getElementById('menuButton');
-    const sidebar = document.getElementById('sidebar');
+  <!-- サイドバー -->
+  <div id="sidebar">
+    <a href="/">ホーム</a>
+    <a href="/profile/">プロフィール</a>
+    <a href="/works/">作品一覧</a>
+    <a href="/contact/">お問い合わせ</a>
+    <a href="#" id="closeSidebar">閉じる</a>
+  </div>
 
-    menuButton.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
-    });
+<script>
+  const intro = document.getElementById('intro');
+  const catEye = document.getElementById('catEye');
+  const main = document.getElementById('main');
+  const menuButton = document.getElementById('menuButton');
+  const sidebar = document.getElementById('sidebar');
+  const closeSidebar = document.getElementById('closeSidebar');
 
-    // キーボード対応（Enterキーでメニュー開閉）
-    menuButton.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        sidebar.classList.toggle('open');
-        sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
-      }
-    });
+  // サイドバー開閉
+  menuButton.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+  });
+  closeSidebar.addEventListener('click', (e) => {
+    e.preventDefault();
+    sidebar.classList.remove('open');
+  });
 
-    // イントロのアニメーション
+  function showMain() {
+    intro.style.display = 'none';
+    main.style.display = 'block';
+    menuButton.style.display = 'block';  // アニメ終了後にメニュー表示
+  }
+
+  // アニメーションは初回のみ表示
+  if (localStorage.getItem('introShown') === 'true') {
+    // 2回目以降はアニメーションスキップ
+    showMain();
+  } else {
+    // 初回はアニメーション表示
     setTimeout(() => {
       catEye.classList.add('visible');
     }, 200);
@@ -220,11 +201,12 @@
     setTimeout(() => {
       intro.classList.add('fade-out');
       setTimeout(() => {
-        intro.style.display = 'none';
-        main.style.display = 'block';
+        localStorage.setItem('introShown', 'true');
+        showMain();
       }, 1500);
     }, 3000);
-  </script>
+  }
+</script>
 
 </body>
 </html>
