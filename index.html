@@ -2,83 +2,94 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>市屋 凪</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>市屋 凪 | ホームページ</title>
   <style>
     body, html {
       margin: 0;
       padding: 0;
-      background-color: #000;
-      color: #fff;
+      background: black;
+      height: 100%;
+      overflow: hidden;
       font-family: 'M PLUS 1p', sans-serif;
-    }
-
-    header {
-      position: relative;
-      background-color: #111;
-      padding: 1rem;
       text-align: center;
+      color: #fff;
     }
 
-    h1 {
-      margin: 0;
-      font-size: 1.5rem;
-    }
-
-    /* ハンバーガーメニュー */
-    .menu-button {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      width: 30px;
-      height: 20px;
-      cursor: pointer;
-    }
-
-    .menu-button div {
-      background-color: #fff;
-      height: 4px;
-      margin: 4px 0;
-      border-radius: 2px;
-      transition: all 0.3s;
-    }
-
-    /* サイドメニュー */
-    .side-menu {
+    /* 猫の目演出（イントロ） */
+    #intro {
       position: fixed;
-      top: 0;
-      right: -250px;
-      width: 250px;
+      top: 0; left: 0;
+      width: 100vw;
       height: 100vh;
-      background-color: rgba(0, 0, 0, 0.9);
-      color: #fff;
+      background-color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 1.5s ease;
+    }
+
+    #intro.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #intro img {
+      max-width: 80%;
+      max-height: 80%;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    #intro img.visible {
+      opacity: 1;
+    }
+
+    /* メインコンテンツ */
+    #main {
+      display: none;
       padding: 2rem;
-      box-sizing: border-box;
-      transition: right 0.3s ease;
-      z-index: 1000;
+      min-height: 100vh;
+      background-color: #000; /* 黒背景 */
+      overflow-y: auto;
     }
 
-    .side-menu.open {
-      right: 0;
+    /* 名前 */
+    #main h1 {
+      margin-bottom: 0.5rem;
+      font-size: 2.5rem;
     }
 
-    .side-menu a {
-      display: block;
-      color: #fff;
-      margin-bottom: 1rem;
+    /* リンクメニュー */
+    .main-menu {
+      margin-bottom: 2rem;
+    }
+    .main-menu a {
+      color: #eee;
       text-decoration: none;
+      margin: 0 15px;
+      font-size: 1.2rem;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.3s;
+    }
+    .main-menu a:hover {
+      border-color: #66aaff;
     }
 
-    /* ギャラリー */
+    /* 作品ギャラリー */
     .gallery {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 1rem;
-      padding: 2rem;
+      margin-top: 1rem;
     }
 
     .gallery-item {
       text-align: center;
+      background: rgba(255 255 255 / 0.1);
+      border-radius: 8px;
+      padding: 0.5rem;
     }
 
     .gallery-item img {
@@ -89,50 +100,64 @@
 
     .gallery-item p {
       margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #eee;
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>市屋 凪</h1>
-    <div class="menu-button" onclick="toggleMenu()">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
-  </header>
-
-  <!-- サイドメニュー -->
-  <div id="sideMenu" class="side-menu">
-    <a href="/">ホーム</a>
-    <a href="/profile/">プロフィール</a>
-    <a href="/works/">ギャラリー</a>
+  <!-- 猫の目イントロ -->
+  <div id="intro">
+    <img id="catEye" src="猫の目.jpg" alt="Cat Eye">
   </div>
 
-  <!-- メイン -->
-  <main>
+  <!-- メインページ -->
+  <div id="main">
+    <h1>市屋 凪</h1>
+
+    <!-- 追加するリンクメニュー -->
+    <nav class="main-menu">
+      <a href="/profile/">プロフィール</a>
+      <a href="/works/">ギャラリー</a>
+      <a href="/contact/">お問い合わせ</a>
+    </nav>
+
     <section class="gallery">
       <div class="gallery-item">
-        <img src="作品1.jpg" alt="作品1">
+        <img src="作品画像1.jpg" alt="作品タイトル1">
         <p>作品タイトル1</p>
       </div>
       <div class="gallery-item">
-        <img src="作品2.jpg" alt="作品2">
+        <img src="作品画像2.jpg" alt="作品タイトル2">
         <p>作品タイトル2</p>
       </div>
       <div class="gallery-item">
-        <img src="作品3.jpg" alt="作品3">
+        <img src="作品画像3.jpg" alt="作品タイトル3">
         <p>作品タイトル3</p>
       </div>
+      <!-- ここに作品を追加 -->
     </section>
-  </main>
+  </div>
 
   <script>
-    function toggleMenu() {
-      const menu = document.getElementById('sideMenu');
-      menu.classList.toggle('open');
-    }
+    const intro = document.getElementById('intro');
+    const catEye = document.getElementById('catEye');
+    const main = document.getElementById('main');
+
+    // 猫の目をフェードイン
+    setTimeout(() => {
+      catEye.classList.add('visible');
+    }, 200);
+
+    // しばらく表示したあとフェードアウト
+    setTimeout(() => {
+      intro.classList.add('fade-out');
+      setTimeout(() => {
+        intro.style.display = 'none';
+        main.style.display = 'block';
+      }, 1500);
+    }, 3000);
   </script>
 
 </body>
