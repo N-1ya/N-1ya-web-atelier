@@ -51,6 +51,39 @@
       color: #fff;
       background-color: #264b75;
       min-height: 100vh;
+      overflow-y: auto;
+    }
+
+    /* 作品ギャラリー */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .gallery-item {
+      text-align: center;
+      background: rgba(255 255 255 / 0.1);
+      border-radius: 8px;
+      padding: 0.5rem;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .gallery-item p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #eee;
+    }
+
+    a {
+      color: #fff;
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -64,8 +97,22 @@
   <!-- メインページ -->
   <div id="main">
     <h1>市屋 凪</h1>
-    <p>ここに作品一覧など、ホームページの内容を表示</p>
-    <a href="/profile/">プロフィールへ</a> | <a href="/works/">作品一覧へ</a>
+
+    <section class="gallery">
+      <div class="gallery-item">
+        <img src="作品画像1.jpg" alt="作品タイトル1">
+        <p>ベル</p>
+      </div>
+      <div class="gallery-item">
+        <img src="作品画像2.jpg" alt="作品タイトル2">
+        <p>猫　ラグドール</p>
+      </div>
+      <!-- ここに作品を追加していく -->
+    </section>
+
+    <nav style="margin-top:1rem;">
+      <a href="/profile/">プロフィールへ</a> | <a href="/works/">作品一覧へ</a>
+    </nav>
   </div>
 
   <script>
@@ -84,8 +131,8 @@
       setTimeout(() => {
         intro.style.display = 'none';
         main.style.display = 'block';
-      }, 1500); // フェードアウト完了後にメイン表示
-    }, 3000); // 表示時間（目を3秒見せる）
+      }, 1500);
+    }, 3000);
   </script>
 
 </body>
