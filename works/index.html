@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>作品一覧 | 市屋 凪</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 2rem;
+      background: #000;
+      color: #fff;
+      font-family: 'M PLUS 1p', sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+
+    .gallery-item {
+      text-align: center;
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 8px;
+      padding: 1rem;
+    }
+
+    .gallery-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    .gallery-item p {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <h1>作品一覧</h1>
+  <section class="gallery">
+    <!-- 以下のブロックを必要な数だけ追加（全30個まで） -->
+    <div class="gallery-item">
+      <img src="sample1.jpg" alt="作品1">
+      <p>作品タイトル1</p>
+    </div>
+    <div class="gallery-item">
+      <img src="sample2.jpg" alt="作品2">
+      <p>作品タイトル2</p>
+    </div>
+    <div class="gallery-item">
+      <img src="sample3.jpg" alt="作品3">
+      <p>作品タイトル3</p>
+    </div>
+    <!-- ... 合計30個まで続けてください -->
+  </section>
+</body>
+</html>
 
