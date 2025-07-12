@@ -1,92 +1,172 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>作品一覧 | 市屋 凪</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 2rem;
-      background-color: #000;
-      color: #fff;
-      font-family: 'M PLUS 1p', sans-serif;
-      text-align: center;
-    }
-    h1 {
-      margin-bottom: 1rem;
-      color: #fff;
-      /* グレーっぽい文字が気になるなら色を白に強制 */
-      color: #fff !important;
-    }
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    .gallery-item {
-      background: rgba(255 255 255 / 0.1);
-      border-radius: 8px;
-      padding: 0.5rem;
-      transition: background 0.3s ease;
-    }
-    .gallery-item:hover {
-      background: rgba(255 255 255 / 0.2);
-    }
-    .gallery-item a {
-      color: #fff;
-      text-decoration: none;
-      display: block;
-    }
-    .gallery-item img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-    }
-    .gallery-item p {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-    }
-    nav {
-      margin-top: 2rem;
-    }
-    nav a {
-      color: #66aaff;
-      text-decoration: underline;
-      margin: 0 0.5rem;
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ギャラリー</title>
+<style>
+  body, html {
+    margin: 0; padding: 0;
+    background: black;
+    height: 100%;
+    font-family: 'M PLUS 1p', sans-serif;
+    color: #fff;
+    text-align: center;
+  }
+
+  /* 三本線メニューアイコン */
+  #menuButton {
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    z-index: 1100;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+  }
+  #menuButton div {
+    background-color: white;
+    height: 4px;
+    margin: 4px 0;
+    border-radius: 2px;
+  }
+
+  /* サイドバー */
+  #sidebar {
+    position: fixed;
+    top: 0; right: 0;
+    width: 250px;
+    height: 100vh;
+    background: rgba(0,0,0,0.8);
+    color: white;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 1150;
+    padding: 2rem;
+    box-sizing: border-box;
+    text-align: left;
+  }
+  #sidebar.open {
+    transform: translateX(0);
+  }
+
+  h1 {
+    margin: 2rem 0 1rem;
+    font-size: 3rem;
+  }
+
+  nav.top-nav {
+    margin-bottom: 2rem;
+  }
+  nav.top-nav a {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 1rem;
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  nav.top-nav a:hover {
+    text-decoration: underline;
+  }
+
+  /* ギャラリー */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 0 1rem 2rem;
+    justify-items: center;
+  }
+
+  .gallery-item {
+    background: rgba(255 255 255 / 0.1);
+    border-radius: 8px;
+    padding: 0.5rem;
+    width: 90%;
+    max-width: 300px;
+    box-sizing: border-box;
+    cursor: pointer;
+    color: #eee;
+    text-align: center;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .gallery-item p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+  }
+
+  a {
+    color: #fff;
+    text-decoration: underline;
+  }
+</style>
 </head>
 <body>
+
+  <!-- 三本線メニュー -->
+  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0" title="メニュー">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- サイドバー -->
+  <aside id="sidebar" aria-hidden="true">
+    <nav>
+      <a href="/">ホーム</a><br />
+      <a href="/profile/">プロフィール</a><br />
+      <a href="/works/">ギャラリー</a><br />
+      <a href="/contact/">お問い合わせ</a>
+    </nav>
+  </aside>
+
   <h1>市屋 凪</h1>
 
+  <nav class="top-nav">
+    <a href="/">ホームへ</a>
+    <a href="/profile/">プロフィールへ</a>
+    <a href="/contact/">お問い合わせへ</a>
+  </nav>
+
   <section class="gallery">
-    <div class="gallery-item">
-      <a href="/works/作品1.html">
-        <img src="作品画像1.jpg" alt="作品タイトル1" />
-        <p>作品タイトル1</p>
-      </a>
+    <div class="gallery-item" onclick="location.href='作品詳細1.html';">
+      <img src="作品画像1.jpg" alt="作品タイトル1" />
+      <p>作品タイトル1</p>
     </div>
-    <div class="gallery-item">
-      <a href="/works/作品2.html">
-        <img src="作品画像2.jpg" alt="作品タイトル2" />
-        <p>作品タイトル2</p>
-      </a>
+    <div class="gallery-item" onclick="location.href='作品詳細2.html';">
+      <img src="作品画像2.jpg" alt="作品タイトル2" />
+      <p>作品タイトル2</p>
     </div>
-    <div class="gallery-item">
-      <a href="/works/作品3.html">
-        <img src="作品画像3.jpg" alt="作品タイトル3" />
-        <p>作品タイトル3</p>
-      </a>
+    <div class="gallery-item" onclick="location.href='作品詳細3.html';">
+      <img src="作品画像3.jpg" alt="作品タイトル3" />
+      <p>作品タイトル3</p>
     </div>
-    <!-- 作品追加はここに同じ形で追加 -->
+    <!-- 作品はここに追加 -->
   </section>
 
-  <nav>
-    <a href="/">ホームへ</a> | <a href="/profile/">プロフィールへ</a>
-  </nav>
+<script>
+  const menuButton = document.getElementById('menuButton');
+  const sidebar = document.getElementById('sidebar');
+
+  menuButton.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
+  });
+
+  menuButton.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      sidebar.classList.toggle('open');
+      sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
+    }
+  });
+</script>
 
 </body>
 </html>
