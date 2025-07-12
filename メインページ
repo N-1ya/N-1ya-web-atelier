@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>市屋 凪 | ホームページ</title>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      background: black;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'M PLUS 1p', sans-serif;
+    }
+
+    /* 猫の目演出（イントロ） */
+    #intro {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: opacity 1.5s ease;
+    }
+
+    #intro.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #intro img {
+      max-width: 80%;
+      max-height: 80%;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    #intro img.visible {
+      opacity: 1;
+    }
+
+    /* メインコンテンツ */
+    #main {
+      display: none;
+      padding: 2rem;
+      color: #fff;
+      background-color: #264b75;
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 猫の目イントロ -->
+  <div id="intro">
+    <img id="catEye" src="猫の目.jpeg" alt="Cat Eye">
+  </div>
+
+  <!-- メインページ -->
+  <div id="main">
+    <h1>市屋 凪</h1>
+    <p>ここに作品一覧など、ホームページの内容を表示</p>
+    <a href="/profile/">プロフィールへ</a> | <a href="/works/">作品一覧へ</a>
+  </div>
+
+  <script>
+    const intro = document.getElementById('intro');
+    const catEye = document.getElementById('catEye');
+    const main = document.getElementById('main');
+
+    // 1. 猫の目をフェードイン
+    setTimeout(() => {
+      catEye.classList.add('visible');
+    }, 200);
+
+    // 2. しばらく表示したあとフェードアウト
+    setTimeout(() => {
+      intro.classList.add('fade-out');
+      setTimeout(() => {
+        intro.style.display = 'none';
+        main.style.display = 'block';
+      }, 1500); // フェードアウト完了後にメイン表示
+    }, 3000); // 表示時間（目を3秒見せる）
+  </script>
+
+</body>
+</html>
