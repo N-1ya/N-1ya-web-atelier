@@ -60,13 +60,28 @@
       height: 24px;
       cursor: pointer;
       z-index: 10000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
     }
 
     #menuButton div {
       background-color: white;
       height: 4px;
-      margin: 4px 0;
       border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* ×アイコンに変化 */
+    #menuButton.open div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    #menuButton.open div:nth-child(2) {
+      opacity: 0;
+    }
+    #menuButton.open div:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
     }
 
     /* サイドバー */
@@ -104,7 +119,7 @@
 <body>
 
   <!-- 三本線メニュー -->
-  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0">
+  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0" title="メニュー">
     <div></div>
     <div></div>
     <div></div>
@@ -138,34 +153,48 @@
   <a href="/">ホーム</a>
 
   <script>
-    // メニュー操作
+    // 要素取得
     const menuButton = document.getElementById('menuButton');
     const sidebar = document.getElementById('sidebar');
     const closeSidebar = document.getElementById('closeSidebar');
+    const form = document.getElementById('contactForm');
+    const status = document.getElementById('status');
 
-    menuButton.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
+    // メニュー開閉切替＆×アイコン切替
+    function toggleSidebar() {
+      const isOpen = sidebar.classList.toggle('open');
+      menuButton.classList.toggle('open', isOpen);
+      sidebar.setAttribute('aria-hidden', !isOpen);
+    }
+
+    menuButton.addEventListener('click', toggleSidebar);
+    menuButton.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        toggleSidebar();
+      }
     });
 
     closeSidebar.addEventListener('click', (e) => {
       e.preventDefault();
       sidebar.classList.remove('open');
+      menuButton.classList.remove('open');
       sidebar.setAttribute('aria-hidden', 'true');
     });
 
-    menuButton.addEventListener('keydown', (e) => {
-      if(e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        sidebar.classList.toggle('open');
-        sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
+    // サイドバー以外のクリックで閉じる
+    document.addEventListener('click', (e) => {
+      const isClickInsideSidebar = sidebar.contains(e.target);
+      const isClickOnMenuButton = menuButton.contains(e.target);
+
+      if (sidebar.classList.contains('open') && !isClickInsideSidebar && !isClickOnMenuButton) {
+        sidebar.classList.remove('open');
+        menuButton.classList.remove('open');
+        sidebar.setAttribute('aria-hidden', 'true');
       }
     });
 
     // フォーム送信処理
-    const form = document.getElementById('contactForm');
-    const status = document.getElementById('status');
-
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
 
