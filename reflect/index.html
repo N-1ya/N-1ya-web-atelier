@@ -5,15 +5,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RE：FLECT</title>
   <style>
+    @font-face {
+      font-family: 'Koku Mincho';
+      src: url('/fonts/KokuMincho-Regular.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
       background: #111;
       color: #fff;
-      font-family: 'Helvetica Neue', sans-serif;
+      font-family: 'Koku Mincho', serif;
       height: 100%;
       width: 100%;
       overflow-x: hidden;
+      scroll-behavior: smooth;
     }
 
     body {
@@ -56,18 +64,102 @@
       max-width: 90%;
       word-wrap: break-word;
     }
+
+    .fade-out {
+      animation: fadeOut 2s forwards;
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+      }
+    }
+
+    .final-section {
+      text-align: center;
+      margin-top: 5vh;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    .final-section.visible {
+      opacity: 1;
+    }
+
+    .final-section img {
+      max-width: 80vw;
+      height: auto;
+      margin-bottom: 1rem;
+      border-radius: 6px;
+    }
+
+    .final-section .info {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      white-space: pre-line;
+      margin: 2rem auto;
+      max-width: 700px;
+      text-align: left;
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .home-link {
+      display: inline-block;
+      margin-top: 3rem;
+      font-size: 1.2rem;
+      color: #fff;
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <div id="intro" class="fade-in visible">
     <h1 class="title">RE：FLECT</h1>
-
   </div>
 
   <div id="messages"></div>
 
+  <div id="final" class="final-section">
+    <img src="/images/reflect.jpg" alt="RE：FLECT" />
+    <div>
+      <p>作品タイトル：RE：FLECT</p>
+      <p>サイズ：F3（273mm×220mm）</p>
+      <p>画法：アクリル画／MDFパネル</p>
+      <p>作品No：#005</p>
+      <p>NFTシリアル：0005-ICH-NAGI</p>
+    </div>
+
+    <div class="info">
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝  
+　　作品証明書（Certificate of Authenticity）  
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+
+作品名：　RE：FLECT  
+作者名：　市屋　凪（Ichiya Nagi）  
+発行番号：　＃005  
+発行日：　2025年6月25日  
+作品種別：　アクリル画  
+公開URL：　https://ichiya-nagi.com/reflect  
+技術情報：　NFCタグ連携／GitHub Pages／独自ドメイン管理
+
+この証明書は、作者本人により制作・発行。  
+オリジナルの作品であることを証明します。  
+また、本作品は上記のWebページにて連携され  
+NFCタグによって作品が保証されます。
+
+※証明書の複製・改変は禁止されています。
+    </div>
+
+    <a class="home-link" href="/">ホームページへ戻る</a>
+  </div>
+
   <script>
     const intro = document.getElementById('intro');
+    const messagesContainer = document.getElementById('messages');
+    const finalSection = document.getElementById('final');
+
     const messages = [
       "その目には”なにが”映っていましたか？",
       "猫は”あなた”を見ています",
@@ -79,21 +171,28 @@
       "”誰かの目”を借りることなく"
     ];
 
-    const messagesContainer = document.getElementById('messages');
-
-    // 最初のタイトルをフェードアウトさせる
     setTimeout(() => {
       intro.classList.remove('visible');
-      setTimeout(showMessages, 1800); // フェードアウト完了後に開始
-    }, 2500); // タイトル表示時間
+      setTimeout(showMessages, 1800);
+    }, 2500);
 
     function showMessages() {
       let i = 0;
       const interval = setInterval(() => {
         if (i >= messages.length) {
           clearInterval(interval);
+          // 最後に全体をフェードアウト → 新しいセクション表示
+          setTimeout(() => {
+            messagesContainer.classList.add('fade-out');
+            setTimeout(() => {
+              messagesContainer.style.display = 'none';
+              finalSection.classList.add('visible');
+              window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+            }, 2000);
+          }, 3000);
           return;
         }
+
         const p = document.createElement('p');
         p.className = 'message fade-in';
         p.innerHTML = messages[i];
@@ -102,7 +201,7 @@
           p.classList.add('visible');
         }, 50);
         i++;
-      }, 2800); // 約2.8秒ごとに表示
+      }, 2800);
     }
   </script>
 </body>
