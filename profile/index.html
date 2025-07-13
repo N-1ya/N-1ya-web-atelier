@@ -24,13 +24,28 @@
       width: 30px;
       height: 25px;
       cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
     }
 
     #menuButton div {
       background-color: white;
       height: 4px;
-      margin: 4px 0;
       border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* ×アイコンに変化 */
+    #menuButton.open div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    #menuButton.open div:nth-child(2) {
+      opacity: 0;
+    }
+    #menuButton.open div:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
     }
 
     /* サイドバー */
@@ -120,39 +135,62 @@
   <!-- メインタイトルとリンク -->
   <h1>プロフィール</h1>
 
-
-
   <!-- プロフィール本文 -->
   <section class="profile-content">
     <p>猫を描いています。</p>
     <p>主にアクリル画を中心に、NFCタグやWeb連動による新しい表現形式も探求中。</p>
     <p><strong>使用画材：</strong>アクリル、MDFパネル、デジタルメディアなど</p>
-<p>
-  <a href="/contact/">お問い合わせ</a></strong>はこちらからどうぞ<br>
-</p>
-
+    <p>
+      <a href="/contact/">お問い合わせ</a>はこちらからどうぞ<br>
+    </p>
   </section>
 
-    <nav class="main-nav">
+  <nav class="main-nav">
     <a href="/">ホーム</a>
   </nav>
-  <script>
-    const menuButton = document.getElementById('menuButton');
-    const sidebar = document.getElementById('sidebar');
 
-    menuButton.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
-    });
+<script>
+  const menuButton = document.getElementById('menuButton');
+  const sidebar = document.getElementById('sidebar');
+  const closeSidebar = document.getElementById('closeSidebar');
 
-    menuButton.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        sidebar.classList.toggle('open');
-        sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
-      }
-    });
-  </script>
+  // トグル関数
+  function toggleSidebar() {
+    const isOpen = sidebar.classList.toggle('open');
+    menuButton.classList.toggle('open', isOpen);
+    sidebar.setAttribute('aria-hidden', !isOpen);
+  }
+
+  // メニューボタンクリック
+  menuButton.addEventListener('click', toggleSidebar);
+
+  // キーボード操作（Enter、Space）
+  menuButton.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      toggleSidebar();
+    }
+  });
+
+  // 閉じるリンククリック
+  closeSidebar.addEventListener('click', (e) => {
+    e.preventDefault();
+    sidebar.classList.remove('open');
+    menuButton.classList.remove('open');
+    sidebar.setAttribute('aria-hidden', 'true');
+  });
+
+  // サイドバー以外クリックで閉じる
+  document.addEventListener('click', (e) => {
+    const isClickInsideSidebar = sidebar.contains(e.target);
+    const isClickOnMenuButton = menuButton.contains(e.target);
+    if (sidebar.classList.contains('open') && !isClickInsideSidebar && !isClickOnMenuButton) {
+      sidebar.classList.remove('open');
+      menuButton.classList.remove('open');
+      sidebar.setAttribute('aria-hidden', 'true');
+    }
+  });
+</script>
 
 </body>
 </html>
