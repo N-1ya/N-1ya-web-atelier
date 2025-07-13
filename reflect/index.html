@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>RE：FLECT</title>
   <style>
     @font-face {
@@ -13,7 +13,8 @@
     }
 
     html, body {
-      margin: 0; padding: 0;
+      margin: 0;
+      padding: 0;
       background: #111;
       color: #fff;
       font-family: 'KokuMincho', serif;
@@ -23,24 +24,25 @@
     }
 
     body {
-      box-sizing: border-box;
-      padding: 5vh 6vw;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: flex-start;
+      padding: 4vh 6vw;
+      box-sizing: border-box;
     }
 
-    /* --- 猫の目アニメーション --- */
+    /* 猫の目イントロ */
     #intro {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      background: black;
+      background-color: black;
       display: flex;
-      justify-content: center;
       align-items: center;
-      z-index: 1000;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 1;
       transition: opacity 1.5s ease;
     }
     #intro.fade-out {
@@ -57,81 +59,57 @@
       opacity: 1;
     }
 
-    /* --- 作品タイトル --- */
-    #titleBox {
-      position: fixed;
-      top: 40vh;
-      width: 100%;
-      text-align: center;
+    .title {
       font-size: 6vw;
-      font-weight: bold;
-      color: white;
-      opacity: 0;
-      transition: opacity 1.5s ease;
-      z-index: 1001;
-      font-family: 'KokuMincho', serif;
-      pointer-events: none;
-    }
-    #titleBox.visible {
-      opacity: 1;
-    }
-    #titleBox.fade-out {
-      opacity: 0;
-      transition: opacity 1.5s ease;
+      margin: 5vh 0 1vh;
+      text-align: center;
+      line-height: 1.2;
     }
 
-    /* --- メッセージ群 --- */
     #messages {
-      width: 100%;
+      margin-top: 4vh;
+      width: 90%;
       max-width: 800px;
-      margin-top: 20vh;
       text-align: center;
-    }
-    .message {
-      opacity: 0;
       font-size: 4.8vw;
       line-height: 1.6;
-      margin: 4vh auto;
-      max-width: 90%;
       word-wrap: break-word;
+      user-select: none;
+    }
+
+    .message {
+      opacity: 0;
       transition: opacity 1.5s ease;
-      font-family: 'KokuMincho', serif;
+      margin: 3vh 0;
     }
     .message.visible {
       opacity: 1;
     }
 
-    /* --- 証明書＆作品情報 --- */
     #finalContent {
       max-width: 800px;
-      margin: 6vh auto 0;
-      text-align: center;
-      font-family: 'KokuMincho', serif;
-      color: #ddd;
+      margin-top: 6vh;
       opacity: 0;
       transition: opacity 1.5s ease;
+      text-align: center;
+      font-family: 'KokuMincho', serif;
+      line-height: 1.6;
     }
     #finalContent.visible {
       opacity: 1;
     }
-
     #finalContent img {
-      max-width: 90vw;
+      width: 90%;
+      max-width: 600px;
       border-radius: 8px;
       margin-bottom: 1rem;
-      display: block;
-      margin-left: auto;
-      margin-right: auto;
     }
-
-    .art-info {
-      font-size: 1.3rem;
-      line-height: 1.6;
+    .meta-info {
+      font-size: 1.1rem;
       margin-bottom: 2rem;
       white-space: pre-wrap;
-      color: #eee;
+      text-align: left;
     }
-
     .certificate {
       background-color: rgba(255,255,255,0.05);
       padding: 2rem;
@@ -141,59 +119,43 @@
       white-space: pre-wrap;
       margin-bottom: 3rem;
       line-height: 1.8;
-      color: #ccc;
     }
-
     .home-link {
       font-size: 1.2rem;
-      text-decoration: underline;
-      color: #ccc;
-      margin-bottom: 4vh;
       display: inline-block;
+      margin-top: 2rem;
+      color: #ccc;
+      text-decoration: underline;
+      cursor: pointer;
     }
 
     @media (max-width: 600px) {
-      #titleBox {
-        font-size: 10vw;
-      }
-      .message {
-        font-size: 5.5vw;
-      }
-      .art-info {
-        font-size: 1rem;
-      }
-      .certificate {
-        font-size: 0.9rem;
-      }
-      .home-link {
-        font-size: 1rem;
-      }
+      .title { font-size: 9vw; }
+      #messages { font-size: 5.5vw; }
+      .meta-info, .certificate { font-size: 0.95rem; }
     }
   </style>
 </head>
 <body>
-
-  <!-- 猫の目 -->
+  <!-- 猫の目イントロ -->
   <div id="intro">
-    <img id="catEye" src="plum-eye.png" alt="猫の目" />
+    <img id="catEye" src="images/plum-eye.png" alt="猫の目" onerror="console.error('plum-eye.pngが見つかりません');" />
   </div>
 
-  <!-- 作品タイトル -->
-  <div id="titleBox">RE：FLECT</div>
+  <h1 class="title">RE：FLECT</h1>
 
-  <!-- メッセージ -->
   <div id="messages"></div>
 
-  <!-- 証明書・作品情報 -->
-  <div id="finalContent" aria-live="polite" aria-atomic="true" role="region" tabindex="0" aria-label="作品証明書と作品情報">
-    <img src="作品画像1.jpg" alt="RE：FLECT 作品画像" />
-    <div class="art-info">
-      タイトル：RE：FLECT<br>
-      サイズ：F6（410×318mm）<br>
-      画法：アクリル、MDFパネル、保護ニス<br>
-      作品No：#005<br>
-      NFTシリアル：0xA32c7a1ff9c…
+  <div id="finalContent" tabindex="-1" aria-live="polite" aria-atomic="true" role="region">
+    <img src="/images/reflect.jpg" alt="RE：FLECT 作品画像" />
+    <div class="meta-info">
+タイトル：RE：FLECT<br>
+サイズ：F6（410×318mm）<br>
+画法：アクリル、MDFパネル、保護ニス<br>
+作品No：#005<br>
+NFTシリアル：0xA32c7a1ff9c…
     </div>
+
     <div class="certificate">
 ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝<br>
 　　　作品証明書（Certificate of Authenticity）<br>
@@ -211,13 +173,13 @@
 NFCタグによって作品が保証されます。<br><br>
 ※証明書の複製・改変は禁止されています。
     </div>
+
     <a href="/" class="home-link">ホームページへ</a>
   </div>
 
   <script>
-    const catEye = document.getElementById('catEye');
     const intro = document.getElementById('intro');
-    const titleBox = document.getElementById('titleBox');
+    const catEye = document.getElementById('catEye');
     const messagesContainer = document.getElementById('messages');
     const finalContent = document.getElementById('finalContent');
 
@@ -232,69 +194,72 @@ NFCタグによって作品が保証されます。<br><br>
       "”誰かの目”を借りることなく"
     ];
 
-    // 猫の目フェードイン
-    setTimeout(() => {
-      catEye.classList.add('visible');
-    }, 200);
+    // 1. 猫の目をフェードイン → 3秒後にフェードアウト → 表示切り替え → 2. タイトルを非表示にして文章を自動スクロールしながら表示 → 3. 文章フェードアウト → 4. 最後に作品情報表示
 
-    // 猫の目フェードアウト＋タイトルフェードイン・アウト
-    setTimeout(() => {
-      intro.classList.add('fade-out');
-      titleBox.classList.add('visible');
-    }, 3000);
+    function fadeIn(element) {
+      element.classList.add('visible');
+    }
+    function fadeOut(element) {
+      element.classList.remove('visible');
+    }
 
-    setTimeout(() => {
-      titleBox.classList.add('fade-out');
-    }, 5500);
+    async function showIntroAnimation() {
+      fadeIn(catEye);
+      await sleep(3000);
+      fadeOut(intro);
+      await sleep(1500);
+      intro.style.display = 'none';
+    }
 
-    setTimeout(() => {
-      titleBox.style.display = 'none';
-      startMessages();
-    }, 7000);
-
-    // メッセージ表示＆スクロール
-    function startMessages() {
-      let i = 0;
-
-      function showNext() {
-        if (i >= messages.length) {
-          // メッセージ終了後の処理
-          clearMessagesAndShowFinal();
-          return;
-        }
+    async function showMessages() {
+      for (let i = 0; i < messages.length; i++) {
         const p = document.createElement('p');
         p.className = 'message';
         p.innerHTML = messages[i];
         messagesContainer.appendChild(p);
-        setTimeout(() => {
-          p.classList.add('visible');
-          p.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }, 100);
-
-        i++;
-        setTimeout(showNext, 2800);
+        await sleep(500);
+        fadeIn(p);
+        await sleep(2300);
+        // 自動スクロールで常に最新メッセージが見えるように
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
       }
-      showNext();
     }
 
-    function clearMessagesAndShowFinal() {
-      // メッセージ群をゆっくりフェードアウトさせる
+    async function hideMessages() {
       const msgs = messagesContainer.querySelectorAll('.message');
-      msgs.forEach((msg, idx) => {
+      for (let i = 0; i < msgs.length; i++) {
+        const msg = msgs[i];
         setTimeout(() => {
           msg.style.opacity = '0';
-        }, idx * 150);
-      });
-
-      setTimeout(() => {
-        messagesContainer.innerHTML = '';
-        // スクロール位置をトップにリセット
-        window.scrollTo({ top: 0, behavior: 'auto' });
-        // 証明書情報をフェードイン
-        finalContent.classList.add('visible');
-        finalContent.focus();
-      }, msgs.length * 150 + 800);
+        }, i * 150);
+      }
+      await sleep(msgs.length * 150 + 800);
+      messagesContainer.innerHTML = '';
     }
+
+    async function showFinalContent() {
+      finalContent.style.display = 'block';
+      fadeIn(finalContent);
+      // スクロールトップに戻す
+      window.scrollTo({ top: 0, behavior: 'auto' });
+      // フォーカス移動（アクセシビリティ）
+      finalContent.focus();
+    }
+
+    // 汎用スリープ関数
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function mainFlow() {
+      await showIntroAnimation();
+      await showMessages();
+      await hideMessages();
+      await showFinalContent();
+    }
+
+    mainFlow();
+
   </script>
 </body>
 </html>
