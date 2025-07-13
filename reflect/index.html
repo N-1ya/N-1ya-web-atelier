@@ -231,9 +231,9 @@ NFCタグによって作品が保証されます。<br><br>
 
     function showMessages() {
       let i = 0;
-      const interval = setInterval(() => {
+      function displayNextMessage() {
         if (i >= messages.length) {
-          clearInterval(interval);
+          // 全て表示し終えたら詩を消してトップへスクロール、作品情報表示
           setTimeout(() => {
             messagesContainer.innerHTML = '';
             window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -243,22 +243,24 @@ NFCタグによって作品が保証されます。<br><br>
           }, 2000);
           return;
         }
-
         const p = document.createElement('p');
         p.className = 'message fade-in';
         p.innerHTML = messages[i];
         messagesContainer.appendChild(p);
         setTimeout(() => p.classList.add('visible'), 50);
-        scrollToBottom();
-        i++;
-      }, 2800);
-    }
 
-    function scrollToBottom() {
-      window.scrollTo({
-        top: document.documentElement.scrollHeight,
-        behavior: 'smooth'
-      });
+        // メッセージ表示後にスクロール
+        setTimeout(() => {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth'
+          });
+        }, 500);
+
+        i++;
+        setTimeout(displayNextMessage, 2800);
+      }
+      displayNextMessage();
     }
   </script>
 </body>
