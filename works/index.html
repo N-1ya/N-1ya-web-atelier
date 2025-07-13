@@ -1,214 +1,185 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>ギャラリー</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      background: black;
-      color: white;
-      font-family: 'M PLUS 1p', sans-serif;
-      text-align: center;
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ギャラリー - 市屋 凪</title>
+<style>
+  body, html {
+    margin: 0; padding: 0;
+    background: black;
+    height: 100%;
+    font-family: 'M PLUS 1p', sans-serif;
+    color: #fff;
+    text-align: center;
+  }
 
-    /* 三本線メニューアイコン */
-    #menuButton {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      z-index: 1100;
-      width: 32px;
-      height: 24px;
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 4px;
-    }
+  /* 三本線メニュー */
+  #menuButton {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 10002;
+    display: block; /* 表示 */
+  }
+  #menuButton div {
+    background-color: white;
+    height: 4px;
+    margin: 4px 0;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  /* ×アイコンに変化 */
+  #menuButton.open div:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  #menuButton.open div:nth-child(2) {
+    opacity: 0;
+  }
+  #menuButton.open div:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
 
-    #menuButton div {
-      background-color: white;
-      height: 4px;
-      border-radius: 2px;
-      transition: all 0.3s ease;
-    }
+  /* サイドバー */
+  #sidebar {
+    position: fixed;
+    top: 0; right: 0;
+    width: 250px;
+    height: 100vh;
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 10001;
+    text-align: left;
+  }
+  #sidebar.open {
+    transform: translateX(0);
+  }
+  #sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+  }
 
-    /* ×アイコンに変化 */
-    #menuButton.open div:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    #menuButton.open div:nth-child(2) {
-      opacity: 0;
-    }
-    #menuButton.open div:nth-child(3) {
-      transform: rotate(-45deg) translate(6px, -6px);
-    }
+  h1 {
+    margin: 3rem 0 1rem;
+    font-size: 2.5rem;
+  }
 
-    /* サイドバー */
-    #sidebar {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 250px;
-      height: 100vh;
-      background: rgba(0, 0, 0, 0.85);
-      color: white;
-      padding: 2rem 1rem;
-      box-sizing: border-box;
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      z-index: 10001;
-      text-align: left;
-    }
+  /* ギャラリー */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 900px;
+    margin: 2rem auto 3rem;
+  }
+  .gallery-item {
+    background: rgba(255 255 255 / 0.1);
+    border-radius: 8px;
+    padding: 0.5rem;
+  }
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+  }
+  .gallery-item p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #eee;
+  }
 
-    #sidebar.open {
-      transform: translateX(0);
-    }
-
-    #sidebar a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      margin: 1rem 0;
-      font-size: 1.2rem;
-    }
-
-    h1 {
-      margin: 3rem 0 1rem;
-      font-size: 2.5rem;
-    }
-
-    nav.main-nav {
-      margin-bottom: 2rem;
-    }
-
-    nav.main-nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 1rem;
-      font-size: 1.1rem;
-    }
-
-    nav.main-nav a:hover {
-      text-decoration: underline;
-    }
-
-    /* ギャラリー部分：3列固定（スマホ含む） */
+  /* スマホでも3列維持 */
+  @media (max-width: 768px) {
     .gallery {
-      display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      max-width: 900px;
-      margin: 0 auto 3rem;
-      padding: 0 1rem;
     }
-
-    .gallery-item {
-      background: rgba(255 255 255 / 0.1);
-      border-radius: 8px;
-      padding: 0.5rem;
-      text-align: center;
+  }
+  @media (max-width: 400px) {
+    .gallery {
+      grid-template-columns: repeat(3, 1fr);
     }
-
-    .gallery-item img {
-      width: 100%;
-      height: auto;
-      border-radius: 8px;
-      display: block;
-    }
-
-    .gallery-item p {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      color: #eee;
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
 
-  <!-- 三本線メニュー -->
-  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0" title="メニュー">
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-
-  <!-- サイドバー -->
-  <aside id="sidebar" aria-hidden="true">
-    <a href="/">ホーム</a>
-    <a href="/profile/">プロフィール</a>
-    <a href="/works/">ギャラリー</a>
-    <a href="/contact/">お問い合わせ</a>
-    <a href="#" id="closeSidebar">閉じる</a>
-  </aside>
-
+<!-- メインページ -->
+<div id="main">
   <h1>ギャラリー</h1>
 
-  <nav class="main-nav">
-    <a href="/">ホーム</a>
+  <nav>
+    <a href="/">ホーム</a> 　<a href="/profile/">プロフィール</a>　<a href="/works/">ギャラリー</a>　<a href="/contact/">お問い合わせ</a>
   </nav>
 
-  <!-- ギャラリー -->
   <section class="gallery">
     <div class="gallery-item">
-      <a href="/works/detail1.html">
-        <img src="/images/art1.jpg" alt="作品1">
-        <p>作品タイトル1</p>
-      </a>
+      <img src="作品画像1.jpg" alt="作品タイトル1">
+      <p>作品タイトル1</p>
     </div>
     <div class="gallery-item">
-      <a href="/works/detail2.html">
-        <img src="/images/art2.jpg" alt="作品2">
-        <p>作品タイトル2</p>
-      </a>
+      <img src="作品画像2.jpg" alt="作品タイトル2">
+      <p>作品タイトル2</p>
     </div>
     <div class="gallery-item">
-      <a href="/works/detail3.html">
-        <img src="/images/art3.jpg" alt="作品3">
-        <p>作品タイトル3</p>
-      </a>
+      <img src="作品画像3.jpg" alt="作品タイトル3">
+      <p>作品タイトル3</p>
     </div>
-    <!-- ここに縦に続けて作品が増えていきます -->
+    <!-- 必要に応じてもっと増やせます -->
   </section>
+</div>
+
+<!-- 三本線メニュー -->
+<div id="menuButton" aria-label="メニュー" role="button" tabindex="0">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<!-- サイドバー -->
+<div id="sidebar">
+  <a href="/">ホーム</a>
+  <a href="/profile/">プロフィール</a>
+  <a href="/works/">ギャラリー</a>
+  <a href="/contact/">お問い合わせ</a>
+</div>
 
 <script>
   const menuButton = document.getElementById('menuButton');
   const sidebar = document.getElementById('sidebar');
-  const closeSidebar = document.getElementById('closeSidebar');
 
-  function toggleSidebar() {
-    const isOpen = sidebar.classList.toggle('open');
-    menuButton.classList.toggle('open', isOpen);
-    sidebar.setAttribute('aria-hidden', !isOpen);
-  }
+  // メニュー開閉トグル
+  menuButton.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    menuButton.classList.toggle('open');
+  });
 
-  menuButton.addEventListener('click', toggleSidebar);
-  menuButton.addEventListener('keydown', e => {
-    if (e.key === 'Enter' || e.key === ' ') {
+  // キーボード操作対応（Enter/Spaceで開閉）
+  menuButton.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      toggleSidebar();
+      sidebar.classList.toggle('open');
+      menuButton.classList.toggle('open');
     }
   });
 
-  closeSidebar.addEventListener('click', e => {
-    e.preventDefault();
-    sidebar.classList.remove('open');
-    menuButton.classList.remove('open');
-    sidebar.setAttribute('aria-hidden', 'true');
-  });
-
-  document.addEventListener('click', e => {
-    const isInsideSidebar = sidebar.contains(e.target);
-    const isOnMenuButton = menuButton.contains(e.target);
-    if (sidebar.classList.contains('open') && !isInsideSidebar && !isOnMenuButton) {
-      sidebar.classList.remove('open');
-      menuButton.classList.remove('open');
-      sidebar.setAttribute('aria-hidden', 'true');
+  // 外クリックで閉じる
+  document.addEventListener('click', (e) => {
+    if(sidebar.classList.contains('open') &&
+      !sidebar.contains(e.target) &&
+      !menuButton.contains(e.target)) {
+        sidebar.classList.remove('open');
+        menuButton.classList.remove('open');
     }
   });
 </script>
