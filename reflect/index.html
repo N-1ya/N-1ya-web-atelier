@@ -8,8 +8,6 @@
     @font-face {
       font-family: 'KokuMincho';
       src: url('/fonts/KokuMincho-Regular.woff2') format('woff2');
-      font-weight: normal;
-      font-style: normal;
     }
 
     html, body {
@@ -18,8 +16,6 @@
       background: #111;
       color: #fff;
       font-family: 'KokuMincho', serif;
-      height: 100%;
-      width: 100%;
       overflow-x: hidden;
     }
 
@@ -27,89 +23,90 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
       padding: 4vh 6vw;
       box-sizing: border-box;
     }
 
-    /* 猫の目イントロ */
-    #intro {
+    .fade-in {
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+    }
+
+    .fade-out {
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    #eyeIntro, #titleIntro {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
       background-color: black;
       display: flex;
-      align-items: center;
       justify-content: center;
-      z-index: 9999;
-      opacity: 1;
-      transition: opacity 1.5s ease;
-    }
-    #intro.fade-out {
-      opacity: 0;
+      align-items: center;
+      z-index: 1000;
       pointer-events: none;
     }
-    #catEye {
-      max-width: 80%;
-      max-height: 80%;
+
+    #eyeIntro img {
+      max-width: 60%;
       opacity: 0;
       transition: opacity 1.5s ease;
     }
-    #catEye.visible {
-      opacity: 1;
-    }
 
-    .title {
+    #titleText {
       font-size: 6vw;
-      margin: 5vh 0 1vh;
-      text-align: center;
-      line-height: 1.2;
-    }
-
-    #messages {
-      margin-top: 4vh;
-      width: 90%;
-      max-width: 800px;
-      text-align: center;
-      font-size: 4.8vw;
-      line-height: 1.6;
-      word-wrap: break-word;
-      user-select: none;
+      color: white;
+      opacity: 0;
+      transition: opacity 1.5s ease;
     }
 
     .message {
+      font-size: 4.8vw;
+      line-height: 1.6;
+      margin: 4vh auto;
+      text-align: center;
+      max-width: 90%;
+      word-wrap: break-word;
       opacity: 0;
-      transition: opacity 1.5s ease;
-      margin: 3vh 0;
+      transition: opacity 1.8s ease-in-out;
     }
+
     .message.visible {
       opacity: 1;
     }
 
-    #finalContent {
-      max-width: 800px;
-      margin-top: 6vh;
+    .final-content {
       opacity: 0;
       transition: opacity 1.5s ease;
+      margin-top: 6vh;
       text-align: center;
-      font-family: 'KokuMincho', serif;
-      line-height: 1.6;
+      max-width: 800px;
     }
-    #finalContent.visible {
+
+    .final-content.visible {
       opacity: 1;
     }
-    #finalContent img {
+
+    .final-content img {
       width: 90%;
       max-width: 600px;
       border-radius: 8px;
       margin-bottom: 1rem;
     }
+
     .meta-info {
       font-size: 1.1rem;
+      line-height: 1.6;
       margin-bottom: 2rem;
       white-space: pre-wrap;
-      text-align: left;
     }
+
     .certificate {
       background-color: rgba(255,255,255,0.05);
       padding: 2rem;
@@ -120,40 +117,46 @@
       margin-bottom: 3rem;
       line-height: 1.8;
     }
+
     .home-link {
       font-size: 1.2rem;
-      display: inline-block;
+      text-align: center;
+      display: block;
       margin-top: 2rem;
-      color: #ccc;
       text-decoration: underline;
-      cursor: pointer;
+      color: #ccc;
     }
 
     @media (max-width: 600px) {
-      .title { font-size: 9vw; }
-      #messages { font-size: 5.5vw; }
+      .message { font-size: 5.5vw; }
       .meta-info, .certificate { font-size: 0.95rem; }
     }
   </style>
 </head>
 <body>
+
   <!-- 猫の目イントロ -->
-  <div id="intro">
-    <img id="catEye" src="images/plum-eye.png" alt="猫の目" onerror="console.error('plum-eye.pngが見つかりません');" />
+  <div id="eyeIntro">
+    <img id="eyeImage" src="images/plum-eye.png" alt="Cat Eye">
   </div>
 
-  <h1 class="title">RE：FLECT</h1>
+  <!-- タイトルイントロ -->
+  <div id="titleIntro">
+    <div id="titleText">RE：FLECT</div>
+  </div>
 
+  <!-- メッセージ表示 -->
   <div id="messages"></div>
 
-  <div id="finalContent" tabindex="-1" aria-live="polite" aria-atomic="true" role="region">
+  <!-- 最後の内容 -->
+  <div id="final" class="final-content">
     <img src="/images/reflect.jpg" alt="RE：FLECT 作品画像" />
     <div class="meta-info">
-タイトル：RE：FLECT<br>
-サイズ：F6（410×318mm）<br>
-画法：アクリル、MDFパネル、保護ニス<br>
-作品No：#005<br>
-NFTシリアル：0xA32c7a1ff9c…
+      タイトル：RE：FLECT<br>
+      サイズ：F6（410×318mm）<br>
+      画法：アクリル、MDFパネル、保護ニス<br>
+      作品No：#005<br>
+      NFTシリアル：0xA32c7a1ff9c…
     </div>
 
     <div class="certificate">
@@ -178,10 +181,12 @@ NFCタグによって作品が保証されます。<br><br>
   </div>
 
   <script>
-    const intro = document.getElementById('intro');
-    const catEye = document.getElementById('catEye');
+    const eyeIntro = document.getElementById('eyeIntro');
+    const eyeImage = document.getElementById('eyeImage');
+    const titleIntro = document.getElementById('titleIntro');
+    const titleText = document.getElementById('titleText');
     const messagesContainer = document.getElementById('messages');
-    const finalContent = document.getElementById('finalContent');
+    const final = document.getElementById('final');
 
     const messages = [
       "その目には”なにが”映っていましたか？",
@@ -194,72 +199,52 @@ NFCタグによって作品が保証されます。<br><br>
       "”誰かの目”を借りることなく"
     ];
 
-    // 1. 猫の目をフェードイン → 3秒後にフェードアウト → 表示切り替え → 2. タイトルを非表示にして文章を自動スクロールしながら表示 → 3. 文章フェードアウト → 4. 最後に作品情報表示
+    // 猫の目表示 → フェードアウト
+    setTimeout(() => {
+      eyeImage.style.opacity = 1;
+    }, 200);
 
-    function fadeIn(element) {
-      element.classList.add('visible');
-    }
-    function fadeOut(element) {
-      element.classList.remove('visible');
-    }
+    setTimeout(() => {
+      eyeIntro.classList.add('fade-out');
+    }, 2500);
 
-    async function showIntroAnimation() {
-      fadeIn(catEye);
-      await sleep(3000);
-      fadeOut(intro);
-      await sleep(1500);
-      intro.style.display = 'none';
-    }
+    // タイトル表示 → フェードアウト
+    setTimeout(() => {
+      titleText.style.opacity = 1;
+    }, 4000);
 
-    async function showMessages() {
-      for (let i = 0; i < messages.length; i++) {
+    setTimeout(() => {
+      titleIntro.classList.add('fade-out');
+    }, 6000);
+
+    // メッセージ表示開始
+    setTimeout(() => {
+      titleIntro.style.display = 'none';
+      showMessages();
+    }, 7600);
+
+    function showMessages() {
+      let i = 0;
+      const interval = setInterval(() => {
+        if (i >= messages.length) {
+          clearInterval(interval);
+          setTimeout(() => {
+            window.scrollTo({ top: 0, behavior: 'auto' }); // スクロール位置リセット
+            final.classList.add('visible');
+          }, 2000);
+          return;
+        }
+
         const p = document.createElement('p');
         p.className = 'message';
         p.innerHTML = messages[i];
         messagesContainer.appendChild(p);
-        await sleep(500);
-        fadeIn(p);
-        await sleep(2300);
-        // 自動スクロールで常に最新メッセージが見えるように
+        setTimeout(() => p.classList.add('visible'), 50);
         window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-      }
+        i++;
+      }, 2800);
     }
-
-    async function hideMessages() {
-      const msgs = messagesContainer.querySelectorAll('.message');
-      for (let i = 0; i < msgs.length; i++) {
-        const msg = msgs[i];
-        setTimeout(() => {
-          msg.style.opacity = '0';
-        }, i * 150);
-      }
-      await sleep(msgs.length * 150 + 800);
-      messagesContainer.innerHTML = '';
-    }
-
-    async function showFinalContent() {
-      finalContent.style.display = 'block';
-      fadeIn(finalContent);
-      // スクロールトップに戻す
-      window.scrollTo({ top: 0, behavior: 'auto' });
-      // フォーカス移動（アクセシビリティ）
-      finalContent.focus();
-    }
-
-    // 汎用スリープ関数
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function mainFlow() {
-      await showIntroAnimation();
-      await showMessages();
-      await hideMessages();
-      await showFinalContent();
-    }
-
-    mainFlow();
-
   </script>
+
 </body>
 </html>
