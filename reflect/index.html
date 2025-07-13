@@ -261,15 +261,15 @@ NFCタグによって作品が保証されます。<br><br>
         p.className = 'message fade-in';
         p.innerHTML = messages[i];
         messagesContainer.appendChild(p);
-        setTimeout(() => p.classList.add('visible'), 50);
 
-        // 最新の詩を画面中央にスクロール
         setTimeout(() => {
-          const pRect = p.getBoundingClientRect();
-          const viewportHeight = window.innerHeight;
-          const scrollY = window.scrollY + pRect.top - (viewportHeight / 2 - pRect.height / 2);
-          window.scrollTo({ top: scrollY, behavior: 'smooth' });
-        }, 600);
+          p.classList.add('visible');
+
+          // 中央にスクロール（画面サイズに対応）
+          const rect = p.getBoundingClientRect();
+          const offset = window.scrollY + rect.top - (window.innerHeight / 2) + (rect.height / 2);
+          window.scrollTo({ top: offset, behavior: 'smooth' });
+        }, 100);
 
         i++;
       }, 2800);
