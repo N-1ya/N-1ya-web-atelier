@@ -39,6 +39,7 @@
       opacity: 1;
     }
 
+    /* 猫の目イントロ */
     #eyeIntro {
       position: fixed;
       top: 0; left: 0;
@@ -62,9 +63,28 @@
       opacity: 1;
     }
 
+    /* タイトル中央表示 */
+    #titleSection {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: black;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9998;
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+    }
+
+    #titleSection.visible {
+      opacity: 1;
+    }
+
     .title {
       font-size: 6vw;
-      margin: 6vh 0 3vh;
       text-align: center;
       line-height: 1.2;
     }
@@ -201,33 +221,33 @@ NFCタグによって作品が保証されます。<br><br>
       catEye.classList.add('visible');
     }, 100);
 
-    // フェードアウト → タイトル表示
+    // 猫の目終了 → タイトル表示
     setTimeout(() => {
       eyeIntro.style.display = 'none';
-      titleSection.style.display = 'block';
+      titleSection.style.display = 'flex';
+      titleSection.classList.add('visible');
+
       setTimeout(() => {
-        titleSection.classList.add('visible');
+        titleSection.classList.remove('visible');
         setTimeout(() => {
-          titleSection.classList.remove('visible');
-          setTimeout(() => {
-            titleSection.style.display = 'none';
-            showMessages();
-          }, 2000);
-        }, 2500);
-      }, 100);
+          titleSection.style.display = 'none';
+          showMessages();
+        }, 2000);
+      }, 2500);
     }, 3000);
 
+    // 詩の表示
     function showMessages() {
       let i = 0;
       const interval = setInterval(() => {
         if (i >= messages.length) {
           clearInterval(interval);
           setTimeout(() => {
-            messagesContainer.innerHTML = ''; // 消す
+            messagesContainer.innerHTML = '';
             window.scrollTo({ top: 0, behavior: 'smooth' });
             setTimeout(() => {
               final.classList.add('visible');
-            }, 1200);
+            }, 1000);
           }, 2000);
           return;
         }
