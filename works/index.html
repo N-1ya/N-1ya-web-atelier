@@ -13,24 +13,27 @@
       font-family: 'M PLUS 1p', sans-serif;
       text-align: center;
       overflow-x: hidden;
+      min-height: 100vh;
     }
 
     /* 三本線メニューアイコン */
     #menuButton {
       position: fixed;
-      top: 15px;
-      right: 15px;
+      top: 1rem;
+      right: 1rem;
       z-index: 1100;
-      width: 30px;
-      height: 25px;
+      width: 32px;
+      height: 24px;
       cursor: pointer;
-      user-select: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
     }
 
     #menuButton div {
       background-color: white;
       height: 4px;
-      margin: 4px 0;
       border-radius: 2px;
       transition: all 0.3s ease;
     }
@@ -49,16 +52,17 @@
     /* サイドバー */
     #sidebar {
       position: fixed;
-      top: 0; right: 0;
+      top: 0;
+      right: 0;
       width: 250px;
       height: 100vh;
-      background: rgba(0, 0, 0, 0.8);
+      background: rgba(0, 0, 0, 0.85);
       color: white;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
       transform: translateX(100%);
       transition: transform 0.3s ease;
-      z-index: 1150;
-      padding: 2rem;
-      box-sizing: border-box;
+      z-index: 10001;
       text-align: left;
     }
 
@@ -66,11 +70,11 @@
       transform: translateX(0);
     }
 
-    #sidebar nav a {
+    #sidebar a {
       display: block;
       color: white;
       text-decoration: none;
-      margin-bottom: 1rem;
+      margin: 1rem 0;
       font-size: 1.2rem;
     }
 
@@ -94,35 +98,34 @@
       text-decoration: underline;
     }
 
-    /* ギャラリー部分 */
+    /* ギャラリー部分：3列固定（スマホ含む） */
     .gallery {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 2rem;
-      padding: 2rem;
-      max-width: 1000px;
-      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      max-width: 900px;
+      margin: 0 auto 3rem;
+      padding: 0 1rem;
     }
 
     .gallery-item {
-      width: 280px; /* 固定幅にしてスマホでも3列になる */
-      background-color: rgba(255, 255, 255, 0.05);
+      background: rgba(255 255 255 / 0.1);
       border-radius: 8px;
-      padding: 1rem;
-      box-sizing: border-box;
+      padding: 0.5rem;
       text-align: center;
     }
 
     .gallery-item img {
       width: 100%;
-      border-radius: 6px;
+      height: auto;
+      border-radius: 8px;
+      display: block;
     }
 
     .gallery-item p {
-      margin-top: 0.7rem;
+      margin-top: 0.5rem;
       font-size: 1rem;
-      color: #ddd;
+      color: #eee;
     }
   </style>
 </head>
@@ -137,13 +140,11 @@
 
   <!-- サイドバー -->
   <aside id="sidebar" aria-hidden="true">
-    <nav>
-      <a href="/">ホーム</a>
-      <a href="/profile/">プロフィール</a>
-      <a href="/works/">ギャラリー</a>
-      <a href="/contact/">お問い合わせ</a>
-      <a href="#" id="closeSidebar">閉じる</a>
-    </nav>
+    <a href="/">ホーム</a>
+    <a href="/profile/">プロフィール</a>
+    <a href="/works/">ギャラリー</a>
+    <a href="/contact/">お問い合わせ</a>
+    <a href="#" id="closeSidebar">閉じる</a>
   </aside>
 
   <h1>ギャラリー</h1>
@@ -156,64 +157,61 @@
   <section class="gallery">
     <div class="gallery-item">
       <a href="/works/detail1.html">
-        <img src="/images/art1.jpg" alt="作品1" />
+        <img src="/images/art1.jpg" alt="作品1">
         <p>作品タイトル1</p>
       </a>
     </div>
     <div class="gallery-item">
       <a href="/works/detail2.html">
-        <img src="/images/art2.jpg" alt="作品2" />
+        <img src="/images/art2.jpg" alt="作品2">
         <p>作品タイトル2</p>
       </a>
     </div>
     <div class="gallery-item">
       <a href="/works/detail3.html">
-        <img src="/images/art3.jpg" alt="作品3" />
+        <img src="/images/art3.jpg" alt="作品3">
         <p>作品タイトル3</p>
       </a>
     </div>
+    <!-- ここに縦に続けて作品が増えていきます -->
   </section>
 
-  <script>
-    const menuButton = document.getElementById('menuButton');
-    const sidebar = document.getElementById('sidebar');
-    const closeSidebar = document.getElementById('closeSidebar');
+<script>
+  const menuButton = document.getElementById('menuButton');
+  const sidebar = document.getElementById('sidebar');
+  const closeSidebar = document.getElementById('closeSidebar');
 
-    menuButton.addEventListener('click', () => {
-      sidebar.classList.toggle('open');
-      menuButton.classList.toggle('open');
-      sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
-    });
+  function toggleSidebar() {
+    const isOpen = sidebar.classList.toggle('open');
+    menuButton.classList.toggle('open', isOpen);
+    sidebar.setAttribute('aria-hidden', !isOpen);
+  }
 
-    menuButton.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        sidebar.classList.toggle('open');
-        menuButton.classList.toggle('open');
-        sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
-      }
-    });
-
-    closeSidebar.addEventListener('click', (e) => {
+  menuButton.addEventListener('click', toggleSidebar);
+  menuButton.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
+      toggleSidebar();
+    }
+  });
+
+  closeSidebar.addEventListener('click', e => {
+    e.preventDefault();
+    sidebar.classList.remove('open');
+    menuButton.classList.remove('open');
+    sidebar.setAttribute('aria-hidden', 'true');
+  });
+
+  document.addEventListener('click', e => {
+    const isInsideSidebar = sidebar.contains(e.target);
+    const isOnMenuButton = menuButton.contains(e.target);
+    if (sidebar.classList.contains('open') && !isInsideSidebar && !isOnMenuButton) {
       sidebar.classList.remove('open');
       menuButton.classList.remove('open');
       sidebar.setAttribute('aria-hidden', 'true');
-    });
-
-    // サイドバーの外側クリックで閉じる機能
-    document.addEventListener('click', (e) => {
-      if (
-        sidebar.classList.contains('open') &&
-        !sidebar.contains(e.target) &&
-        !menuButton.contains(e.target)
-      ) {
-        sidebar.classList.remove('open');
-        menuButton.classList.remove('open');
-        sidebar.setAttribute('aria-hidden', 'true');
-      }
-    });
-  </script>
+    }
+  });
+</script>
 
 </body>
 </html>
