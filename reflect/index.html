@@ -263,9 +263,12 @@ NFCタグによって作品が保証されます。<br><br>
         messagesContainer.appendChild(p);
         setTimeout(() => p.classList.add('visible'), 50);
 
-        // 詩に追随してスクロール
+        // 最新の詩を画面中央にスクロール
         setTimeout(() => {
-          p.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          const pRect = p.getBoundingClientRect();
+          const viewportHeight = window.innerHeight;
+          const scrollY = window.scrollY + pRect.top - (viewportHeight / 2 - pRect.height / 2);
+          window.scrollTo({ top: scrollY, behavior: 'smooth' });
         }, 600);
 
         i++;
