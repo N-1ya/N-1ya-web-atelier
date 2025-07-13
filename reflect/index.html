@@ -2,28 +2,12 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>RE：FLECT</title>
-  <style>
-    @font-face {
-      font-family: 'Koku Mincho';
-      src: url('/fonts/KokuMincho-Regular.woff2') format('woff2');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    html, body {
-      margin: 0;
-      padding: 0;<!DOCTYPE html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>RE：FLECT</title>
   <style>
     @font-face {
       font-family: 'KokuMincho';
-      src: url('/fonts/KokuMincho-Regular.woff2') format('woff2');
+      src: url('/fonts/KokuMincho-Regular.woff2') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
@@ -39,13 +23,36 @@
       overflow-x: hidden;
     }
 
-    body {
+    #intro {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: black;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      justify-content: flex-start;
-      padding: 4vh 6vw;
-      box-sizing: border-box;
+      z-index: 1000;
+      transition: opacity 1.5s ease;
+    }
+
+    #intro.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    #intro img {
+      max-width: 80%;
+      max-height: 80%;
+      opacity: 0;
+      transition: opacity 1.5s ease;
+    }
+
+    #intro img.visible {
+      opacity: 1;
+    }
+
+    .container {
+      padding: 5vh 6vw;
     }
 
     .fade-in {
@@ -59,9 +66,9 @@
 
     .title {
       font-size: 6vw;
-      margin: 5vh 0 1vh;
+      margin: 6vh 0 2vh;
       text-align: center;
-      line-height: 1.2;
+      line-height: 1.3;
     }
 
     .message {
@@ -71,270 +78,80 @@
       text-align: center;
       max-width: 90%;
       word-wrap: break-word;
-    }
-
-    .final-content {
-      opacity: 0;
-      transition: opacity 1.5s ease;
-      margin-top: 6vh;
-      text-align: center;
-      max-width: 800px;
-    }
-
-    .final-content.visible {
-      opacity: 1;
-    }
-
-    .final-content img {
-      width: 90%;
-      max-width: 600px;
-      border-radius: 8px;
-      margin-bottom: 1rem;
-    }
-
-    .meta-info {
-      font-size: 1.1rem;
-      line-height: 1.6;
-      margin-bottom: 2rem;
-      white-space: pre-wrap;
     }
 
     .certificate {
-      background-color: rgba(255,255,255,0.05);
-      padding: 2rem;
-      border-radius: 10px;
-      font-size: 1rem;
-      text-align: left;
+      margin-top: 6vh;
+      font-size: 4.2vw;
       white-space: pre-wrap;
-      margin-bottom: 3rem;
-      line-height: 1.8;
-      max-width: 100%;
-    }
-
-    .home-link {
-      font-size: 1.2rem;
-      text-align: center;
-      display: block;
-      margin-top: 2rem;
-      text-decoration: underline;
-      color: #ccc;
-    }
-
-    @media (max-width: 600px) {
-      .title { font-size: 9vw; }
-      .message { font-size: 5.5vw; }
-      .meta-info, .certificate { font-size: 0.95rem; }
-    }
-  </style>
-</head>
-<body>
-  <div id="intro" class="fade-in visible">
-    <h1 class="title">RE：FLECT</h1>
-  </div>
-
-  <div id="messages"></div>
-
-  <div id="final" class="final-content">
-    <img src="/images/reflect.jpg" alt="RE：FLECT 作品画像" />
-    <div class="meta-info">
-      タイトル：RE：FLECT<br>
-      サイズ：F6（410×318mm）<br>
-      画法：アクリル、MDFパネル、保護ニス<br>
-      作品No：#005<br>
-      NFTシリアル：0xA32c7a1ff9c…
-    </div>
-
-    <div class="certificate">
-＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝<br>
-　　　作品証明書（Certificate of Authenticity）<br>
-＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝<br><br>
-作品名：　RE：FLECT<br>
-作者名：　市屋　凪（Ichiya Nagi）<br>
-発行番号：　＃005<br>
-発行日：　2025年6月25日<br>
-作品種別：　アクリル画<br>
-公開URL：　https://ichiya-nagi.com/reflect<br>
-技術情報：　NFCタグ連携／GitHub Pages／独自ドメイン管理<br><br>
-この証明書は、作者本人により制作・発行。<br>
-オリジナルの作品であることを証明します。<br>
-また、本作品は上記のWebページにて連携され<br>
-NFCタグによって作品が保証されます。<br><br>
-※証明書の複製・改変は禁止されています。
-    </div>
-
-    <a href="/" class="home-link">ホームページへ</a>
-  </div>
-
-  <script>
-    const intro = document.getElementById('intro');
-    const messagesContainer = document.getElementById('messages');
-    const final = document.getElementById('final');
-
-    const messages = [
-      "その目には”なにが”映っていましたか？",
-      "猫は”あなた”を見ています",
-      "”あなた”が”あなた”であることを　猫は知っています",
-      "では、”あなた自身”はどうでしょうか",
-      "”あなた”が”あなた”であることを<br>”あなた”は定義できますか？",
-      "”自分とはなにか”",
-      "”あなた”は答えられますか？",
-      "”誰かの目”を借りることなく"
-    ];
-
-    // 最初のタイトルをフェードアウト
-    setTimeout(() => {
-      intro.classList.remove('visible');
-      setTimeout(showMessages, 1800);
-    }, 2500);
-
-    function showMessages() {
-      let i = 0;
-      const interval = setInterval(() => {
-        if (i >= messages.length) {
-          clearInterval(interval);
-          setTimeout(() => {
-            final.classList.add('visible');
-            scrollToBottom();
-          }, 2000);
-          return;
-        }
-
-        const p = document.createElement('p');
-        p.className = 'message fade-in';
-        p.innerHTML = messages[i];
-        messagesContainer.appendChild(p);
-        setTimeout(() => p.classList.add('visible'), 50);
-        i++;
-        scrollToBottom();
-      }, 2800);
-    }
-
-    function scrollToBottom() {
-      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
-  </script>
-</body>
-</html>
-
-      background: #111;
-      color: #fff;
-      font-family: 'Koku Mincho', serif;
-      height: 100%;
-      width: 100%;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-    }
-
-    body {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
-      padding: 4vh 6vw;
-      box-sizing: border-box;
-    }
-
-    .fade-in {
-      opacity: 0;
-      transition: opacity 1.8s ease-in-out;
-    }
-
-    .fade-in.visible {
-      opacity: 1;
-    }
-
-    .title {
-      font-size: 6vw;
-      margin: 5vh 0 1vh;
-      text-align: center;
-      line-height: 1.2;
-    }
-
-    .subtitle {
-      font-size: 4.5vw;
-      margin-bottom: 6vh;
-      text-align: center;
-      color: #ccc;
-    }
-
-    .message {
-      font-size: 4.8vw;
-      line-height: 1.6;
-      margin: 4vh auto;
-      text-align: center;
-      max-width: 90%;
-      word-wrap: break-word;
-    }
-
-    .fade-out {
-      animation: fadeOut 2s forwards;
-    }
-
-    @keyframes fadeOut {
-      to {
-        opacity: 0;
-      }
-    }
-
-    .final-section {
-      text-align: center;
-      margin-top: 5vh;
-      opacity: 0;
-      transition: opacity 2s ease;
-    }
-
-    .final-section.visible {
-      opacity: 1;
-    }
-
-    .final-section img {
-      max-width: 80vw;
-      height: auto;
-      margin-bottom: 1rem;
-      border-radius: 6px;
-    }
-
-    .final-section .info {
-      font-size: 1.1rem;
-      line-height: 1.8;
-      white-space: pre-line;
-      margin: 2rem auto;
-      max-width: 700px;
       text-align: left;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 1rem;
+      background: rgba(255,255,255,0.05);
+      padding: 2rem;
       border-radius: 8px;
+      max-width: 90vw;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .art-image {
+      margin: 4vh auto 2vh;
+      max-width: 90vw;
+      border-radius: 10px;
+      display: block;
+    }
+
+    .art-info {
+      font-size: 4.4vw;
+      text-align: center;
+      margin-top: 1vh;
+      line-height: 1.6;
     }
 
     .home-link {
-      display: inline-block;
-      margin-top: 3rem;
-      font-size: 1.2rem;
+      display: block;
+      margin: 5vh auto;
+      text-align: center;
+      font-size: 4.5vw;
       color: #fff;
       text-decoration: underline;
+    }
+
+    @media (min-width: 768px) {
+      .title { font-size: 2.5rem; }
+      .message, .art-info { font-size: 1.5rem; }
+      .certificate { font-size: 1.2rem; }
+      .home-link { font-size: 1.4rem; }
     }
   </style>
 </head>
 <body>
-  <div id="intro" class="fade-in visible">
-    <h1 class="title">RE：FLECT</h1>
+
+  <!-- 猫の目アニメーション -->
+  <div id="intro">
+    <img id="catEye" src="plum-eye.png" alt="Cat Eye">
   </div>
 
-  <div id="messages"></div>
-
-  <div id="final" class="final-section">
-    <img src="/images/reflect.jpg" alt="RE：FLECT" />
-    <div>
-      <p>作品タイトル：RE：FLECT</p>
-      <p>サイズ：F3（273mm×220mm）</p>
-      <p>画法：アクリル画／MDFパネル</p>
-      <p>作品No：#005</p>
-      <p>NFTシリアル：0005-ICH-NAGI</p>
+  <!-- 本文 -->
+  <div id="content" class="container" style="display:none;">
+    <div id="introText" class="fade-in visible">
+      <h1 class="title">RE：FLECT</h1>
     </div>
 
-    <div class="info">
-＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝  
-　　作品証明書（Certificate of Authenticity）  
+    <div id="messages"></div>
+
+    <div id="afterMessages" style="display:none;">
+      <img src="作品画像1.jpg" alt="作品画像" class="art-image">
+      <div class="art-info">
+        RE：FLECT<br>
+        サイズ：F6（410×318mm）<br>
+        技法：アクリル<br>
+        作品No：005<br>
+        NFTシリアル：#005
+      </div>
+
+      <div class="certificate">
+＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
+　　作品証明書（Certificate of Authenticity）
 ＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 
 作品名：　RE：FLECT  
@@ -343,23 +160,26 @@ NFCタグによって作品が保証されます。<br><br>
 発行日：　2025年6月25日  
 作品種別：　アクリル画  
 公開URL：　https://ichiya-nagi.com/reflect  
-技術情報：　NFCタグ連携／GitHub Pages／独自ドメイン管理
+技術情報：　NFCタグ連携／GitHub Pages／独自ドメイン管理  
 
 この証明書は、作者本人により制作・発行。  
 オリジナルの作品であることを証明します。  
 また、本作品は上記のWebページにて連携され  
-NFCタグによって作品が保証されます。
+NFCタグによって作品が保証されます。  
 
 ※証明書の複製・改変は禁止されています。
-    </div>
+      </div>
 
-    <a class="home-link" href="/">ホームページへ戻る</a>
+      <a class="home-link" href="/">ホームページへ</a>
+    </div>
   </div>
 
   <script>
+    const catEye = document.getElementById('catEye');
     const intro = document.getElementById('intro');
+    const content = document.getElementById('content');
     const messagesContainer = document.getElementById('messages');
-    const finalSection = document.getElementById('final');
+    const afterMessages = document.getElementById('afterMessages');
 
     const messages = [
       "その目には”なにが”映っていましたか？",
@@ -372,37 +192,50 @@ NFCタグによって作品が保証されます。
       "”誰かの目”を借りることなく"
     ];
 
+    // アニメーション（猫の目）
     setTimeout(() => {
-      intro.classList.remove('visible');
-      setTimeout(showMessages, 1800);
-    }, 2500);
+      catEye.classList.add('visible');
+    }, 200);
 
-    function showMessages() {
+    setTimeout(() => {
+      intro.classList.add('fade-out');
+      setTimeout(() => {
+        intro.style.display = 'none';
+        content.style.display = 'block';
+        window.scrollTo(0, 0); // スクロールリセット
+        startMessages();
+      }, 1500);
+    }, 3000);
+
+    // メッセージ表示とスクロール
+    function startMessages() {
       let i = 0;
       const interval = setInterval(() => {
         if (i >= messages.length) {
           clearInterval(interval);
-          // 最後に全体をフェードアウト → 新しいセクション表示
           setTimeout(() => {
-            messagesContainer.classList.add('fade-out');
-            setTimeout(() => {
-              messagesContainer.style.display = 'none';
-              finalSection.classList.add('visible');
-              window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-            }, 2000);
-          }, 3000);
+            scrollToBottomAndShowCertificate();
+          }, 2000);
           return;
         }
-
         const p = document.createElement('p');
         p.className = 'message fade-in';
         p.innerHTML = messages[i];
         messagesContainer.appendChild(p);
         setTimeout(() => {
           p.classList.add('visible');
-        }, 50);
+          p.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
         i++;
       }, 2800);
+    }
+
+    function scrollToBottomAndShowCertificate() {
+      window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      setTimeout(() => {
+        afterMessages.style.display = 'block';
+        afterMessages.scrollIntoView({ behavior: 'smooth' });
+      }, 800);
     }
   </script>
 </body>
