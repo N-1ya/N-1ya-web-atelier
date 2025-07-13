@@ -1,181 +1,157 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>プロフィール</title>
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      background: black;
-      height: 100%;
-      font-family: 'M PLUS 1p', sans-serif;
-      color: #fff;
-      text-align: center;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>プロフィール - 市屋 凪</title>
+<style>
+  body, html {
+    margin: 0;
+    padding: 0;
+    background: black;
+    height: 100%;
+    font-family: 'M PLUS 1p', sans-serif;
+    color: #fff;
+    text-align: center;
+  }
 
-    /* 三本線メニューアイコン */
-    #menuButton {
-      position: fixed;
-      top: 1rem;
-      right: 1rem;
-      width: 32px;
-      height: 24px;
-      cursor: pointer;
-      z-index: 10000;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 4px;
-    }
+  /* 三本線メニュー */
+  #menuButton {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    width: 32px;
+    height: 24px;
+    cursor: pointer;
+    z-index: 10002;
+    display: block;
+  }
+  #menuButton div {
+    background-color: white;
+    height: 4px;
+    margin: 4px 0;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+  /* ×アイコンに変化 */
+  #menuButton.open div:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  #menuButton.open div:nth-child(2) {
+    opacity: 0;
+  }
+  #menuButton.open div:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+  }
 
-    #menuButton div {
-      background-color: white;
-      height: 4px;
-      border-radius: 2px;
-      transition: all 0.3s ease;
-    }
+  /* サイドバー */
+  #sidebar {
+    position: fixed;
+    top: 0; right: 0;
+    width: 250px;
+    height: 100vh;
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+    transform: translateX(100%);
+    transition: transform 0.3s ease;
+    z-index: 10001;
+    text-align: left;
+  }
+  #sidebar.open {
+    transform: translateX(0);
+  }
+  #sidebar a {
+    display: block;
+    color: white;
+    text-decoration: none;
+    margin: 1rem 0;
+    font-size: 1.2rem;
+  }
 
-    /* ×アイコンに変化 */
-    #menuButton.open div:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    #menuButton.open div:nth-child(2) {
-      opacity: 0;
-    }
-    #menuButton.open div:nth-child(3) {
-      transform: rotate(-45deg) translate(6px, -6px);
-    }
+  h1 {
+    margin: 3rem 0 1rem;
+    font-size: 2.5rem;
+  }
 
-    /* サイドバー */
-    #sidebar {
-      position: fixed;
-      top: 0;
-      right: 0;
-      width: 250px;
-      height: 100vh;
-      background: rgba(0,0,0,0.85);
-      color: #fff;
-      padding: 2rem 1rem;
-      box-sizing: border-box;
-      transform: translateX(100%);
-      transition: transform 0.3s ease;
-      z-index: 10001;
-      text-align: left;
-    }
+  .profile-content {
+    max-width: 700px;
+    margin: 0 auto 3rem;
+    padding: 0 1rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #ddd;
+    text-align: left;
+  }
 
-    #sidebar.open {
-      transform: translateX(0);
-    }
-
-    #sidebar a {
-      display: block;
-      color: white;
-      text-decoration: none;
-      margin: 1rem 0;
-      font-size: 1.2rem;
-    }
-
-    h1 {
-      margin: 3rem 0 1rem;
-      font-size: 2.5rem;
-    }
-
-    nav.main-nav {
-      margin-bottom: 2rem;
-    }
-
-    nav.main-nav a {
-      color: white;
-      text-decoration: none;
-      margin: 0 1rem;
-      font-size: 1.1rem;
-    }
-
-    nav.main-nav a:hover {
-      text-decoration: underline;
-    }
-
-    .profile-content {
-      max-width: 700px;
-      margin: 0 auto 3rem;
-      padding: 0 1rem;
-      font-size: 1.1rem;
-      line-height: 1.6;
-      color: #ddd;
-    }
-
-    a {
-      color: #fff;
-      text-decoration: underline;
-    }
-  </style>
+  a {
+    color: #fff;
+    text-decoration: underline;
+  }
+</style>
 </head>
 <body>
 
-  <!-- 三本線メニュー -->
-  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0" title="メニュー">
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-
-  <!-- サイドバー -->
-  <aside id="sidebar" aria-hidden="true">
-    <a href="/">ホーム</a>
-    <a href="/profile/">プロフィール</a>
-    <a href="/works/">ギャラリー</a>
-    <a href="/contact/">お問い合わせ</a>
-    <a href="#" id="closeSidebar">閉じる</a>
-  </aside>
-
+<div id="main">
+  <!-- メインタイトル -->
   <h1>プロフィール</h1>
 
+  <!-- ナビゲーション -->
+  <nav>
+    <a href="/">ホーム</a>　
+    <a href="/profile/">プロフィール</a>　
+    <a href="/works/">ギャラリー</a>　
+    <a href="/contact/">お問い合わせ</a>
+  </nav>
+
+  <!-- プロフィール本文 -->
   <section class="profile-content">
     <p>猫を描いています。</p>
     <p>主にアクリル画を中心に、NFCタグやWeb連動による新しい表現形式も探求中。</p>
     <p><strong>使用画材：</strong>アクリル、MDFパネル、デジタルメディアなど</p>
     <p><a href="/contact/">お問い合わせ</a>はこちらからどうぞ</p>
   </section>
+</div>
 
-  <nav class="main-nav">
-    <a href="/">ホーム</a>
-  </nav>
+<!-- 三本線メニュー -->
+<div id="menuButton" aria-label="メニュー" role="button" tabindex="0" title="メニュー">
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
+<!-- サイドバー -->
+<div id="sidebar">
+  <a href="/">ホーム</a>
+  <a href="/profile/">プロフィール</a>
+  <a href="/works/">ギャラリー</a>
+  <a href="/contact/">お問い合わせ</a>
+</div>
 
 <script>
   const menuButton = document.getElementById('menuButton');
   const sidebar = document.getElementById('sidebar');
-  const closeSidebar = document.getElementById('closeSidebar');
 
-  function toggleSidebar() {
-    const isOpen = sidebar.classList.toggle('open');
-    menuButton.classList.toggle('open', isOpen);
-    sidebar.setAttribute('aria-hidden', !isOpen);
-  }
+  menuButton.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    menuButton.classList.toggle('open');
+  });
 
-  menuButton.addEventListener('click', toggleSidebar);
-  menuButton.addEventListener('keydown', e => {
+  menuButton.addEventListener('keydown', (e) => {
     if(e.key === 'Enter' || e.key === ' ') {
       e.preventDefault();
-      toggleSidebar();
+      sidebar.classList.toggle('open');
+      menuButton.classList.toggle('open');
     }
   });
 
-  closeSidebar.addEventListener('click', e => {
-    e.preventDefault();
-    sidebar.classList.remove('open');
-    menuButton.classList.remove('open');
-    sidebar.setAttribute('aria-hidden', 'true');
-  });
-
-  document.addEventListener('click', e => {
-    const isInsideSidebar = sidebar.contains(e.target);
-    const isOnMenuButton = menuButton.contains(e.target);
-    if(sidebar.classList.contains('open') && !isInsideSidebar && !isOnMenuButton) {
+  document.addEventListener('click', (e) => {
+    if(sidebar.classList.contains('open') &&
+       !sidebar.contains(e.target) &&
+       !menuButton.contains(e.target)) {
       sidebar.classList.remove('open');
       menuButton.classList.remove('open');
-      sidebar.setAttribute('aria-hidden', 'true');
     }
   });
 </script>
