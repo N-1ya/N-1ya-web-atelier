@@ -16,6 +16,8 @@
       background: #111;
       color: #fff;
       font-family: 'KokuMincho', serif;
+      height: 100%;
+      width: 100%;
       overflow-x: hidden;
     }
 
@@ -23,47 +25,48 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: flex-start;
       padding: 4vh 6vw;
       box-sizing: border-box;
     }
 
     .fade-in {
       opacity: 0;
-      transition: opacity 1.5s ease;
+      transition: opacity 2s ease-in-out;
     }
 
     .fade-in.visible {
       opacity: 1;
     }
 
-    .fade-out {
-      opacity: 0;
-      transition: opacity 1.5s ease;
-    }
-
-    #eyeIntro, #titleIntro {
+    #eyeIntro {
       position: fixed;
       top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      background-color: black;
+      width: 100vw;
+      height: 100vh;
+      background: black;
       display: flex;
-      justify-content: center;
       align-items: center;
-      z-index: 1000;
-      pointer-events: none;
+      justify-content: center;
+      z-index: 9999;
     }
 
     #eyeIntro img {
-      max-width: 60%;
+      max-width: 80%;
+      max-height: 80%;
       opacity: 0;
-      transition: opacity 1.5s ease;
+      transition: opacity 2s ease;
     }
 
-    #titleText {
+    #eyeIntro img.visible {
+      opacity: 1;
+    }
+
+    .title {
       font-size: 6vw;
-      color: white;
-      opacity: 0;
-      transition: opacity 1.5s ease;
+      margin: 6vh 0 3vh;
+      text-align: center;
+      line-height: 1.2;
     }
 
     .message {
@@ -73,12 +76,6 @@
       text-align: center;
       max-width: 90%;
       word-wrap: break-word;
-      opacity: 0;
-      transition: opacity 1.8s ease-in-out;
-    }
-
-    .message.visible {
-      opacity: 1;
     }
 
     .final-content {
@@ -128,6 +125,7 @@
     }
 
     @media (max-width: 600px) {
+      .title { font-size: 9vw; }
       .message { font-size: 5.5vw; }
       .meta-info, .certificate { font-size: 0.95rem; }
     }
@@ -137,18 +135,18 @@
 
   <!-- 猫の目イントロ -->
   <div id="eyeIntro">
-    <img id="eyeImage" src="images/plum-eye.png" alt="Cat Eye">
+    <img src="/images/plum-eye.png" alt="猫の目" id="catEye">
   </div>
 
-  <!-- タイトルイントロ -->
-  <div id="titleIntro">
-    <div id="titleText">RE：FLECT</div>
+  <!-- タイトル -->
+  <div id="titleSection" class="fade-in" style="display: none;">
+    <h1 class="title">RE：FLECT</h1>
   </div>
 
-  <!-- メッセージ表示 -->
+  <!-- 詩的メッセージ -->
   <div id="messages"></div>
 
-  <!-- 最後の内容 -->
+  <!-- 最後の作品・証明書表示 -->
   <div id="final" class="final-content">
     <img src="/images/reflect.jpg" alt="RE：FLECT 作品画像" />
     <div class="meta-info">
@@ -182,9 +180,8 @@ NFCタグによって作品が保証されます。<br><br>
 
   <script>
     const eyeIntro = document.getElementById('eyeIntro');
-    const eyeImage = document.getElementById('eyeImage');
-    const titleIntro = document.getElementById('titleIntro');
-    const titleText = document.getElementById('titleText');
+    const catEye = document.getElementById('catEye');
+    const titleSection = document.getElementById('titleSection');
     const messagesContainer = document.getElementById('messages');
     const final = document.getElementById('final');
 
@@ -192,36 +189,33 @@ NFCタグによって作品が保証されます。<br><br>
       "その目には”なにが”映っていましたか？",
       "猫は”あなた”を見ています",
       "”あなた”が”あなた”であることを　猫は知っています",
-      "では、”あなた自身”はどうでしょうか",
+      "”あなた”はどうでしょうか",
       "”あなた”が”あなた”であることを<br>”あなた”は定義できますか？",
       "”自分とはなにか”",
       "”あなた”は答えられますか？",
       "”誰かの目”を借りることなく"
     ];
 
-    // 猫の目表示 → フェードアウト
+    // 猫の目フェードイン
     setTimeout(() => {
-      eyeImage.style.opacity = 1;
-    }, 200);
+      catEye.classList.add('visible');
+    }, 100);
 
+    // フェードアウト → タイトル表示
     setTimeout(() => {
-      eyeIntro.classList.add('fade-out');
-    }, 2500);
-
-    // タイトル表示 → フェードアウト
-    setTimeout(() => {
-      titleText.style.opacity = 1;
-    }, 4000);
-
-    setTimeout(() => {
-      titleIntro.classList.add('fade-out');
-    }, 6000);
-
-    // メッセージ表示開始
-    setTimeout(() => {
-      titleIntro.style.display = 'none';
-      showMessages();
-    }, 7600);
+      eyeIntro.style.display = 'none';
+      titleSection.style.display = 'block';
+      setTimeout(() => {
+        titleSection.classList.add('visible');
+        setTimeout(() => {
+          titleSection.classList.remove('visible');
+          setTimeout(() => {
+            titleSection.style.display = 'none';
+            showMessages();
+          }, 2000);
+        }, 2500);
+      }, 100);
+    }, 3000);
 
     function showMessages() {
       let i = 0;
@@ -229,14 +223,17 @@ NFCタグによって作品が保証されます。<br><br>
         if (i >= messages.length) {
           clearInterval(interval);
           setTimeout(() => {
-            window.scrollTo({ top: 0, behavior: 'auto' }); // スクロール位置リセット
-            final.classList.add('visible');
+            messagesContainer.innerHTML = ''; // 消す
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => {
+              final.classList.add('visible');
+            }, 1200);
           }, 2000);
           return;
         }
 
         const p = document.createElement('p');
-        p.className = 'message';
+        p.className = 'message fade-in';
         p.innerHTML = messages[i];
         messagesContainer.appendChild(p);
         setTimeout(() => p.classList.add('visible'), 50);
@@ -245,6 +242,5 @@ NFCタグによって作品が保証されます。<br><br>
       }, 2800);
     }
   </script>
-
 </body>
 </html>
