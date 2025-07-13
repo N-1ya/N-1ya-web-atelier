@@ -24,6 +24,7 @@
       width: 30px;
       height: 25px;
       cursor: pointer;
+      user-select: none;
     }
 
     #menuButton div {
@@ -31,6 +32,18 @@
       height: 4px;
       margin: 4px 0;
       border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    /* ×アイコンに変化 */
+    #menuButton.open div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    #menuButton.open div:nth-child(2) {
+      opacity: 0;
+    }
+    #menuButton.open div:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
     }
 
     /* サイドバー */
@@ -93,7 +106,7 @@
     }
 
     .gallery-item {
-      width: 280px;
+      width: 280px; /* 固定幅にしてスマホでも3列になる */
       background-color: rgba(255, 255, 255, 0.05);
       border-radius: 8px;
       padding: 1rem;
@@ -143,19 +156,19 @@
   <section class="gallery">
     <div class="gallery-item">
       <a href="/works/detail1.html">
-        <img src="/images/art1.jpg" alt="作品1">
+        <img src="/images/art1.jpg" alt="作品1" />
         <p>作品タイトル1</p>
       </a>
     </div>
     <div class="gallery-item">
       <a href="/works/detail2.html">
-        <img src="/images/art2.jpg" alt="作品2">
+        <img src="/images/art2.jpg" alt="作品2" />
         <p>作品タイトル2</p>
       </a>
     </div>
     <div class="gallery-item">
       <a href="/works/detail3.html">
-        <img src="/images/art3.jpg" alt="作品3">
+        <img src="/images/art3.jpg" alt="作品3" />
         <p>作品タイトル3</p>
       </a>
     </div>
@@ -164,9 +177,11 @@
   <script>
     const menuButton = document.getElementById('menuButton');
     const sidebar = document.getElementById('sidebar');
+    const closeSidebar = document.getElementById('closeSidebar');
 
     menuButton.addEventListener('click', () => {
       sidebar.classList.toggle('open');
+      menuButton.classList.toggle('open');
       sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
     });
 
@@ -174,7 +189,28 @@
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
         sidebar.classList.toggle('open');
+        menuButton.classList.toggle('open');
         sidebar.setAttribute('aria-hidden', !sidebar.classList.contains('open'));
+      }
+    });
+
+    closeSidebar.addEventListener('click', (e) => {
+      e.preventDefault();
+      sidebar.classList.remove('open');
+      menuButton.classList.remove('open');
+      sidebar.setAttribute('aria-hidden', 'true');
+    });
+
+    // サイドバーの外側クリックで閉じる機能
+    document.addEventListener('click', (e) => {
+      if (
+        sidebar.classList.contains('open') &&
+        !sidebar.contains(e.target) &&
+        !menuButton.contains(e.target)
+      ) {
+        sidebar.classList.remove('open');
+        menuButton.classList.remove('open');
+        sidebar.setAttribute('aria-hidden', 'true');
       }
     });
   </script>
