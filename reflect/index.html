@@ -39,7 +39,6 @@
       opacity: 1;
     }
 
-    /* 猫の目イントロ */
     #eyeIntro {
       position: fixed;
       top: 0; left: 0;
@@ -56,24 +55,23 @@
       max-width: 80%;
       max-height: 80%;
       opacity: 0;
-      transition: opacity 2s ease;
+      transition: opacity 2s ease-in-out;
     }
 
     #eyeIntro img.visible {
       opacity: 1;
     }
 
-    /* タイトル中央表示 */
     #titleSection {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: black;
       display: flex;
       align-items: center;
       justify-content: center;
+      background: #111;
       z-index: 9998;
       opacity: 0;
       transition: opacity 2s ease-in-out;
@@ -158,8 +156,8 @@
     <img src="/images/plum-eye.png" alt="猫の目" id="catEye">
   </div>
 
-  <!-- タイトル -->
-  <div id="titleSection" class="fade-in" style="display: none;">
+  <!-- タイトル中央表示 -->
+  <div id="titleSection">
     <h1 class="title">RE：FLECT</h1>
   </div>
 
@@ -216,17 +214,25 @@ NFCタグによって作品が保証されます。<br><br>
       "”誰かの目”を借りることなく"
     ];
 
-    // 猫の目フェードイン
+    // 猫の目アニメーション
     setTimeout(() => {
       catEye.classList.add('visible');
+
+      // 表示中の時間
+      setTimeout(() => {
+        catEye.classList.remove('visible');
+
+        // 画像非表示
+        setTimeout(() => {
+          eyeIntro.style.display = 'none';
+          showTitle();
+        }, 2000); // フェードアウト完了
+      }, 2500);
     }, 100);
 
-    // 猫の目終了 → タイトル表示
-    setTimeout(() => {
-      eyeIntro.style.display = 'none';
-      titleSection.style.display = 'flex';
+    function showTitle() {
       titleSection.classList.add('visible');
-
+      // タイトルフェードアウト → 消す → 詩表示開始
       setTimeout(() => {
         titleSection.classList.remove('visible');
         setTimeout(() => {
@@ -234,20 +240,19 @@ NFCタグによって作品が保証されます。<br><br>
           showMessages();
         }, 2000);
       }, 2500);
-    }, 3000);
+    }
 
-    // 詩の表示
     function showMessages() {
       let i = 0;
       const interval = setInterval(() => {
         if (i >= messages.length) {
           clearInterval(interval);
           setTimeout(() => {
-            messagesContainer.innerHTML = '';
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            messagesContainer.innerHTML = ''; // 詩を消す
+            window.scrollTo({ top: 0, behavior: 'smooth' }); // 一番上へ
             setTimeout(() => {
-              final.classList.add('visible');
-            }, 1000);
+              final.classList.add('visible'); // 作品表示
+            }, 1200);
           }, 2000);
           return;
         }
