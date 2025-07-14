@@ -1,95 +1,100 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>プロフィール - 市屋 凪</title>
-<style>
-  body, html {
-    margin: 0;
-    padding: 0;
-    background: black;
-    height: 100%;
-    font-family: 'M PLUS 1p', sans-serif;
-    color: #fff;
-    text-align: center;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>プロフィール - 市屋 凪</title>
+  <style>
+    @font-face {
+      font-family: 'KokuMincho';
+      src: url('/fonts/KokuMincho-Regular.woff2') format('woff2');
+    }
 
-  /* 三本線メニュー */
-  #menuButton {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    width: 32px;
-    height: 24px;
-    cursor: pointer;
-    z-index: 10002;
-    display: block;
-  }
-  #menuButton div {
-    background-color: white;
-    height: 4px;
-    margin: 4px 0;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-  }
-  /* ×アイコンに変化 */
-  #menuButton.open div:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-  #menuButton.open div:nth-child(2) {
-    opacity: 0;
-  }
-  #menuButton.open div:nth-child(3) {
-    transform: rotate(-45deg) translate(6px, -6px);
-  }
+    body, html {
+      margin: 0;
+      padding: 0;
+      background: black;
+      height: 100%;
+      font-family: 'KokuMincho', serif;
+      color: #fff;
+      text-align: center;
+    }
 
-  /* サイドバー */
-  #sidebar {
-    position: fixed;
-    top: 0; right: 0;
-    width: 250px;
-    height: 100vh;
-    background: rgba(0,0,0,0.85);
-    color: #fff;
-    padding: 2rem 1rem;
-    box-sizing: border-box;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 10001;
-    text-align: left;
-  }
-  #sidebar.open {
-    transform: translateX(0);
-  }
-  #sidebar a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    margin: 1rem 0;
-    font-size: 1.2rem;
-  }
+    /* 三本線メニュー */
+    #menuButton {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      width: 32px;
+      height: 24px;
+      cursor: pointer;
+      z-index: 10002;
+      display: block;
+    }
+    #menuButton div {
+      background-color: white;
+      height: 4px;
+      margin: 4px 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    /* ×アイコンに変化 */
+    #menuButton.open div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    #menuButton.open div:nth-child(2) {
+      opacity: 0;
+    }
+    #menuButton.open div:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
 
-  h1 {
-    margin: 3rem 0 1rem;
-    font-size: 2.5rem;
-  }
+    /* サイドバー */
+    #sidebar {
+      position: fixed;
+      top: 0; right: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 10001;
+      text-align: left;
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 1rem 0;
+      font-size: 1.2rem;
+    }
 
-  .profile-content {
-    max-width: 700px;
-    margin: 0 auto 3rem;
-    padding: 0 1rem;
-    font-size: 1.1rem;
-    line-height: 1.6;
-    color: #ddd;
-    text-align: left;
-  }
+    h1 {
+      margin: 3rem 0 1rem;
+      font-size: 2.5rem;
+    }
 
-  a {
-    color: #fff;
-    text-decoration: underline;
-  }
-</style>
+    .profile-content {
+      max-width: 700px;
+      margin: 0 auto 3rem;
+      padding: 0 1rem;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #ddd;
+      text-align: center;
+    }
+
+    a {
+      color: #fff;
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
 
@@ -97,13 +102,14 @@
   <!-- メインタイトル -->
   <h1>プロフィール</h1>
 
- <h2>市屋　凪　｜Ichiya　Nagi</h2>
+  <h2>市屋　凪　｜Ichiya　Nagi</h2>
+
   <!-- プロフィール本文 -->
   <section class="profile-content">
     <p>猫を描いています。</p>
     <p>主にアクリル画を中心に、NFCタグやWeb連動による新しい表現形式も探求中。</p>
     <p><strong>使用画材：</strong>アクリル、MDFパネル、デジタルメディアなど</p>
-    </a>お問い合わせは</p><p><a href="/contact/">こちら</a>から</p>
+    <p>お問い合わせは <a href="/contact/">こちら</a> から</p>
 
     <a href="/">ホームへ</a>
   </section>
