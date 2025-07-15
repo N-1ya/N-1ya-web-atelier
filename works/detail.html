@@ -280,12 +280,12 @@
     </div>
   </div>
   
-    <div style="margin-top: 1.5rem; text-align: center;">
-  <a href="/works/" 
-     style="display: inline-block; padding: 0.8rem 1.5rem; background: #444; color: #fff; border-radius: 6px; text-decoration: none; font-weight: bold; transition: background 0.3s;">
-    ギャラリーに戻る
-  </a>
-</div>
+  <div style="margin-top: 1.5rem; text-align: center;">
+    <a href="/works/" 
+       style="display: inline-block; padding: 0.8rem 1.5rem; background: #444; color: #fff; border-radius: 6px; text-decoration: none; font-weight: bold; transition: background 0.3s;">
+      ギャラリーに戻る
+    </a>
+  </div>
 
   <script>
     // URLからid取得
@@ -322,6 +322,15 @@
           document.getElementById('material').textContent = work.material || 'アクリル／MDFボード';
           document.getElementById('year').textContent = work.year || '2025';
           document.getElementById('edition').textContent = work.edition || '1/1';
+
+          // ここから購入ページに情報を渡すリンク生成
+          const purchaseLink = 'purchase.html?' + new URLSearchParams({
+            id: work.id,
+            title: work.title,
+            price: work.price,
+            image: work.image
+          }).toString();
+          document.querySelector('.purchase-btn').setAttribute('href', purchaseLink);
         })
         .catch(err => {
           console.error(err);
