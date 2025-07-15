@@ -109,6 +109,7 @@
     margin: 2rem auto 3rem;
   }
   .gallery-item {
+    position: relative;
     background: rgba(255 255 255 / 0.1);
     border-radius: 8px;
     padding: 0.5rem;
@@ -123,6 +124,21 @@
     margin-top: 0.5rem;
     font-size: 1rem;
     color: #eee;
+  }
+
+  /* SOLDラベル */
+  .sold-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: red;
+    color: white;
+    padding: 5px 10px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    border-radius: 4px;
+    pointer-events: none;
+    user-select: none;
   }
 
   /* スマホでも3列維持 */
@@ -322,20 +338,20 @@
       total += item.price * item.quantity;
       const div = document.createElement('div');
       div.className = 'cart-item';
-      div.innerHTML = `
-        <img src="${item.image}" alt="${item.title}">
+      div.innerHTML = \`
+        <img src="\${item.image}" alt="\${item.title}">
         <div class="cart-item-info">
-          <p>${item.title}</p>
-          <p>¥${item.price.toLocaleString()}</p>
+          <p>\${item.title}</p>
+          <p>¥\${item.price.toLocaleString()}</p>
         </div>
         <div class="cart-item-qty">
-          <input type="number" min="1" value="${item.quantity}" data-index="${index}" aria-label="数量">
-          <span class="cart-item-remove" data-index="${index}" role="button" tabindex="0" aria-label="商品を削除">×</span>
+          <input type="number" min="1" value="\${item.quantity}" data-index="\${index}" aria-label="数量" max="\${item.stock}">
+          <span class="cart-item-remove" data-index="\${index}" role="button" tabindex="0" aria-label="商品を削除">×</span>
         </div>
-      `;
+      \`;
       cartItemsContainer.appendChild(div);
     });
-    cartTotal.textContent = `合計: ¥${total.toLocaleString()}`;
+    cartTotal.textContent = \`合計: ¥\${total.toLocaleString()}\`;
   }
 
   // カートモーダル開閉
@@ -361,7 +377,13 @@
         e.target.value = '1';
       }
       const cart = getCart();
-      cart[index].quantity = value;
+      const item = cart[index];
+      if(value > item.stock) {
+        alert(\`在庫数は\${item.stock}点までです。\`);
+        value = item.stock;
+        e.target.value = value;
+      }
+      item.quantity = value;
       saveCart(cart);
       updateCartDisplay();
     }
@@ -419,14 +441,19 @@
       data.forEach(work => {
         const item = document.createElement('div');
         item.className = 'gallery-item';
-        item.innerHTML = `
-          <a href="detail.html?id=${encodeURIComponent(work.id)}">
-            <img src="${work.image}" alt="${work.title}">
-            <p>${work.title}</p>
-            <p style="font-size: 0.9rem; color: #ccc;">¥${Number(work.price).toLocaleString()}</p>
+
+        // SOLDラベル表示とボタン無効化の条件
+        const isSoldOut = (work.stock === 0);
+
+        item.innerHTML = \`
+          <a href="detail.html?id=\${encodeURIComponent(work.id)}">
+            <img src="\${work.image}" alt="\${work.title}">
+            <p>\${work.title}</p>
+            <p style="font-size: 0.9rem; color: #ccc;">¥\${Number(work.price).toLocaleString()}</p>
           </a>
-          <button class="add-to-cart" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}" aria-label="カートに追加">カートに追加</button>
-        `;
+          <button class="add-to-cart" data-id="\${work.id}" data-title="\${work.title}" data-price="\${work.price}" data-image="\${work.image}" data-stock="\${work.stock}" aria-label="カートに追加" \${isSoldOut ? 'disabled' : ''}>カートに追加</button>
+          \${isSoldOut ? '<div class="sold-label">SOLD</div>' : ''}
+        \`;
         gallery.appendChild(item);
       });
 
@@ -437,16 +464,27 @@
           const title = button.dataset.title;
           const price = Number(button.dataset.price);
           const image = button.dataset.image;
+          const stock = Number(button.dataset.stock);
+
+          if(stock === 0) {
+            alert('この作品は在庫切れです。');
+            return;
+          }
 
           let cart = getCart();
           const existingIndex = cart.findIndex(item => item.id === id);
           if(existingIndex >= 0) {
-            cart[existingIndex].quantity++;
+            const existingItem = cart[existingIndex];
+            if(existingItem.quantity + 1 > stock) {
+              alert(\`在庫は\${stock}点です。これ以上追加できません。\`);
+              return;
+            }
+            existingItem.quantity++;
           } else {
-            cart.push({id, title, price, image, quantity: 1});
+            cart.push({id, title, price, image, quantity: 1, stock});
           }
           saveCart(cart);
-          alert(`${title} をカートに追加しました。`);
+          alert(\`\${title} をカートに追加しました。\`);
         });
       });
     })
