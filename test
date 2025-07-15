@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>購入ページ - 市屋 凪</title>
+  <style>
+    @font-face {
+      font-family: 'KokuMincho';
+      src: url('fonts/KokuMincho-Regular.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      background: black;
+      height: 100%;
+      font-family: 'KokuMincho', serif;
+      color: #fff;
+      text-align: center;
+    }
+
+    #menuButton {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      width: 32px;
+      height: 24px;
+      cursor: pointer;
+      z-index: 10002;
+    }
+    #menuButton div {
+      background-color: white;
+      height: 4px;
+      margin: 4px 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    #menuButton.open div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    #menuButton.open div:nth-child(2) {
+      opacity: 0;
+    }
+    #menuButton.open div:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    #sidebar {
+      position: fixed;
+      top: 0; right: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 10001;
+      text-align: left;
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 1rem 0;
+      font-size: 1.2rem;
+    }
+
+    .form-container {
+      background: #333;
+      padding: 2rem;
+      margin: 6rem auto 3rem;
+      max-width: 600px;
+      border-radius: 10px;
+      text-align: left;
+    }
+    .form-container h2 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-row {
+      display: flex;
+      gap: 1rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"],
+    select,
+    textarea,
+    button {
+      width: 100%;
+      padding: 0.5rem;
+      font-family: 'KokuMincho', serif;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      box-sizing: border-box;
+    }
+    button {
+      cursor: pointer;
+    }
+    .small-note {
+      font-size: 0.8rem;
+      color: #ccc;
+    }
+    .small-button {
+      width: auto;
+      padding: 0.3rem 1rem;
+      font-size: 0.9rem;
+      margin-top: 1.7rem;
+    }
+    .confirm-dialog {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #222;
+      padding: 2rem;
+      border-radius: 10px;
+      z-index: 10010;
+      max-width: 90vw;
+      width: 400px;
+      display: none;
+      color: #fff;
+    }
+    .confirm-dialog h3 {
+      margin-top: 0;
+      font-size: 1.2rem;
+    }
+    .dialog-buttons {
+      margin-top: 1rem;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+    }
+    .dialog-buttons button {
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      border: none;
+      font-family: 'KokuMincho', serif;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    .dialog-buttons button:hover {
+      opacity: 0.8;
+    }
+    .product-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .product-info img {
+      width: 50px;
+      height: auto;
+    }
+    .payment-method {
+      text-align: left;
+    }
+    .payment-method input[type="radio"] {
+      margin-right: 0.5rem;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    .payment-method label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.5rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .payment-fields {
+      margin-top: 1rem;
+      display: none;
+    }
+    .price-info {
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <div id="sidebar">
+    <a href="/">ホーム</a>
+    <a href="/profile/">プロフィール</a>
+    <a href="/works/">ギャラリー</a>
+    <a href="/contact/">お問い合わせ</a>
+  </div>
+
+  <div class="form-container">
+    <h2>購入フォーム</h2>
+    <div class="form-group">注文番号: #12345678</div>
+
+    <div class="form-group product-info">
+      <img src="art-icon.jpg" alt="商品画像" />
+      <div class="price-info">
+        個数: 2<br />
+        金額: ¥30,000<br />
+        合計: ¥60,000
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div style="flex:1">
+        <label for="lastNameKanji">姓（漢字）</label>
+        <input type="text" id="lastNameKanji" name="lastNameKanji" />
+      </div>
+      <div style="flex:1">
+        <label for="firstNameKanji">名（漢字）</label>
+        <input type="text" id="firstNameKanji" name="firstNameKanji" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div style="flex:1">
+        <label for="lastNameKana">姓（カタカナ）</label>
+        <input type="text" id="lastNameKana" name="lastNameKana" />
+      </div>
+      <div style="flex:1">
+        <label for="firstNameKana">名（カタカナ）</label>
+        <input type="text" id="firstNameKana" name="firstNameKana" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div style="flex:2">
+        <label for="postalCode">郵便番号</label>
+        <input type="text" id="postalCode" name="postalCode" />
+        <div class="small-note">※ハイフンなしで入力してください</div>
+      </div>
+      <div style="flex:1">
+        <button class="small-button" type="button" id="autoFillBtn">自動入力</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="prefecture">都道府県</label>
+      <select id="prefecture" name="prefecture">
+        <option>東京都</option>
+        <!-- 他の都道府県も必要ならここに追加 -->
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="city">市区町村</label>
+      <input type="text" id="city" name="city" />
+    </div>
+
+    <div class="form-group">
+      <label for="address1">番地</label>
+      <input type="text" id="address1" name="address1" />
+    </div>
+
+    <div class="form-group">
+      <label for="address2">アパート・マンション名、部屋番号</label>
+      <input type="text" id="address2" name="address2" />
+    </div>
+
+    <div class="form-group">
+      <label for="phone">電話番号</label>
+      <input type="tel" id="phone" name="phone" placeholder="例: 09012345678" />
+    </div>
+
+    <div class="form-group">
+      <label for="email">メールアドレス</label>
+      <input type="email" id="email" name="email" placeholder="example@example.com" />
+    </div>
+
+    <div class="form-group">
+      <label>決済方法</label>
+      <div class="payment-method">
+        <label><input type="radio" name="payment" value="credit" />クレジットカード</label>
+        <label><input type="radio" name="payment" value="paypay" />PayPay</label>
+        <label><input type="radio" name="payment" value="applepay" />Apple Pay</label>
+        <label><input type="radio" name="payment" value="conveni" />コンビニ払い</label>
+      </div>
+      <div class="payment-fields" id="creditFields">
+        <label for="cardNumber">カード番号</label>
+        <input type="text" id="cardNumber" name="cardNumber" />
+        <label for="expiry">有効期限</label>
+        <input type="text" id="expiry" name="expiry" placeholder="MM/YY" />
+        <label for="securityCode">セキュリティコード</label>
+        <input type="text" id="securityCode" name="securityCode" />
+        <label for="cardHolder">名義</label>
+        <input type="text" id="cardHolder" name="cardHolder" />
+        <button type="button" id="registerCardBtn">登録</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <button id="confirmButton" type="button">確認</button>
+    </div>
+  </div>
+
+  <div class="confirm-dialog" id="confirmDialog" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmDesc">
+    <h3 id="confirmTitle">注文を確認してください</h3>
+    <div id="confirmDesc">
+      <p>注文番号: #12345678</p>
+      <p>作品: RE:FLECT（2点）</p>
+      <p>合計金額: ¥60,000</p>
+      <p>配送先: 東京都渋谷区〜</p>
+      <p id="confirmPaymentMethod">決済方法: </p>
+      <p>電話番号: <span id="confirmPhone"></span></p>
+      <p>メールアドレス: <span id="confirmEmail"></span></p>
+    </div>
+    <div class="dialog-buttons">
+      <button id="cancelDialogBtn" type="button">キャンセル</button>
+      <button id="submitOrderBtn" type="button">購入する</button>
+    </div>
+  </div>
+
+  <script>
+    const paymentRadios = document.querySelectorAll('input[name="payment"]');
+    const creditFields = document.getElementById('creditFields');
+
+    paymentRadios.forEach(radio => {
+      radio.addEventListener('change', () => {
+        if (radio.value === 'credit') {
+          creditFields.style.display = 'block';
+        } else {
+          creditFields.style.display = 'none';
+        }
+      });
+    });
+
+    const confirmButton = document.getElementById('confirmButton');
+    const confirmDialog = document.getElementById('confirmDialog');
+    const cancelDialogBtn = document.getElementById('cancelDialogBtn');
+    const submitOrderBtn = document.getElementById('submitOrderBtn');
+
+    // 確認ボタンクリックでダイアログ表示、内容セット
+    confirmButton.addEventListener('click', () => {
+      // ここで入力内容を確認ダイアログに反映
+      document.getElementById('confirmPaymentMethod').textContent = '決済方法: ' + (document.querySelector('input[name="payment"]:checked')?.parentElement.textContent.trim() || '未選択');
+      document.getElementById('confirmPhone').textContent = document.getElementById('phone').value || '(未入力)';
+      document.getElementById('confirmEmail').textContent = document.getElementById('email').value || '(未入力)';
+
+      confirmDialog.style.display = 'block';
+    });
+
+    cancelDialogBtn.addEventListener('click', () => {
+      confirmDialog.style.display = 'none';
+    });
+
+    // 購入ボタン押下時（ダミーAPI連携）
+    submitOrderBtn.addEventListener('click', () => {
+      // 入力値をまとめる
+      const orderData = {
+        orderNumber: '#12345678',
+        product: 'RE:FLECT',
+        quantity: 2,
+        totalPrice: 60000,
+        nameKanji: {
+          last: document.getElementById('lastNameKanji').value,
+          first: document.getElementById('firstNameKanji').value,
+        },
+        nameKana: {
+          last: document.getElementById('lastNameKana').value,
+          first: document.getElementById('firstNameKana').value,
+        },
+        postalCode: document.getElementById('postalCode').value,
+        prefecture: document.getElementById('prefecture').value,
+        city: document.getElementById('city').value,
+        address1: document.getElementById('address1').value,
+        address2: document.getElementById('address2').value,
+        phone: document.getElementById('phone').value,
+        email: document.getElementById('email').value,
+        paymentMethod: document.querySelector('input[name="payment"]:checked')?.value || '',
+        creditCardInfo: {},
+      };
+
+      if(orderData.paymentMethod === 'credit') {
+        orderData.creditCardInfo = {
+          cardNumber: document.getElementById('cardNumber').value,
+          expiry: document.getElementById('expiry').value,
+          securityCode: document.getElementById('securityCode').value,
+          cardHolder: document.getElementById('cardHolder').value,
+        };
+      }
+
+      // ダミーAPI送信（本実装時はKOMOJU等に差し替え）
+      fetch('https://example.com/api/order', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(orderData),
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('ネットワークエラー');
+        return response.json();
+      })
+      .then(data => {
+        alert('注文が完了しました！');
+        confirmDialog.style.display = 'none';
+        // 実運用では注文完了ページへリダイレクト
+        window.location.href = '/thanks';
+      })
+      .catch(err => {
+        alert('注文処理に失敗しました。もう一度お試しください。');
+        console.error(err);
+      });
+    });
+
+    // 自動入力（郵便番号）ボタン（デモ用：簡単なサンプル）
+    document.getElementById('autoFillBtn').addEventListener('click', () => {
+      // ここに郵便番号API連携などを追加可能（現状はサンプル値）
+      document.getElementById('prefecture').value = '東京都';
+      document.getElementById('city').value = '渋谷区';
+      document.getElementById('address1').value = '神南1-19-11';
+    });
+
+  </script>
+</body>
+</html>
