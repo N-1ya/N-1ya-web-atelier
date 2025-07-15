@@ -324,13 +324,13 @@
           document.getElementById('edition').textContent = work.edition || '1/1';
 
           // ここから購入ページに情報を渡すリンク生成
-          const purchaseLink = 'purchase.html?' + new URLSearchParams({
+          const purchaseLink = './purchase.html?' + new URLSearchParams({
             id: work.id,
             title: work.title,
             price: work.price,
             image: work.image
           }).toString();
-          document.querySelector('.purchase-btn').setAttribute('href', purchaseLink);
+          document.querySelector('./purchase-btn').setAttribute('href', purchaseLink);
         })
         .catch(err => {
           console.error(err);
