@@ -155,9 +155,79 @@
       padding-top: 0.75rem;
       padding-bottom: 1rem;
     }
+
+    /* メニュー三本線ボタン */
+    #menuButton {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      width: 32px;
+      height: 24px;
+      cursor: pointer;
+      z-index: 10002;
+      display: block;
+    }
+    #menuButton div {
+      background-color: white;
+      height: 4px;
+      margin: 4px 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    #menuButton.open div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    #menuButton.open div:nth-child(2) {
+      opacity: 0;
+    }
+    #menuButton.open div:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+
+    /* サイドバー */
+    #sidebar {
+      position: fixed;
+      top: 0; right: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 10001;
+      text-align: left;
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 1rem 0;
+      font-size: 1.2rem;
+    }
   </style>
 </head>
 <body>
+
+  <!-- 三本線メニュー -->
+  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0">
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+
+  <!-- サイドバー -->
+  <div id="sidebar">
+    <a href="/">ホーム</a>
+    <a href="/profile/">プロフィール</a>
+    <a href="/works/">ギャラリー</a>
+    <a href="/contact/">お問い合わせ</a>
+  </div>
+
   <div class="container" id="content">
     <h1 id="title">読み込み中...</h1>
     <div class="product-detail">
@@ -275,6 +345,25 @@
         }
       });
     });
+
+    // ===== ここから三本線メニューのトグル処理 =====
+    const menuButton = document.getElementById('menuButton');
+    const sidebar = document.getElementById('sidebar');
+
+    menuButton.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+      menuButton.classList.toggle('open');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (sidebar.classList.contains('open') &&
+          !sidebar.contains(e.target) &&
+          !menuButton.contains(e.target)) {
+        sidebar.classList.remove('open');
+        menuButton.classList.remove('open');
+      }
+    });
+    // ===== ここまで三本線メニューのトグル処理 =====
   </script>
 </body>
 </html>
