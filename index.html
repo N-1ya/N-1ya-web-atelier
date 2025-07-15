@@ -1,253 +1,228 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>市屋 凪</title>
-<style>
-  @font-face {
-    font-family: 'KokuMincho';
-    src: url('fonts/KokuMincho-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-  }
-  
-  body, html {
-    margin: 0; padding: 0;
-    background: black;
-    height: 100%;
-    font-family: 'KokuMincho', serif;
-    color: #fff;
-    text-align: center;
-  }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>市屋 凪</title>
+  <style>
+    @font-face {
+      font-family: 'KokuMincho';
+      src: url('fonts/KokuMincho-Regular.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
 
-  /* 猫の目イントロ */
-  #intro {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background-color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    transition: opacity 1.5s ease;
-  }
-  #intro.fade-out {
-    opacity: 0;
-    pointer-events: none;
-  }
-  #intro img {
-    max-width: 80%;
-    max-height: 80%;
-    opacity: 0;
-    transition: opacity 1.5s ease;
-  }
-  #intro img.visible {
-    opacity: 1;
-  }
+    body, html {
+      margin: 0; padding: 0;
+      background: black;
+      height: 100%;
+      font-family: 'KokuMincho', serif;
+      color: #fff;
+      text-align: center;
+    }
 
-  /* メインコンテンツ */
-  #main {
-    display: none;
-    padding: 2rem;
-    min-height: 100vh;
-    background-color: #000;
-    overflow-y: auto;
-    text-align: center;
-  }
+    /* 三本線メニュー */
+    #menuButton {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      width: 32px;
+      height: 24px;
+      cursor: pointer;
+      z-index: 10003;
+    }
+    #menuButton div {
+      background-color: white;
+      height: 4px;
+      margin: 4px 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    #menuButton.open div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    #menuButton.open div:nth-child(2) {
+      opacity: 0;
+    }
+    #menuButton.open div:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
 
-  /* 三本線メニュー */
-  #menuButton {
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    width: 32px;
-    height: 24px;
-    cursor: pointer;
-    z-index: 10002;
-    display: none;
-  }
-  #menuButton div {
-    background-color: white;
-    height: 4px;
-    margin: 4px 0;
-    border-radius: 2px;
-    transition: all 0.3s ease;
-  }
-  #menuButton.open div:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-  #menuButton.open div:nth-child(2) {
-    opacity: 0;
-  }
-  #menuButton.open div:nth-child(3) {
-    transform: rotate(-45deg) translate(6px, -6px);
-  }
+    /* サイドバー */
+    #sidebar {
+      position: fixed;
+      top: 0; right: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 10001;
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 1rem 0;
+      font-size: 1.2rem;
+    }
 
-  /* サイドバー */
-  #sidebar {
-    position: fixed;
-    top: 0; right: 0;
-    width: 250px;
-    height: 100vh;
-    background: rgba(0,0,0,0.85);
-    color: #fff;
-    padding: 2rem 1rem;
-    box-sizing: border-box;
-    transform: translateX(100%);
-    transition: transform 0.3s ease;
-    z-index: 10001;
-  }
-  #sidebar.open {
-    transform: translateX(0);
-  }
-  #sidebar a {
-    display: block;
-    color: white;
-    text-decoration: none;
-    margin: 1rem 0;
-    font-size: 1.2rem;
-  }
+    h1 {
+      margin: 3rem 0 1rem;
+      font-size: 2.5rem;
+    }
 
-  h1 {
-    margin: 3rem 0 1rem;
-    font-size: 2.5rem;
-  }
+    nav a {
+      margin: 0 1rem;
+      color: #ccc;
+      text-decoration: none;
+    }
 
-  /* ギャラリー */
-  .gallery {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    max-width: 900px;
-    margin: 2rem auto 0;
-  }
-  .gallery-item {
-    background: rgba(255 255 255 / 0.1);
-    border-radius: 8px;
-    padding: 0.5rem;
-  }
-  .gallery-item img {
-    width: 100%;
-    height: auto;
-    border-radius: 8px;
-  }
-  .gallery-item p {
-    margin-top: 0.5rem;
-    font-size: 1rem;
-    color: #eee;
-  }
+    /* カートボタン */
+    #cartButton {
+      position: fixed;
+      top: 1rem;
+      right: 4rem;
+      width: 32px;
+      height: 32px;
+      cursor: pointer;
+      z-index: 10003;
+      border: none;
+      background: none;
+      color: white;
+      font-size: 24px;
+      line-height: 32px;
+      text-align: center;
+    }
+    #cartButton:hover {
+      color: #ff6666;
+    }
 
-  /* カート関連スタイル */
-  #cartButton {
-    position: fixed;
-    top: 1rem;
-    right: 4rem;
-    width: 40px;
-    height: 40px;
-    background-color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    z-index: 10003;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #000;
-    font-weight: bold;
-    user-select: none;
-    font-size: 1.3rem;
-  }
-  #cartModal {
-    display: none; /* ← ここを確実に非表示に */
-    position: fixed;
-    top: 5rem;
-    right: 1rem;
-    width: 350px;
-    max-height: 400px;
-    background: #222;
-    color: #fff;
-    border-radius: 8px;
-    padding: 1rem;
-    box-shadow: 0 0 10px #000;
-    z-index: 10004;
-    overflow-y: auto;
-    flex-direction: column;
-    display: flex; /* これも消すと最初に見えることを防げます */
-  }
-  #cartModal.hidden {
-    display: none !important;
-  }
-  #cartModal button#cartCloseBtn {
-    background: #ff6666;
-    border: none;
-    color: #fff;
-    padding: 0.3rem 0.8rem;
-    border-radius: 4px;
-    cursor: pointer;
-    align-self: flex-end;
-    font-weight: bold;
-  }
-  #cartModal h2 {
-    margin-top: 0;
-    margin-bottom: 0.5rem;
-  }
-  #cartContents {
-    flex-grow: 1;
-    overflow-y: auto;
-    margin-bottom: 1rem;
-  }
-  #cartContents div {
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #444;
-    padding-bottom: 0.6rem;
-  }
+    /* カートモーダル */
+    #cartModal {
+      display: none;
+      position: fixed;
+      top: 10vh;
+      right: 10vw;
+      width: 300px;
+      max-height: 80vh;
+      background: rgba(20,20,20,0.95);
+      border: 1px solid #555;
+      border-radius: 8px;
+      padding: 1rem;
+      box-sizing: border-box;
+      overflow-y: auto;
+      z-index: 10005;
+    }
+    #cartModal.open {
+      display: block;
+    }
+    #cartModal h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.3rem;
+    }
+    #cartItems {
+      margin-bottom: 1rem;
+    }
+    .cart-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.8rem;
+      border-bottom: 1px solid #444;
+      padding-bottom: 0.4rem;
+    }
+    .cart-item img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      border-radius: 4px;
+      margin-right: 0.6rem;
+    }
+    .cart-item-info {
+      flex-grow: 1;
+      text-align: left;
+    }
+    .cart-item-info p {
+      margin: 0 0 0.2rem 0;
+    }
+    .cart-item-qty {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .cart-item-qty input {
+      width: 40px;
+      text-align: center;
+      background: #222;
+      border: 1px solid #444;
+      color: white;
+      border-radius: 4px;
+    }
+    .cart-item-remove {
+      cursor: pointer;
+      color: #ff6666;
+      font-weight: bold;
+      margin-left: 0.6rem;
+      user-select: none;
+    }
 
-  #purchaseBtn {
-    background-color: #ff6666;
-    border: none;
-    color: white;
-    font-weight: bold;
-    padding: 0.75rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-  }
-  #purchaseBtn:disabled {
-    background-color: #999;
-    cursor: not-allowed;
-  }
-  #purchaseBtn:hover:not(:disabled) {
-    background-color: #ee4444;
-  }
-</style>
+    #cartTotal {
+      font-weight: bold;
+      text-align: right;
+      margin-bottom: 1rem;
+    }
+
+    #cartButtons {
+      display: flex;
+      justify-content: space-between;
+    }
+    #cartButtons button, #cartButtons a {
+      padding: 0.6rem 1rem;
+      border-radius: 6px;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      color: black;
+    }
+    #cartButtons button {
+      background: #444;
+      color: white;
+    }
+    #cartButtons button:hover {
+      background: #666;
+    }
+    #cartButtons a {
+      background: #ff6666;
+    }
+    #cartButtons a:hover {
+      background: #ff4444;
+    }
+  </style>
 </head>
 <body>
 
-<!-- 猫の目イントロ -->
-<div id="intro">
-  <img id="catEye" src="plum-eye.png" alt="Cat Eye">
-</div>
+<h1>市屋 凪</h1>
 
-<!-- メインページ -->
-<div id="main">
-  <h1>市屋 凪</h1>
+<nav>
+  <a href="/profile/">プロフィール</a>
+  <a href="/works/">ギャラリー</a>
+  <a href="/contact/">お問い合わせ</a>
+</nav>
 
-  <nav>
-    <a href="/profile/">プロフィール</a> 　<a href="/works/">ギャラリー</a>　<a href="/contact/">お問い合わせ</a>
-  </nav>
-
-  <section class="gallery" id="gallery">
-    <!-- 作品はここに動的に挿入されます -->
-  </section>
-</div>
+<!-- カートボタン -->
+<button id="cartButton" aria-label="カートを開く" title="カートを開く">🛒</button>
 
 <!-- 三本線メニュー -->
 <div id="menuButton" aria-label="メニュー" role="button" tabindex="0">
-  <div></div>
-  <div></div>
-  <div></div>
+  <div></div><div></div><div></div>
 </div>
 
 <!-- サイドバー -->
@@ -258,141 +233,104 @@
   <a href="/contact/">お問い合わせ</a>
 </div>
 
-<!-- カートボタン -->
-<div id="cartButton" aria-label="カート" role="button" tabindex="0" title="カート">
-  🛒
-</div>
-
 <!-- カートモーダル -->
-<div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle" class="hidden">
-  <button id="cartCloseBtn" aria-label="カートを閉じる">閉じる</button>
-  <h2 id="cartTitle">カートの中身</h2>
-  <div id="cartContents">
-    <p>カートは空です。</p>
+<div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
+  <h2 id="cartTitle">カート</h2>
+  <div id="cartItems"></div>
+  <div id="cartTotal"></div>
+  <div id="cartButtons">
+    <button id="closeCartBtn">閉じる</button>
+    <a href="works/purchase/" id="checkoutBtn">購入に進む</a>
   </div>
-  <button id="purchaseBtn" disabled>購入に進む</button>
 </div>
 
 <script>
-  const intro = document.getElementById('intro');
-  const catEye = document.getElementById('catEye');
-  const main = document.getElementById('main');
   const menuButton = document.getElementById('menuButton');
   const sidebar = document.getElementById('sidebar');
   const cartButton = document.getElementById('cartButton');
   const cartModal = document.getElementById('cartModal');
-  const cartCloseBtn = document.getElementById('cartCloseBtn');
-  const cartContents = document.getElementById('cartContents');
-  const purchaseBtn = document.getElementById('purchaseBtn');
+  const cartItemsContainer = document.getElementById('cartItems');
+  const cartTotal = document.getElementById('cartTotal');
+  const closeCartBtn = document.getElementById('closeCartBtn');
+  const checkoutBtn = document.getElementById('checkoutBtn');
 
-  // メニュー開閉
+  // カート操作
+  function getCart() {
+    const cart = localStorage.getItem('cart');
+    return cart ? JSON.parse(cart) : [];
+  }
+  function saveCart(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+
+  function updateCartDisplay() {
+    const cart = getCart();
+    cartItemsContainer.innerHTML = '';
+    if(cart.length === 0) {
+      cartItemsContainer.innerHTML = '<p>カートに商品がありません。</p>';
+      cartTotal.textContent = '';
+      checkoutBtn.style.pointerEvents = 'none';
+      checkoutBtn.style.opacity = '0.5';
+      return;
+    }
+    checkoutBtn.style.pointerEvents = 'auto';
+    checkoutBtn.style.opacity = '1';
+
+    let total = 0;
+    cart.forEach((item, index) => {
+      total += item.price * item.quantity;
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <img src="${item.image}" alt="${item.title}">
+        <div class="cart-item-info">
+          <p>${item.title}</p>
+          <p>¥${item.price.toLocaleString()}</p>
+        </div>
+        <div class="cart-item-qty">
+          <input type="number" min="1" value="${item.quantity}" data-index="${index}">
+          <span class="cart-item-remove" data-index="${index}" role="button" tabindex="0">×</span>
+        </div>
+      `;
+      cartItemsContainer.appendChild(div);
+    });
+    cartTotal.textContent = `合計: ¥${total.toLocaleString()}`;
+  }
+
+  cartButton.addEventListener('click', () => {
+    updateCartDisplay();
+    cartModal.classList.add('open');
+  });
+
+  closeCartBtn.addEventListener('click', () => {
+    cartModal.classList.remove('open');
+  });
+
+  cartItemsContainer.addEventListener('input', e => {
+    if(e.target.tagName === 'INPUT') {
+      const index = e.target.dataset.index;
+      let value = parseInt(e.target.value);
+      if(isNaN(value) || value < 1) value = 1;
+      const cart = getCart();
+      cart[index].quantity = value;
+      saveCart(cart);
+      updateCartDisplay();
+    }
+  });
+
+  cartItemsContainer.addEventListener('click', e => {
+    if(e.target.classList.contains('cart-item-remove')) {
+      const index = e.target.dataset.index;
+      let cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      updateCartDisplay();
+    }
+  });
+
   menuButton.addEventListener('click', () => {
     sidebar.classList.toggle('open');
     menuButton.classList.toggle('open');
-  });
-
-  // 外側クリックでサイドバー閉じる
-  document.addEventListener('click', (e) => {
-    if (sidebar.classList.contains('open') &&
-        !sidebar.contains(e.target) &&
-        !menuButton.contains(e.target)) {
-      sidebar.classList.remove('open');
-      menuButton.classList.remove('open');
-    }
-  });
-
-  // アニメーション制御
-  function showMain() {
-    intro.style.display = 'none';
-    main.style.display = 'block';
-    menuButton.style.display = 'block';
-  }
-
-  if (localStorage.getItem('introShown') === 'true') {
-    showMain();
-  } else {
-    setTimeout(() => {
-      catEye.classList.add('visible');
-    }, 200);
-    setTimeout(() => {
-      intro.classList.add('fade-out');
-      setTimeout(() => {
-        localStorage.setItem('introShown', 'true');
-        showMain();
-      }, 1500);
-    }, 3000);
-  }
-
-  // ギャラリーの読み込みと表示（最大15件）
-  fetch('/works/works.json')
-    .then(response => {
-      if(!response.ok) throw new Error('作品データの取得失敗');
-      return response.json();
-    })
-    .then(data => {
-      const gallery = document.getElementById('gallery');
-      data.slice(0, 15).forEach(work => {
-        const div = document.createElement('div');
-        div.className = 'gallery-item';
-        div.innerHTML = `
-          <a href="/works/detail.html?id=${encodeURIComponent(work.id)}">
-            <img src="/works/${work.image}" alt="${work.title}">
-            <p>${work.title}</p>
-          </a>
-        `;
-        gallery.appendChild(div);
-      });
-    })
-    .catch(error => {
-      console.error('ギャラリーの読み込みに失敗しました:', error);
-    });
-
-  // --- カート機能の仮実装 ---
-  let cart = [];
-
-  // モーダル初期は非表示確実にする
-  cartModal.classList.add('hidden');
-
-  // カートモーダルを開く
-  cartButton.addEventListener('click', () => {
-    updateCartDisplay();
-    cartModal.classList.remove('hidden');
-  });
-
-  // 閉じるボタンで閉じる
-  cartCloseBtn.addEventListener('click', () => {
-    cartModal.classList.add('hidden');
-  });
-
-  // モーダル外クリックで閉じる（任意）
-  document.addEventListener('click', e => {
-    if (!cartModal.classList.contains('hidden') &&
-        !cartModal.contains(e.target) &&
-        e.target !== cartButton) {
-      cartModal.classList.add('hidden');
-    }
-  });
-
-  // カート内容表示更新関数
-  function updateCartDisplay() {
-    if (cart.length === 0) {
-      cartContents.innerHTML = '<p>カートは空です。</p>';
-      purchaseBtn.disabled = true;
-    } else {
-      purchaseBtn.disabled = false;
-      cartContents.innerHTML = '';
-      cart.forEach(item => {
-        const div = document.createElement('div');
-        div.textContent = `${item.title} - ¥${item.price.toLocaleString()}`;
-        cartContents.appendChild(div);
-      });
-    }
-  }
-
-  // 購入ボタン押下
-  purchaseBtn.addEventListener('click', () => {
-    if(cart.length === 0) return;
-    window.location.href = '/purchase/';
   });
 </script>
 
