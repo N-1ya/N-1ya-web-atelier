@@ -11,7 +11,7 @@
     font-weight: normal;
     font-style: normal;
   }
-  
+
   body, html {
     margin: 0; padding: 0;
     background: black;
@@ -30,7 +30,7 @@
     height: 24px;
     cursor: pointer;
     z-index: 10002;
-    display: block; /* 表示 */
+    display: block;
   }
   #menuButton div {
     background-color: white;
@@ -39,7 +39,6 @@
     border-radius: 2px;
     transition: all 0.3s ease;
   }
-  /* ×アイコンに変化 */
   #menuButton.open div:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
   }
@@ -129,21 +128,8 @@
     <a href="/">ホーム</a>
   </nav>
 
-  <section class="gallery">
-    <div class="gallery-item">
-      <img src="作品画像1.jpg" alt="作品タイトル1">
-      <p>作品タイトル1</p>
-    </div>
-    <div class="gallery-item">
-      <img src="作品画像2.jpg" alt="作品タイトル2">
-      <p>作品タイトル2</p>
-    </div>
-    <div class="gallery-item">
-      <img src="作品画像3.jpg" alt="作品タイトル3">
-      <p>作品タイトル3</p>
-    </div>
-    <!-- 必要に応じてもっと増やせます -->
-  </section>
+  <!-- JSONで自動生成されるギャラリー -->
+  <section class="gallery" id="gallery"></section>
 </div>
 
 <!-- 三本線メニュー -->
@@ -189,6 +175,28 @@
         menuButton.classList.remove('open');
     }
   });
+
+  // ギャラリーをJSONから生成
+  fetch('/works.json')
+    .then(response => response.json())
+    .then(data => {
+      const gallery = document.getElementById('gallery');
+      data.forEach(work => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
+        item.innerHTML = `
+          <a href="detail.html?id=${encodeURIComponent(work.id)}">
+            <img src="${work.image}" alt="${work.title}">
+            <p>${work.title}</p>
+            <p style="font-size: 0.9rem; color: #ccc;">¥${Number(work.price).toLocaleString()}</p>
+          </a>
+        `;
+        gallery.appendChild(item);
+      });
+    })
+    .catch(error => {
+      console.error('ギャラリーの読み込みに失敗しました:', error);
+    });
 </script>
 
 </body>
