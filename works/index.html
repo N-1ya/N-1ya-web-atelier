@@ -177,7 +177,7 @@
   });
 
   // ギャラリーをJSONから生成
-  fetch('/works.json')
+  fetch('./works.json')
     .then(response => response.json())
     .then(data => {
       const gallery = document.getElementById('gallery');
