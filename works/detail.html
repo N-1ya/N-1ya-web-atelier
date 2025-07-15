@@ -82,7 +82,7 @@
   if (!id) {
     document.getElementById('content').innerHTML = '<p>作品IDが指定されていません。</p><a href="/works/">ギャラリーに戻る</a>';
   } else {
-    fetch('/works.json')
+    fetch('works.json')
       .then(response => response.json())
       .then(data => {
         // IDに合致する作品を探す
