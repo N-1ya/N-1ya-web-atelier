@@ -109,7 +109,7 @@
     margin: 2rem auto 3rem;
   }
   .gallery-item {
-    position: relative;
+    position: relative; /* SOLDラベル用に追加 */
     background: rgba(255 255 255 / 0.1);
     border-radius: 8px;
     padding: 0.5rem;
@@ -442,7 +442,6 @@
         const item = document.createElement('div');
         item.className = 'gallery-item';
 
-        // SOLDラベル表示とボタン無効化の条件
         const isSoldOut = (work.stock === 0);
 
         item.innerHTML = \`
