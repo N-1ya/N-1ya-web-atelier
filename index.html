@@ -157,19 +157,8 @@
     <a href="/profile/">プロフィール</a> 　<a href="/works/">ギャラリー</a>　<a href="/contact/">お問い合わせ</a>
   </nav>
 
-  <section class="gallery">
-    <div class="gallery-item">
-      <img src="作品画像1.jpg" alt="作品タイトル1">
-      <p>作品タイトル1</p>
-    </div>
-    <div class="gallery-item">
-      <img src="作品画像2.jpg" alt="作品タイトル2">
-      <p>作品タイトル2</p>
-    </div>
-    <div class="gallery-item">
-      <img src="作品画像3.jpg" alt="作品タイトル3">
-      <p>作品タイトル3</p>
-    </div>
+  <section class="gallery" id="gallery">
+    <!-- 作品はここに動的に挿入されます -->
   </section>
 </div>
 
@@ -232,6 +221,30 @@
       }, 1500);
     }, 3000);
   }
+
+  // ギャラリーの読み込みと表示（最大15件）
+  fetch('/works/works.json')
+    .then(response => {
+      if(!response.ok) throw new Error('作品データの取得失敗');
+      return response.json();
+    })
+    .then(data => {
+      const gallery = document.getElementById('gallery');
+      data.slice(0, 15).forEach(work => {
+        const div = document.createElement('div');
+        div.className = 'gallery-item';
+        div.innerHTML = `
+          <a href="/works/detail.html?id=${encodeURIComponent(work.id)}">
+            <img src="/works/${work.image}" alt="${work.title}">
+            <p>${work.title}</p>
+          </a>
+        `;
+        gallery.appendChild(div);
+      });
+    })
+    .catch(error => {
+      console.error('ギャラリーの読み込みに失敗しました:', error);
+    });
 </script>
 
 </body>
