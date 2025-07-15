@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>作品詳細 - 市屋 凪</title>
+<style>
+  @font-face {
+    font-family: 'KokuMincho';
+    src: url('fonts/KokuMincho-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+  body {
+    margin: 0; padding: 2rem;
+    font-family: 'KokuMincho', serif;
+    background-color: #000;
+    color: #fff;
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  a {
+    color: #fff;
+    text-decoration: none;
+  }
+  h1 {
+    margin-bottom: 1rem;
+  }
+  .main-img {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 10px;
+  }
+  .price {
+    color: #ff6666;
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin: 1rem 0;
+  }
+  .description {
+    line-height: 1.6;
+    color: #ccc;
+  }
+  nav a {
+    display: inline-block;
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+    border: 1px solid #fff;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: background-color 0.3s;
+  }
+  nav a:hover {
+    background-color: #333;
+  }
+</style>
+<title>作品詳細 - 市屋 凪</title>
+</head>
+<body>
+
+<div id="content">
+  <h1 id="title">読み込み中...</h1>
+  <img id="mainImage" src="" alt="" class="main-img" />
+  <div class="price" id="price"></div>
+  <div class="description" id="description"></div>
+
+  <nav>
+    <a href="/works/">← ギャラリーに戻る</a>
+  </nav>
+</div>
+
+<script>
+  // URLのクエリパラメータからidを取得
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param);
+  }
+
+  const id = getQueryParam('id');
+  if (!id) {
+    document.getElementById('content').innerHTML = '<p>作品IDが指定されていません。</p><a href="/works/">ギャラリーに戻る</a>';
+  } else {
+    fetch('/works.json')
+      .then(response => response.json())
+      .then(data => {
+        // IDに合致する作品を探す
+        const work = data.find(w => w.id === id);
+        if (!work) {
+          document.getElementById('content').innerHTML = '<p>作品が見つかりませんでした。</p><a href="/works/">ギャラリーに戻る</a>';
+          return;
+        }
+
+        // 作品情報を表示
+        document.getElementById('title').textContent = work.title;
+        document.getElementById('mainImage').src = work.image.replace('-thumb',''); // サムネのパスから大きい画像に変える例
+        document.getElementById('mainImage').alt = work.title;
+        document.getElementById('price').textContent = `¥${Number(work.price).toLocaleString()}`;
+        document.getElementById('description').textContent = work.description || '説明文はありません。';
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('content').innerHTML = '<p>作品情報の読み込みに失敗しました。</p><a href="/works/">ギャラリーに戻る</a>';
+      });
+  }
+</script>
+
+</body>
+</html>
