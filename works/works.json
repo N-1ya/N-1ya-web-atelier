@@ -2,7 +2,7 @@
   {
     "id": "reflect",
     "title": "RE:FLECT",
-    "image": "../images/reflect_main.jpg",
+    "image": "../images/test.png",
     "price": 30000,
     "description": "漆黒の闇と宇宙の神秘をテーマに描かれたアクリル絵画です。繊細な色彩と質感で、見る者を深遠な世界へ誘います。",
     "size": "30×22.5cm",
@@ -13,7 +13,7 @@
   {
     "id": "dream-manifestation",
     "title": "Dream Manifestation",
-    "image": "../images/dream_manifestation_main.jpg",
+    "image": "../images/test.png",
     "price": 45000,
     "description": "夢の具現化を表現した幻想的な作品。繊細なタッチで描かれた幻想風景。",
     "size": "40×30cm",
@@ -24,7 +24,7 @@
   {
     "id": "silent-whisper",
     "title": "Silent Whisper",
-    "image": "../images/silent_whisper_main.jpg",
+    "image": "../images/test.png",
     "price": 25000,
     "description": "静かな囁きを感じる作品。柔らかな色調と優しい光の表現が特徴です。",
     "size": "25×25cm",
