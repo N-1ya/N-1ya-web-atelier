@@ -1,110 +1,280 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>作品詳細</title>
-<style>
-  @font-face {
-    font-family: 'KokuMincho';
-    src: url('fonts/KokuMincho-Regular.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
-  }
-  body {
-    margin: 0; padding: 2rem;
-    font-family: 'KokuMincho', serif;
-    background-color: #000;
-    color: #fff;
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  a {
-    color: #fff;
-    text-decoration: none;
-  }
-  h1 {
-    margin-bottom: 1rem;
-  }
-  .main-img {
-    width: 100%;
-    max-height: 400px;
-    object-fit: contain;
-    border-radius: 10px;
-  }
-  .price {
-    color: #ff6666;
-    font-size: 1.8rem;
-    font-weight: bold;
-    margin: 1rem 0;
-  }
-  .description {
-    line-height: 1.6;
-    color: #ccc;
-  }
-  nav a {
-    display: inline-block;
-    margin-top: 1.5rem;
-    font-size: 1.2rem;
-    border: 1px solid #fff;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    transition: background-color 0.3s;
-  }
-  nav a:hover {
-    background-color: #333;
-  }
-</style>
-<title>作品詳細</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>作品詳細 - 市屋 凪</title>
+  <style>
+    @font-face {
+      font-family: 'KokuMincho';
+      src: url('/fonts/KokuMincho-Regular.woff2') format('woff2');
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'KokuMincho', serif;
+      background-color: #000;
+      color: #fff;
+    }
+
+    a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    .product-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    @media (min-width: 768px) {
+      .product-detail {
+        flex-direction: row;
+      }
+    }
+
+    .product-gallery {
+      flex: 1;
+    }
+
+    .main-img {
+      width: 100%;
+      border-radius: 10px;
+      max-height: 400px;
+      object-fit: contain;
+    }
+
+    .product-info {
+      flex: 1;
+    }
+
+    .product-info table {
+      width: 100%;
+      border-spacing: 0.5rem 0.8rem;
+    }
+
+    .product-info th {
+      text-align: left;
+      font-weight: normal;
+      width: 30%;
+      color: #ccc;
+    }
+
+    .price {
+      font-size: 1.8rem;
+      color: #ff6666;
+      margin: 1.5rem 0;
+      font-weight: bold;
+    }
+
+    .purchase-btn {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background-color: #fff;
+      color: #000;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: background 0.3s;
+      text-align: center;
+    }
+
+    .purchase-btn:hover {
+      background-color: #ddd;
+    }
+
+    /* 作品説明追加部分 */
+    .product-description {
+      margin: 4rem 0 0 0;
+      color: #eee;
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 900px;
+    }
+    .product-description h2 {
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+    }
+
+    /* アコーディオンスタイル */
+    .accordion-section {
+      margin-top: 3rem;
+      border-top: 1px solid #444;
+    }
+
+    .accordion-header {
+      cursor: pointer;
+      padding: 1rem 0;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      color: #ccc;
+      border-bottom: 1px solid #333;
+    }
+
+    .accordion-header::after {
+      content: "＋";
+      font-size: 1.6rem;
+      transition: transform 0.3s ease;
+      color: #999;
+    }
+
+    .accordion-header.active {
+      color: #fff;
+      border-color: #fff;
+    }
+
+    .accordion-header.active::after {
+      content: "−";
+      color: #fff;
+    }
+
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+      font-size: 1rem;
+      color: #bbb;
+      padding-left: 0.5rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .accordion-content.open {
+      max-height: 500px;
+      padding-top: 0.75rem;
+      padding-bottom: 1rem;
+    }
+  </style>
 </head>
 <body>
+  <div class="container" id="content">
+    <h1 id="title">読み込み中...</h1>
+    <div class="product-detail">
+      <div class="product-gallery">
+        <img src="" id="mainImage" class="main-img" alt="作品画像" />
+      </div>
+      <div class="product-info">
+        <table>
+          <tr><th>サイズ</th><td id="size">--</td></tr>
+          <tr><th>素材</th><td id="material">--</td></tr>
+          <tr><th>制作年</th><td id="year">--</td></tr>
+          <tr><th>エディション</th><td id="edition">--</td></tr>
+        </table>
+        <div class="price" id="price"></div>
+        <a href="/purchase/" class="purchase-btn">購入に進む</a>
+      </div>
+    </div>
 
-<div id="content">
-  <h1 id="title">読み込み中...</h1>
-  <img id="mainImage" src="" alt="" class="main-img" />
-  <div class="price" id="price"></div>
-  <div class="description" id="description"></div>
+    <div class="product-description">
+      <h2>作品説明</h2>
+      <p id="description">読み込み中...</p>
+    </div>
 
-  <nav>
-    <a href="/works/">← ギャラリーに戻る</a>
-  </nav>
-</div>
+    <!-- アコーディオン開始 -->
+    <div class="accordion-section">
+      <div class="accordion-header" role="button" aria-expanded="false" aria-controls="shippingContent" id="shippingHeader" tabindex="0">
+        発送について
+      </div>
+      <div class="accordion-content" id="shippingContent" role="region" aria-labelledby="shippingHeader">
+        <p>全国一律送料¥500。3万円以上のご購入で送料無料。発送は注文確定後3〜5営業日以内に行います。</p>
+      </div>
+    </div>
 
-<script>
-  // URLのクエリパラメータからidを取得
-  function getQueryParam(param) {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get(param);
-  }
+    <div class="accordion-section">
+      <div class="accordion-header" role="button" aria-expanded="false" aria-controls="paymentContent" id="paymentHeader" tabindex="0">
+        支払いについて
+      </div>
+      <div class="accordion-content" id="paymentContent" role="region" aria-labelledby="paymentHeader">
+        <p>クレジットカード、PayPay、コンビニ払いなど各種決済に対応しております。安心してご利用ください。</p>
+      </div>
+    </div>
 
-  const id = getQueryParam('id');
-  if (!id) {
-    document.getElementById('content').innerHTML = '<p>作品IDが指定されていません。</p><a href="/works/">ギャラリーに戻る</a>';
-  } else {
-    fetch('./works.json')
-      .then(response => response.json())
-      .then(data => {
-        // IDに合致する作品を探す
-        const work = data.find(w => w.id === id);
-        if (!work) {
-          document.getElementById('content').innerHTML = '<p>作品が見つかりませんでした。</p><a href="/works/">ギャラリーに戻る</a>';
-          return;
+    <div class="accordion-section">
+      <div class="accordion-header" role="button" aria-expanded="false" aria-controls="guaranteeContent" id="guaranteeHeader" tabindex="0">
+        保証について
+      </div>
+      <div class="accordion-content" id="guaranteeContent" role="region" aria-labelledby="guaranteeHeader">
+        <p>本作品は作者市屋 凪本人が制作・発行したオリジナル作品です。偽造・複製を禁止します。</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // URLからid取得
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const id = getQueryParam('id');
+    if (!id) {
+      document.getElementById('content').innerHTML = '<p>作品IDが指定されていません。</p><a href="/works/">ギャラリーに戻る</a>';
+    } else {
+      fetch('./works.json')
+        .then(res => {
+          if (!res.ok) throw new Error('HTTP error ' + res.status);
+          return res.json();
+        })
+        .then(data => {
+          const work = data.find(w => w.id === id);
+          if (!work) {
+            document.getElementById('content').innerHTML = '<p>作品が見つかりませんでした。</p><a href="/works/">ギャラリーに戻る</a>';
+            return;
+          }
+
+          // タイトル・画像・価格・説明
+          document.getElementById('title').textContent = work.title;
+          document.getElementById('mainImage').src = work.image;
+          document.getElementById('mainImage').alt = work.title;
+          document.getElementById('price').textContent = `¥${Number(work.price).toLocaleString()}`;
+          document.getElementById('description').textContent = work.description || '説明文はありません。';
+
+          // 固定のスペック情報は仮置き。あればworkオブジェクトに入れてください。
+          document.getElementById('size').textContent = work.size || '30×22.5cm';
+          document.getElementById('material').textContent = work.material || 'アクリル／MDFボード';
+          document.getElementById('year').textContent = work.year || '2025';
+          document.getElementById('edition').textContent = work.edition || '1/1';
+        })
+        .catch(err => {
+          console.error(err);
+          document.getElementById('content').innerHTML = '<p>作品情報の読み込みに失敗しました。</p><a href="/works/">ギャラリーに戻る</a>';
+        });
+    }
+
+    // アコーディオン処理
+    document.querySelectorAll('.accordion-header').forEach(header => {
+      header.addEventListener('click', () => {
+        const content = document.getElementById(header.getAttribute('aria-controls'));
+        const isOpen = content.classList.contains('open');
+        if (isOpen) {
+          content.classList.remove('open');
+          header.classList.remove('active');
+          header.setAttribute('aria-expanded', 'false');
+        } else {
+          content.classList.add('open');
+          header.classList.add('active');
+          header.setAttribute('aria-expanded', 'true');
         }
-
-        // 作品情報を表示
-        document.getElementById('title').textContent = work.title;
-        document.getElementById('mainImage').src = work.image.replace('-thumb',''); // サムネのパスから大きい画像に変える例
-        document.getElementById('mainImage').alt = work.title;
-        document.getElementById('price').textContent = `¥${Number(work.price).toLocaleString()}`;
-        document.getElementById('description').textContent = work.description || '説明文はありません。';
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById('content').innerHTML = '<p>作品情報の読み込みに失敗しました。</p><a href="/works/">ギャラリーに戻る</a>';
       });
-  }
-</script>
-
+      // キーボード対応
+      header.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          header.click();
+        }
+      });
+    });
+  </script>
 </body>
 </html>
