@@ -75,8 +75,6 @@
     border-radius: 2px;
     transition: all 0.3s ease;
   }
-
-  /* ×アイコンに変化 */
   #menuButton.open div:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
   }
@@ -140,6 +138,89 @@
     font-size: 1rem;
     color: #eee;
   }
+
+  /* カート関連スタイル */
+  #cartButton {
+    position: fixed;
+    top: 1rem;
+    right: 4rem;
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    z-index: 10003;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-weight: bold;
+    user-select: none;
+    font-size: 1.3rem;
+  }
+  #cartModal {
+    display: none; /* ← ここを確実に非表示に */
+    position: fixed;
+    top: 5rem;
+    right: 1rem;
+    width: 350px;
+    max-height: 400px;
+    background: #222;
+    color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 0 10px #000;
+    z-index: 10004;
+    overflow-y: auto;
+    flex-direction: column;
+    display: flex; /* これも消すと最初に見えることを防げます */
+  }
+  #cartModal.hidden {
+    display: none !important;
+  }
+  #cartModal button#cartCloseBtn {
+    background: #ff6666;
+    border: none;
+    color: #fff;
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    align-self: flex-end;
+    font-weight: bold;
+  }
+  #cartModal h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+  }
+  #cartContents {
+    flex-grow: 1;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+  }
+  #cartContents div {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #444;
+    padding-bottom: 0.6rem;
+  }
+
+  #purchaseBtn {
+    background-color: #ff6666;
+    border: none;
+    color: white;
+    font-weight: bold;
+    padding: 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+  }
+  #purchaseBtn:disabled {
+    background-color: #999;
+    cursor: not-allowed;
+  }
+  #purchaseBtn:hover:not(:disabled) {
+    background-color: #ee4444;
+  }
 </style>
 </head>
 <body>
@@ -177,12 +258,32 @@
   <a href="/contact/">お問い合わせ</a>
 </div>
 
+<!-- カートボタン -->
+<div id="cartButton" aria-label="カート" role="button" tabindex="0" title="カート">
+  🛒
+</div>
+
+<!-- カートモーダル -->
+<div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle" class="hidden">
+  <button id="cartCloseBtn" aria-label="カートを閉じる">閉じる</button>
+  <h2 id="cartTitle">カートの中身</h2>
+  <div id="cartContents">
+    <p>カートは空です。</p>
+  </div>
+  <button id="purchaseBtn" disabled>購入に進む</button>
+</div>
+
 <script>
   const intro = document.getElementById('intro');
   const catEye = document.getElementById('catEye');
   const main = document.getElementById('main');
   const menuButton = document.getElementById('menuButton');
   const sidebar = document.getElementById('sidebar');
+  const cartButton = document.getElementById('cartButton');
+  const cartModal = document.getElementById('cartModal');
+  const cartCloseBtn = document.getElementById('cartCloseBtn');
+  const cartContents = document.getElementById('cartContents');
+  const purchaseBtn = document.getElementById('purchaseBtn');
 
   // メニュー開閉
   menuButton.addEventListener('click', () => {
@@ -245,6 +346,54 @@
     .catch(error => {
       console.error('ギャラリーの読み込みに失敗しました:', error);
     });
+
+  // --- カート機能の仮実装 ---
+  let cart = [];
+
+  // モーダル初期は非表示確実にする
+  cartModal.classList.add('hidden');
+
+  // カートモーダルを開く
+  cartButton.addEventListener('click', () => {
+    updateCartDisplay();
+    cartModal.classList.remove('hidden');
+  });
+
+  // 閉じるボタンで閉じる
+  cartCloseBtn.addEventListener('click', () => {
+    cartModal.classList.add('hidden');
+  });
+
+  // モーダル外クリックで閉じる（任意）
+  document.addEventListener('click', e => {
+    if (!cartModal.classList.contains('hidden') &&
+        !cartModal.contains(e.target) &&
+        e.target !== cartButton) {
+      cartModal.classList.add('hidden');
+    }
+  });
+
+  // カート内容表示更新関数
+  function updateCartDisplay() {
+    if (cart.length === 0) {
+      cartContents.innerHTML = '<p>カートは空です。</p>';
+      purchaseBtn.disabled = true;
+    } else {
+      purchaseBtn.disabled = false;
+      cartContents.innerHTML = '';
+      cart.forEach(item => {
+        const div = document.createElement('div');
+        div.textContent = `${item.title} - ¥${item.price.toLocaleString()}`;
+        cartContents.appendChild(div);
+      });
+    }
+  }
+
+  // 購入ボタン押下
+  purchaseBtn.addEventListener('click', () => {
+    if(cart.length === 0) return;
+    window.location.href = '/purchase/';
+  });
 </script>
 
 </body>
