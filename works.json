@@ -1,0 +1,33 @@
+[
+  {
+    "id": "reflect",
+    "title": "RE:FLECT",
+    "price": 30000,
+    "size": "30×22.5cm",
+    "material": "アクリル／MDFボード",
+    "year": "2025",
+    "edition": "1/1",
+    "description": "この作品「RE:FLECT」は、漆黒の闇と宇宙の神秘をテーマに描かれたアクリル絵画です。繊細な色彩と質感で、見る者を深遠な世界へ誘います。",
+    "images": [
+      "images/reflect/main.jpg",
+      "images/reflect/thumb1.jpg",
+      "images/reflect/thumb2.jpg",
+      "images/reflect/thumb3.jpg"
+    ]
+  },
+  {
+    "id": "sleeping-cat",
+    "title": "眠る猫",
+    "price": 18000,
+    "size": "24×18cm",
+    "material": "油彩／キャンバス",
+    "year": "2024",
+    "edition": "1/10",
+    "description": "柔らかな毛並みの猫がまどろむ瞬間を切り取った一枚。穏やかな日常のワンシーンをお楽しみください。",
+    "images": [
+      "images/sleeping-cat/main.jpg",
+      "images/sleeping-cat/thumb1.jpg",
+      "images/sleeping-cat/thumb2.jpg"
+    ]
+  }
+]
