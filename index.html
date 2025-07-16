@@ -388,10 +388,10 @@
         const div = document.createElement('div');
         div.className = 'gallery-item';
 
-        // 追加ボタンのHTML（最初の作品だけに設置）
-        const addToCartBtnHTML = index === 0 ? 
-          `<button class="add-to-cart-btn" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}">カートに追加</button>` 
-          : '';
+        // 追加ボタンのHTML
+       const addToCartBtnHTML = 
+  `<button class="add-to-cart-btn" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}">カートに追加</button>`;
+
 
         div.innerHTML = `
           <a href="/works/detail.html?id=${encodeURIComponent(work.id)}">
