@@ -437,7 +437,7 @@
 
     const id = getQueryParam('id');
     if (!id) {
-      document.getElementById('content').innerHTML = '<p>作品IDが指定されていません。</p><a href="/works/">ギャラリーに戻る</a>';
+      document.getElementById('content').innerHTML = '<p>作品が見つかりませんでした。</p><a href="/works/">ギャラリーに戻る</a>';
     } else {
       fetch('./works.json')
         .then(res => {
