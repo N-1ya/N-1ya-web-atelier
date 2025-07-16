@@ -21,7 +21,6 @@
     text-align: center;
   }
 
-  /* 猫の目イントロ */
   #intro {
     position: fixed;
     top: 0; left: 0;
@@ -47,7 +46,6 @@
     opacity: 1;
   }
 
-  /* メインコンテンツ */
   #main {
     display: none;
     padding: 2rem 1rem 3rem;
@@ -57,7 +55,6 @@
     text-align: center;
   }
 
-  /* 三本線メニュー */
   #menuButton {
     position: fixed;
     top: 1rem;
@@ -85,7 +82,6 @@
     transform: rotate(-45deg) translate(6px, -6px);
   }
 
-  /* サイドバー */
   #sidebar {
     position: fixed;
     top: 0; right: 0;
@@ -122,7 +118,6 @@
     text-decoration: none;
   }
 
-  /* ギャラリー */
   .gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -151,7 +146,6 @@
     color: #eee;
   }
 
-  /* カートボタン */
   #cartButton {
     position: fixed;
     top: 1rem;
@@ -172,7 +166,6 @@
     color: #ff6666;
   }
 
-  /* カートモーダル */
   #cartModal {
     display: none;
     position: fixed;
@@ -277,12 +270,10 @@
 </head>
 <body>
 
-<!-- 猫の目イントロ -->
 <div id="intro">
   <img id="catEye" src="plum-eye.png" alt="Cat Eye">
 </div>
 
-<!-- メインコンテンツ -->
 <div id="main">
   <h1>市屋 凪</h1>
   <nav>
@@ -291,17 +282,13 @@
     <a href="/contact/">お問い合わせ</a>
   </nav>
 
-  <section class="gallery" id="gallery">
-    <!-- 作品はここに動的に挿入されます -->
-  </section>
+  <section class="gallery" id="gallery"></section>
 </div>
 
-<!-- 三本線メニュー -->
 <div id="menuButton" aria-label="メニュー" role="button" tabindex="0">
   <div></div><div></div><div></div>
 </div>
 
-<!-- サイドバー -->
 <div id="sidebar">
   <a href="/">ホーム</a>
   <a href="/profile/">プロフィール</a>
@@ -309,15 +296,11 @@
   <a href="/contact/">お問い合わせ</a>
 </div>
 
-<!-- カートボタン -->
 <button id="cartButton" aria-label="カートを開く" title="カートを開く">🛒</button>
 
-<!-- カートモーダル -->
 <div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
   <h2 id="cartTitle">カート</h2>
-  <div id="cartContents">
-    <p>カートに商品がありません。</p>
-  </div>
+  <div id="cartContents"><p>カートに商品がありません。</p></div>
   <div id="cartButtons">
     <button id="closeCartBtn">閉じる</button>
     <a href="/purchase/" id="checkoutBtn">購入に進む</a>
@@ -336,7 +319,16 @@
   const checkoutBtn = document.getElementById('checkoutBtn');
   const cartContents = document.getElementById('cartContents');
 
-  // 三本線メニュー開閉
+  // localStorage対応
+  function getCart() {
+    const cart = localStorage.getItem('cart');
+    return cart ? JSON.parse(cart) : [];
+  }
+  function saveCart(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
+  }
+  let cart = getCart();
+
   menuButton.addEventListener('click', () => {
     sidebar.classList.toggle('open');
     menuButton.classList.toggle('open');
@@ -348,8 +340,6 @@
       menuButton.classList.toggle('open');
     }
   });
-
-  // 外クリックでメニュー閉じる
   document.addEventListener('click', e => {
     if(sidebar.classList.contains('open') &&
       !sidebar.contains(e.target) &&
@@ -359,7 +349,6 @@
     }
   });
 
-  // イントロアニメーション制御
   function showMain() {
     intro.style.display = 'none';
     main.style.display = 'block';
@@ -378,7 +367,6 @@
     }, 5000);
   }
 
-  // ギャラリー読み込み・表示（最大15件）
   fetch('/works/works.json')
     .then(res => {
       if(!res.ok) throw new Error('作品データ取得失敗');
@@ -402,39 +390,35 @@
       console.error('ギャラリー読み込み失敗:', err);
     });
 
-  // カート機能（ローカル管理の簡易版）
-  let cart = [];
-
-  // カート表示更新
   function updateCartDisplay() {
     if(cart.length === 0) {
       cartContents.innerHTML = '<p>カートに商品がありません。</p>';
       checkoutBtn.style.pointerEvents = 'none';
       checkoutBtn.style.opacity = '0.5';
-      return;
+    } else {
+      checkoutBtn.style.pointerEvents = 'auto';
+      checkoutBtn.style.opacity = '1';
+      cartContents.innerHTML = '';
+      cart.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <img src="/works/${item.image}" alt="${item.title}">
+          <div class="cart-item-info">
+            <p>${item.title}</p>
+            <p>¥${item.price.toLocaleString()}</p>
+          </div>
+          <div class="cart-item-qty">
+            <input type="number" min="1" value="${item.quantity}" data-id="${item.id}" aria-label="数量">
+            <span class="cart-item-remove" data-id="${item.id}" role="button" tabindex="0" aria-label="商品を削除">×</span>
+          </div>
+        `;
+        cartContents.appendChild(div);
+      });
     }
-    checkoutBtn.style.pointerEvents = 'auto';
-    checkoutBtn.style.opacity = '1';
-    cartContents.innerHTML = '';
-    cart.forEach(item => {
-      const div = document.createElement('div');
-      div.className = 'cart-item';
-      div.innerHTML = `
-        <img src="/works/${item.image}" alt="${item.title}">
-        <div class="cart-item-info">
-          <p>${item.title}</p>
-          <p>¥${item.price.toLocaleString()}</p>
-        </div>
-        <div class="cart-item-qty">
-          <input type="number" min="1" value="${item.quantity}" data-id="${item.id}" aria-label="数量">
-          <span class="cart-item-remove" data-id="${item.id}" role="button" tabindex="0" aria-label="商品を削除">×</span>
-        </div>
-      `;
-      cartContents.appendChild(div);
-    });
+    saveCart(cart);
   }
 
-  // カートモーダル開閉
   cartButton.addEventListener('click', () => {
     if(cartModal.classList.contains('open')) {
       cartModal.classList.remove('open');
@@ -444,12 +428,10 @@
     }
   });
 
-  // 閉じるボタン
   closeCartBtn.addEventListener('click', () => {
     cartModal.classList.remove('open');
   });
 
-  // 数量変更イベント（イベント委任）
   cartContents.addEventListener('input', e => {
     if(e.target.tagName === 'INPUT') {
       const id = e.target.dataset.id;
@@ -466,7 +448,6 @@
     }
   });
 
-  // 削除ボタン
   cartContents.addEventListener('click', e => {
     if(e.target.classList.contains('cart-item-remove')) {
       const id = e.target.dataset.id;
@@ -475,7 +456,6 @@
     }
   });
 
-  // キーボード削除対応
   cartContents.addEventListener('keydown', e => {
     if(e.target.classList.contains('cart-item-remove') && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
@@ -485,15 +465,10 @@
     }
   });
 
-  // 購入ボタン
   checkoutBtn.addEventListener('click', () => {
     if(cart.length === 0) return;
     window.location.href = '/purchase/';
   });
-
-  // 作品ページ等でカートに追加機能を実装したい場合、
-  // ここにcart.push(...) と localStorage連携を追加してください。
-
 </script>
 
 </body>
