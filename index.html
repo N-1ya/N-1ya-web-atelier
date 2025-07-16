@@ -281,7 +281,6 @@
     <a href="/works/">ギャラリー</a>
     <a href="/contact/">お問い合わせ</a>
   </nav>
-
   <section class="gallery" id="gallery"></section>
 </div>
 
@@ -300,7 +299,9 @@
 
 <div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
   <h2 id="cartTitle">カート</h2>
-  <div id="cartContents"><p>カートに商品がありません。</p></div>
+  <div id="cartContents">
+    <p>カートに商品がありません。</p>
+  </div>
   <div id="cartButtons">
     <button id="closeCartBtn">閉じる</button>
     <a href="/purchase/" id="checkoutBtn">購入に進む</a>
@@ -318,16 +319,6 @@
   const closeCartBtn = document.getElementById('closeCartBtn');
   const checkoutBtn = document.getElementById('checkoutBtn');
   const cartContents = document.getElementById('cartContents');
-
-  // localStorage対応
-  function getCart() {
-    const cart = localStorage.getItem('cart');
-    return cart ? JSON.parse(cart) : [];
-  }
-  function saveCart(cart) {
-    localStorage.setItem('cart', JSON.stringify(cart));
-  }
-  let cart = getCart();
 
   menuButton.addEventListener('click', () => {
     sidebar.classList.toggle('open');
@@ -390,33 +381,37 @@
       console.error('ギャラリー読み込み失敗:', err);
     });
 
+  // ✅ 修正：localStorageから読み込む
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
   function updateCartDisplay() {
+    localStorage.setItem('cart', JSON.stringify(cart)); // ← 追加済
+
     if(cart.length === 0) {
       cartContents.innerHTML = '<p>カートに商品がありません。</p>';
       checkoutBtn.style.pointerEvents = 'none';
       checkoutBtn.style.opacity = '0.5';
-    } else {
-      checkoutBtn.style.pointerEvents = 'auto';
-      checkoutBtn.style.opacity = '1';
-      cartContents.innerHTML = '';
-      cart.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'cart-item';
-        div.innerHTML = `
-          <img src="/works/${item.image}" alt="${item.title}">
-          <div class="cart-item-info">
-            <p>${item.title}</p>
-            <p>¥${item.price.toLocaleString()}</p>
-          </div>
-          <div class="cart-item-qty">
-            <input type="number" min="1" value="${item.quantity}" data-id="${item.id}" aria-label="数量">
-            <span class="cart-item-remove" data-id="${item.id}" role="button" tabindex="0" aria-label="商品を削除">×</span>
-          </div>
-        `;
-        cartContents.appendChild(div);
-      });
+      return;
     }
-    saveCart(cart);
+    checkoutBtn.style.pointerEvents = 'auto';
+    checkoutBtn.style.opacity = '1';
+    cartContents.innerHTML = '';
+    cart.forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'cart-item';
+      div.innerHTML = `
+        <img src="/works/${item.image}" alt="${item.title}">
+        <div class="cart-item-info">
+          <p>${item.title}</p>
+          <p>¥${item.price.toLocaleString()}</p>
+        </div>
+        <div class="cart-item-qty">
+          <input type="number" min="1" value="${item.quantity}" data-id="${item.id}" aria-label="数量">
+          <span class="cart-item-remove" data-id="${item.id}" role="button" tabindex="0" aria-label="商品を削除">×</span>
+        </div>
+      `;
+      cartContents.appendChild(div);
+    });
   }
 
   cartButton.addEventListener('click', () => {
@@ -427,7 +422,6 @@
       cartModal.classList.add('open');
     }
   });
-
   closeCartBtn.addEventListener('click', () => {
     cartModal.classList.remove('open');
   });
@@ -444,24 +438,25 @@
       if(item) {
         item.quantity = val;
         updateCartDisplay();
+        localStorage.setItem('cart', JSON.stringify(cart)); // ← 追加済
       }
     }
   });
-
   cartContents.addEventListener('click', e => {
     if(e.target.classList.contains('cart-item-remove')) {
       const id = e.target.dataset.id;
       cart = cart.filter(i => i.id !== id);
       updateCartDisplay();
+      localStorage.setItem('cart', JSON.stringify(cart)); // ← 追加済
     }
   });
-
   cartContents.addEventListener('keydown', e => {
     if(e.target.classList.contains('cart-item-remove') && (e.key === 'Enter' || e.key === ' ')) {
       e.preventDefault();
       const id = e.target.dataset.id;
       cart = cart.filter(i => i.id !== id);
       updateCartDisplay();
+      localStorage.setItem('cart', JSON.stringify(cart)); // ← 追加済
     }
   });
 
