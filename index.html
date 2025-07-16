@@ -463,14 +463,17 @@
     });
   }
 
-  cartButton.addEventListener('click', () => {
-    if(cartModal.classList.contains('open')) {
-      cartModal.classList.remove('open');
-    } else {
-      updateCartDisplay();
-      cartModal.classList.add('open');
-    }
-  });
+cartButton.addEventListener('click', () => {
+  if(cartModal.classList.contains('open')) {
+    cartModal.classList.remove('open');
+  } else {
+    // ここで毎回 localStorage から最新の cart を読み込む
+    cart = JSON.parse(localStorage.getItem('cart')) || [];
+    updateCartDisplay();
+    cartModal.classList.add('open');
+  }
+});
+
   closeCartBtn.addEventListener('click', () => {
     cartModal.classList.remove('open');
   });
