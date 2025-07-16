@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -10,228 +9,398 @@
       font-family: 'KokuMincho';
       src: url('/fonts/KokuMincho-Regular.woff2') format('woff2');
     }
-    body, html {
-      margin: 0; padding: 0;
+    body {
+      margin: 0;
+      padding: 0;
       font-family: 'KokuMincho', serif;
       background-color: #000;
       color: #fff;
     }
-    a { color: #fff; text-decoration: none; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 2rem; }
-    .product-detail { display: flex; flex-direction: column; gap: 2rem; }
-    @media (min-width: 768px) {
-      .product-detail { flex-direction: row; }
+    a {
+      color: #fff;
+      text-decoration: none;
     }
-    .product-gallery { flex: 1; }
-    .main-img { width: 100%; border-radius: 10px; max-height: 400px; object-fit: contain; }
-    .product-info { flex: 1; }
-    .product-info table { width: 100%; border-spacing: .5rem .8rem; }
-    .product-info th { text-align: left; font-weight: normal; width: 30%; color: #ccc; }
-    .price { font-size: 1.8rem; color: #ff6666; margin: 1.5rem 0; font-weight: bold; }
-    .purchase-btn, #cartButton { display: inline-block; padding: .7rem 1.5rem; border: none; border-radius:30px; font-weight:bold; cursor:pointer; transition: background .3s; }
-    .purchase-btn { background: #fff; color: #000; text-align:center; }
-    .purchase-btn:hover { background: #ddd; }
-    #cartButton { background:none; color:#fff; position:fixed; top:1rem; right:4rem; width:32px; height:32px; font-size:24px; line-height:32px; z-index:10003; }
-    #cartButton:hover { color:#ff6666; }
-    .product-description { margin:4rem 0 0; color:#eee; font-size:1rem; line-height:1.6; max-width:900px;}
-    .product-description h2 { margin-bottom:.8rem; font-weight:600; }
-    .accordion-section { margin-top:3rem; border-top:1px solid #444; }
-    .accordion-header { cursor:pointer; padding:1rem 0; font-weight:600; font-size:1.1rem; display:flex; justify-content:space-between; align-items:center; user-select:none; color:#ccc; border-bottom:1px solid #333; }
-    .accordion-header::after { content:"＋"; font-size:1.6rem; color:#999; transition:transform .3s; }
-    .accordion-header.active { color:#fff; border-color:#fff; }
-    .accordion-header.active::after { content:"−"; color:#fff; }
-    .accordion-content { max-height:0; overflow:hidden; transition:max-height .35s ease; font-size:1rem; color:#bbb; padding-left:.5rem; }
-    .accordion-content.open { max-height:500px; padding-top:.75rem; padding-bottom:1rem; }
-    #menuButton { position:fixed; top:1rem; right:1rem; width:32px; height:24px; cursor:pointer; z-index:10003; }
-    #menuButton div { background-color:white; height:4px; margin:4px 0; border-radius:2px; transition:all .3s ease; }
-    #menuButton.open div:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
-    #menuButton.open div:nth-child(2) { opacity:0; }
-    #menuButton.open div:nth-child(3) { transform:rotate(-45deg) translate(6px,-6px); }
-    #sidebar { position:fixed; top:0; right:0; width:250px; height:100vh; background:rgba(0,0,0,.85); color:#fff; padding:2rem 1rem; box-sizing:border-box; transform:translateX(100%); transition:transform .3s ease; z-index:10001; }
-    #sidebar.open { transform:translateX(0); }
-    #sidebar a { display:block; color:white; text-decoration:none; margin:1rem 0; font-size:1.2rem; }
-    #cartModal { display:none; position:fixed; top:10vh; right:10vw; width:300px; max-height:80vh; background:rgba(20,20,20,.95); border:1px solid #555; border-radius:8px; padding:1rem; box-sizing:border-box; overflow-y:auto; z-index:10005; }
-    #cartModal.open { display:block; }
-    #cartModal h2 { margin-top:0; margin-bottom:1rem; font-size:1.3rem; }
-    #cartItems, .cart-item { margin-bottom:1rem; }
-    .cart-item { display:flex; align-items:center; border-bottom:1px solid #444; padding-bottom:.4rem; }
-    .cart-item img { width:50px; height:50px; object-fit:contain; border-radius:4px; margin-right:.6rem; }
-    .cart-item-info { flex-grow:1; }
-    .cart-item-info p { margin:0 0 .2rem; }
-    .cart-item-qty { display:flex; align-items:center; gap:.3rem; }
-    .cart-item-qty input { width:40px; text-align:center; background:#222; border:1px solid #444; color:#fff; border-radius:4px; }
-    .cart-item-remove { cursor:pointer; color:#ff6666; font-weight:bold; margin-left:.6rem; user-select:none; }
-    #cartTotal { font-weight:bold; text-align:right; margin-bottom:1rem; }
-    #cartButtons { display:flex; justify-content:space-between; }
-    #cartButtons button,#cartButtons a { padding:.6rem 1rem; border-radius:6px; border:none; font-weight:bold; cursor:pointer; text-decoration:none; color:black;}
-    #cartButtons button { background:#444; color:#fff; }
-    #cartButtons button:hover { background:#666; }
-    #cartButtons a { background:#ff6666; }
-    #cartButtons a:hover { background:#ff4444; }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    .product-detail {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+    @media (min-width: 768px) {
+      .product-detail {
+        flex-direction: row;
+      }
+    }
+    .product-gallery {
+      flex: 1;
+    }
+    .main-img {
+      width: 100%;
+      border-radius: 10px;
+      max-height: 400px;
+      object-fit: contain;
+    }
+    .product-info {
+      flex: 1;
+    }
+    .product-info table {
+      width: 100%;
+      border-spacing: 0.5rem 0.8rem;
+    }
+    .product-info th {
+      text-align: left;
+      font-weight: normal;
+      width: 30%;
+      color: #ccc;
+    }
+    .price {
+      font-size: 1.8rem;
+      color: #ff6666;
+      margin: 1.5rem 0;
+      font-weight: bold;
+    }
+    .purchase-btn {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background-color: #fff;
+      color: #000;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: background 0.3s;
+      text-align: center;
+      cursor: pointer;
+    }
+    .purchase-btn:hover {
+      background-color: #ddd;
+    }
+    .sold-label {
+      display: inline-block;
+      padding: 0.8rem 2rem;
+      background-color: #800;
+      color: #fff;
+      border-radius: 30px;
+      font-weight: bold;
+      text-align: center;
+      opacity: 0.8;
+      cursor: not-allowed;
+    }
+    .product-description {
+      margin: 4rem 0 0 0;
+      color: #eee;
+      font-size: 1rem;
+      line-height: 1.6;
+      max-width: 900px;
+    }
+    .product-description h2 {
+      margin-bottom: 0.8rem;
+      font-weight: 600;
+    }
+    .accordion-section {
+      margin-top: 3rem;
+      border-top: 1px solid #444;
+    }
+    .accordion-header {
+      cursor: pointer;
+      padding: 1rem 0;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      user-select: none;
+      color: #ccc;
+      border-bottom: 1px solid #333;
+    }
+    .accordion-header::after {
+      content: "＋";
+      font-size: 1.6rem;
+      transition: transform 0.3s ease;
+      color: #999;
+    }
+    .accordion-header.active {
+      color: #fff;
+      border-color: #fff;
+    }
+    .accordion-header.active::after {
+      content: "−";
+      color: #fff;
+    }
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease;
+      font-size: 1rem;
+      color: #bbb;
+      padding-left: 0.5rem;
+    }
+    .accordion-content.open {
+      max-height: 500px;
+      padding-top: 0.75rem;
+      padding-bottom: 1rem;
+    }
+    #menuButton {
+      position: fixed;
+      top: 1rem;
+      right: 1rem;
+      width: 32px;
+      height: 24px;
+      cursor: pointer;
+      z-index: 10002;
+      display: block;
+    }
+    #menuButton div {
+      background-color: white;
+      height: 4px;
+      margin: 4px 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+    #menuButton.open div:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    #menuButton.open div:nth-child(2) {
+      opacity: 0;
+    }
+    #menuButton.open div:nth-child(3) {
+      transform: rotate(-45deg) translate(6px, -6px);
+    }
+    #sidebar {
+      position: fixed;
+      top: 0; right: 0;
+      width: 250px;
+      height: 100vh;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 2rem 1rem;
+      box-sizing: border-box;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      z-index: 10001;
+      text-align: left;
+    }
+    #sidebar.open {
+      transform: translateX(0);
+    }
+    #sidebar a {
+      display: block;
+      color: white;
+      text-decoration: none;
+      margin: 1rem 0;
+      font-size: 1.2rem;
+    }
+    #cartButton {
+      position: fixed;
+      top: 1rem;
+      right: 4rem;
+      z-index: 10002;
+      cursor: pointer;
+      font-size: 1.8rem;
+    }
+    #cartModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 320px;
+      height: 100%;
+      background: #222;
+      color: #fff;
+      z-index: 10001;
+      padding: 1rem;
+      box-shadow: -3px 0 5px rgba(0,0,0,0.5);
+      overflow-y: auto;
+    }
+    #cartModal h2 {
+      margin-top: 0;
+    }
+    #cartModal button {
+      margin-top: 1rem;
+    }
   </style>
 </head>
 <body>
-  <div id="menuButton" aria-label="メニュー" role="button" tabindex="0"><div></div><div></div><div></div></div>
-  <div id="sidebar">
-    <a href="/">ホーム</a>
-    <a href="/profile/">プロフィール</a>
-    <a href="/works/">ギャラリー</a>
-    <a href="/contact/">お問い合わせ</a>
+
+<div id="menuButton" aria-label="メニュー" role="button" tabindex="0">
+  <div></div><div></div><div></div>
+</div>
+<div id="cartButton" aria-label="カート" role="button" tabindex="0">🛒</div>
+
+<div id="sidebar">
+  <a href="/">ホーム</a>
+  <a href="/profile/">プロフィール</a>
+  <a href="/works/">ギャラリー</a>
+  <a href="/contact/">お問い合わせ</a>
+</div>
+
+<div id="cartModal">
+  <h2>カート</h2>
+  <div id="cartItems">カートは空です</div>
+  <div style="margin-top:1rem;">
+    <a href="/purchase.html" style="display:inline-block;background:#fff;color:#000;padding:0.5rem 1rem;border-radius:5px;text-decoration:none;font-weight:bold;">購入へ進む</a>
   </div>
+  <button id="closeCart">閉じる</button>
+</div>
 
-  <div class="container" id="content">
-    <h1 id="title">読み込み中...</h1>
-    <div class="product-detail">
-      <div class="product-gallery">
-        <img src="" id="mainImage" class="main-img" alt="作品画像" />
-      </div>
-      <div class="product-info">
-        <table>
-          <tr><th>サイズ</th><td id="size">--</td></tr>
-          <tr><th>素材</th><td id="material">--</td></tr>
-          <tr><th>制作年</th><td id="year">--</td></tr>
-          <tr><th>エディション</th><td id="edition">--</td></tr>
-          <tr><th>在庫</th><td id="stok">--</td></tr>
-        </table>
-        <div class="price" id="price"></div>
-        <a href="/purchase/" class="purchase-btn">購入に進む</a>
-      </div>
+<div class="container" id="content">
+  <h1 id="title">読み込み中...</h1>
+  <div class="product-detail">
+    <div class="product-gallery">
+      <img src="" id="mainImage" class="main-img" alt="作品画像" />
     </div>
-
-    <div class="product-description">
-      <h2>作品説明</h2>
-      <p id="description">読み込み中...</p>
-    </div>
-
-    <div class="accordion-section">
-      <div class="accordion-header" role="button" aria-expanded="false"
-        aria-controls="shippingContent" tabindex="0">発送について</div>
-      <div class="accordion-content" id="shippingContent" role="region">
-        <p>全国一律送料無料。発送は注文確定後3〜5営業日以内に行います。</p>
-        <p>万が一配送時にトラブル...</p>
-      </div>
-    </div>
-    <div class="accordion-section">
-      <div class="accordion-header" role="button" aria-expanded="false"
-        aria-controls="paymentContent" tabindex="0">お支払いについて</div>
-      <div class="accordion-content" id="paymentContent">
-        <p>クレジットカード、PayPay、コンビニ払い...</p>
-      </div>
-    </div>
-    <div class="accordion-section">
-      <div class="accordion-header" role="button" aria-expanded="false"
-        aria-controls="guaranteeContent" tabindex="0">保証について</div>
-      <div class="accordion-content" id="guaranteeContent">
-        <p>作品はすべてNFCタグ...</p>
-      </div>
+    <div class="product-info">
+      <table>
+        <tr><th>サイズ</th><td id="size">--</td></tr>
+        <tr><th>素材</th><td id="material">--</td></tr>
+        <tr><th>制作年</th><td id="year">--</td></tr>
+        <tr><th>エディション</th><td id="edition">--</td></tr>
+        <tr><th>在庫</th><td id="stok">--</td></tr>
+      </table>
+      <div class="price" id="price"></div>
+      <div class="purchase-btn" id="addToCartBtn" style="display:none;">カートに入れる</div>
+      <div class="sold-label" id="soldOutLabel" style="display:none;">SOLD</div>
     </div>
   </div>
 
-  <div style="text-align:center; margin:1.5rem 0;">
-    <a href="/works/" style="padding:.8rem 1.5rem; background:#444; color:#fff; border-radius:6px; font-weight:bold;">
-      ギャラリーに戻る
-    </a>
+  <div class="product-description">
+    <h2>作品説明</h2>
+    <p id="description">読み込み中...</p>
   </div>
 
-  <button id="cartButton" aria-label="カートを開く" title="カートを開く">🛒</button>
-  <div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
-    <h2 id="cartTitle">カート</h2>
-    <div id="cartItems"></div>
-    <div id="cartTotal"></div>
-    <div id="cartButtons">
-      <button id="closeCartBtn">閉じる</button>
-      <a href="/works/purchase.html" id="checkoutBtn">購入に進む</a>
+  <!-- アコーディオン -->
+  <div class="accordion-section">
+    <div class="accordion-header" aria-controls="shippingContent" id="shippingHeader" tabindex="0">発送について</div>
+    <div class="accordion-content" id="shippingContent">
+      <p>全国一律送料無料。発送は注文確定後3〜5営業日以内に行います。</p>
+      <p>万が一配送時にトラブルが生じた場合、お問い合わせフォームよりご連絡ください。</p>
     </div>
   </div>
 
-  <script>
-    function getQueryParam(name){return new URLSearchParams(location.search).get(name);}
-    const id=getQueryParam('id'), menuButton=document.getElementById('menuButton'),
-          sidebar=document.getElementById('sidebar'), cartButton=document.getElementById('cartButton'),
-          cartModal=document.getElementById('cartModal'), cartItems=document.getElementById('cartItems'),
-          cartTotal=document.getElementById('cartTotal'), closeCartBtn=document.getElementById('closeCartBtn'),
-          checkoutBtn=document.getElementById('checkoutBtn');
+  <div class="accordion-section">
+    <div class="accordion-header" aria-controls="paymentContent" id="paymentHeader" tabindex="0">お支払いについて</div>
+    <div class="accordion-content" id="paymentContent">
+      <p>クレジットカード、PayPay、コンビニ払いなど各種決済に対応しております。</p>
+    </div>
+  </div>
 
-    menuButton.addEventListener('click',()=>{sidebar.classList.toggle('open');menuButton.classList.toggle('open');});
-    menuButton.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();sidebar.classList.toggle('open');menuButton.classList.toggle('open');}});
-    document.addEventListener('click',e=>{if(sidebar.classList.contains('open')&&!sidebar.contains(e.target)&&!menuButton.contains(e.target)){sidebar.classList.remove('open');menuButton.classList.remove('open');}});
+  <div class="accordion-section">
+    <div class="accordion-header" aria-controls="guaranteeContent" id="guaranteeHeader" tabindex="0">保証について</div>
+    <div class="accordion-content" id="guaranteeContent">
+      <p>作品はすべてNFCタグ内に保存された証明書により保証されます。</p>
+      <p>また、すべての作品はNFCタグを読み取っていただくことでwebページでも証明書をご確認いただけます。<p/>
+      <p>紙面タイプでの証明書をご希望される場合は、ご注文番号を記載の上、ご購入から３か月以内にお問合せフォームよりご連絡ください。</p>
+    </div>
+  </div>
+</div>
 
-    // アコーディオン
-    document.querySelectorAll('.accordion-header').forEach(h=>{
-      h.addEventListener('click',()=>{
-        const c=document.getElementById(h.getAttribute('aria-controls'));
-        const open=c.classList.toggle('open');
-        h.classList.toggle('active',open);
-        h.setAttribute('aria-expanded',open);
-      });
-      h.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();h.click();}});
-    });
+<div style="margin-top: 1.5rem; text-align: center;">
+  <a href="/works/" style="display: inline-block; padding: 0.8rem 1.5rem; background: #444; color: #fff; border-radius: 6px; text-decoration: none; font-weight: bold;">ギャラリーに戻る</a>
+</div>
 
-    // cart
-    function getCart(){return JSON.parse(localStorage.getItem('cart')||'[]');}
-    function saveCart(c){localStorage.setItem('cart',JSON.stringify(c));}
-    function updateCart(){
-      const c=getCart(); cartItems.innerHTML='';
-      if(c.length===0){cartItems.innerHTML='<p>カートに商品がありません。</p>';cartTotal.textContent='';checkoutBtn.style.pointerEvents='none';checkoutBtn.style.opacity='.5';return;}
-      checkoutBtn.style.pointerEvents='auto';checkoutBtn.style.opacity='1';
-      let tot=0;
-      c.forEach((i,idx)=>{
-        tot+=i.price*i.quantity;
-        const d=document.createElement('div'); d.className='cart-item';
-        d.innerHTML=`<img src="${i.image}" alt="${i.title}"><div class="cart-item-info"><p>${i.title}</p><p>¥${i.price.toLocaleString()}</p></div><div class="cart-item-qty"><input type="number" min="1" value="${i.quantity}" data-index="${idx}"><span class="cart-item-remove" role="button" tabindex="0" data-index="${idx}">×</span></div>`;
-        cartItems.append(d);
-      });
-      cartTotal.textContent=`合計: ¥${tot.toLocaleString()}`;
-    }
+<script>
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (!id) {
+    document.getElementById('content').innerHTML = '<p>作品情報の読み込みに失敗しました。</p>';
+  } else {
+    fetch('./works.json')
+      .then(res => res.json())
+      .then(data => {
+        const work = data.find(w => w.id === id);
+        if (!work) {
+          document.getElementById('content').innerHTML = '<p>作品が見つかりませんでした。</p>';
+          return;
+        }
+        document.getElementById('title').textContent = work.title;
+        document.getElementById('mainImage').src = work.image;
+        document.getElementById('price').textContent = '¥' + Number(work.price).toLocaleString();
+        document.getElementById('description').textContent = work.description || '説明文なし';
+        document.getElementById('size').textContent = work.size || '-';
+        document.getElementById('material').textContent = work.material || '-';
+        document.getElementById('year').textContent = work.year || '-';
+        document.getElementById('edition').textContent = work.edition || '-';
+        document.getElementById('stok').textContent = work.stock || '0';
 
-    cartButton.addEventListener('click',()=>{cartModal.classList.toggle('open');if(cartModal.classList.contains('open'))updateCart();});
-    closeCartBtn.addEventListener('click',()=>{cartModal.classList.remove('open');});
-    cartItems.addEventListener('input',e=>{
-      if(e.target.tagName==='INPUT'){
-        const i=getCart(); const idx=e.target.dataset.index;
-        let v=parseInt(e.target.value); if(isNaN(v)||v<1){v=1; e.target.value='1';}
-        i[idx].quantity=v; saveCart(i); updateCart();
-      }
-    });
-    cartItems.addEventListener('click',e=>{
-      if(e.target.classList.contains('cart-item-remove')){
-        const i=getCart(); i.splice(e.target.dataset.index,1); saveCart(i); updateCart();
-      }
-    });
-    cartItems.addEventListener('keydown',e=>{
-      if(e.target.classList.contains('cart-item-remove')&&(e.key==='Enter'||e.key===' ')){
-        e.preventDefault(); const iArr=getCart(); iArr.splice(e.target.dataset.index,1); saveCart(iArr); updateCart();
-      }
-    });
+        const addBtn = document.getElementById('addToCartBtn');
+        const soldLabel = document.getElementById('soldOutLabel');
 
-    // load detail + insert cart-add button
-    if(!id){document.getElementById('content').innerHTML='<p>IDなし</p><a href="/works/">戻る</a>';}
-    else {
-      fetch('./works.json').then(r=>r.json()).then(data=>{
-        const w=data.find(o=>o.id===id); if(!w)return;
-        document.getElementById('title').textContent=w.title;
-        const img=document.getElementById('mainImage'); img.src=w.image; img.alt=w.title;
-        document.getElementById('price').textContent=`¥${Number(w.price).toLocaleString()}`;
-        document.getElementById('description').textContent=w.description||'説明なし。';
-        document.getElementById('size').textContent=w.size||'--';
-        document.getElementById('material').textContent=w.material||'--';
-        document.getElementById('year').textContent=w.year||'--';
-        document.getElementById('edition').textContent=w.edition||'--';
-        document.querySelector('.purchase-btn').href='purchase.html?'+new URLSearchParams({id:w.id,title:w.title,price:w.price,image:w.image});
-        // add cart button
-        const btn=document.createElement('button');
-        btn.textContent='カートに追加'; btn.style.marginLeft='1rem';
-        btn.className='purchase-btn';
-        btn.addEventListener('click',()=>{
-          const arr=getCart(); const idx=arr.findIndex(x=>x.id===w.id);
-          if(idx>=0)arr[idx].quantity++;
-          else arr.push({id:w.id,title:w.title,price:Number(w.price),image:w.image,quantity:1});
-          saveCart(arr);
-          alert(`${w.title} を追加しました。`);
+        if (Number(work.stock) > 0) {
+          addBtn.style.display = 'inline-block';
+          soldLabel.style.display = 'none';
+        } else {
+          addBtn.style.display = 'none';
+          soldLabel.style.display = 'inline-block';
+        }
+
+        addBtn.addEventListener('click', () => {
+          const cart = JSON.parse(localStorage.getItem('cart')) || [];
+          const exists = cart.find(item => item.id === work.id);
+          if (exists) {
+            alert('すでにカートに追加済みです');
+            return;
+          }
+          cart.push({ id: work.id, title: work.title, price: work.price, image: work.image, quantity: 1 });
+          localStorage.setItem('cart', JSON.stringify(cart));
+          alert('カートに追加しました');
         });
-        document.querySelector('.purchase-btn').insertAdjacentElement('afterend',btn);
+      });
+  }
+
+  // カート表示処理
+  document.getElementById('cartButton').onclick = () => {
+    const modal = document.getElementById('cartModal');
+    const items = JSON.parse(localStorage.getItem('cart')) || [];
+    const container = document.getElementById('cartItems');
+    if (items.length === 0) {
+      container.textContent = 'カートは空です';
+    } else {
+      container.innerHTML = items.map(i =>
+        `<div style="margin-bottom:1rem;">
+          <strong>${i.title}</strong><br/>
+          ¥${i.price.toLocaleString()} × ${i.quantity}
+          <button data-id="${i.id}" style="margin-left:1rem;color:red;">削除</button>
+        </div>`
+      ).join('');
+      container.querySelectorAll('button[data-id]').forEach(btn => {
+        btn.onclick = () => {
+          const id = btn.getAttribute('data-id');
+          const updated = items.filter(i => i.id !== id);
+          localStorage.setItem('cart', JSON.stringify(updated));
+          document.getElementById('cartButton').click(); // 再表示
+        };
       });
     }
-  </script>
+    modal.style.display = 'block';
+  };
+  document.getElementById('closeCart').onclick = () => {
+    document.getElementById('cartModal').style.display = 'none';
+  };
+
+  // メニュー・アコーディオン
+  document.querySelectorAll('.accordion-header').forEach(h => {
+    h.onclick = () => {
+      const c = document.getElementById(h.getAttribute('aria-controls'));
+      h.classList.toggle('active');
+      c.classList.toggle('open');
+    };
+  });
+  const menuButton = document.getElementById('menuButton');
+  const sidebar = document.getElementById('sidebar');
+  menuButton.onclick = () => {
+    sidebar.classList.toggle('open');
+    menuButton.classList.toggle('open');
+  };
+  document.addEventListener('click', (e) => {
+    if (sidebar.classList.contains('open') &&
+        !sidebar.contains(e.target) &&
+        !menuButton.contains(e.target)) {
+      sidebar.classList.remove('open');
+      menuButton.classList.remove('open');
+    }
+  });
+</script>
+
 </body>
 </html>
