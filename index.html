@@ -130,6 +130,7 @@
     border-radius: 8px;
     padding: 0.5rem;
     transition: background-color 0.3s ease;
+    position: relative;
   }
   .gallery-item:hover {
     background: rgba(255 255 255 / 0.2);
@@ -144,6 +145,24 @@
     margin-top: 0.5rem;
     font-size: 1rem;
     color: #eee;
+  }
+  /* 追加したカート追加ボタンのスタイル */
+  .add-to-cart-btn {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background-color: #ff6666;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s ease;
+  }
+  .add-to-cart-btn:hover {
+    background-color: #ff4444;
   }
 
   #cartButton {
@@ -365,16 +384,44 @@
     })
     .then(data => {
       const gallery = document.getElementById('gallery');
-      data.slice(0,15).forEach(work => {
+      data.slice(0,15).forEach((work, index) => {
         const div = document.createElement('div');
         div.className = 'gallery-item';
+
+        // 追加ボタンのHTML（最初の作品だけに設置）
+        const addToCartBtnHTML = index === 0 ? 
+          `<button class="add-to-cart-btn" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}">カートに追加</button>` 
+          : '';
+
         div.innerHTML = `
           <a href="/works/detail.html?id=${encodeURIComponent(work.id)}">
             <img src="/works/${work.image}" alt="${work.title}">
             <p>${work.title}</p>
           </a>
+          ${addToCartBtnHTML}
         `;
         gallery.appendChild(div);
+      });
+
+      // 「カートに追加」ボタンのクリックイベント設定
+      gallery.addEventListener('click', e => {
+        if(e.target.classList.contains('add-to-cart-btn')) {
+          const btn = e.target;
+          const id = btn.dataset.id;
+          const title = btn.dataset.title;
+          const price = Number(btn.dataset.price);
+          const image = btn.dataset.image;
+
+          // 既にカートにあるかチェック
+          const existingIndex = cart.findIndex(item => item.id === id);
+          if(existingIndex >= 0) {
+            cart[existingIndex].quantity++;
+          } else {
+            cart.push({ id, title, price, image, quantity: 1 });
+          }
+          localStorage.setItem('cart', JSON.stringify(cart));
+          alert(`「${title}」をカートに追加しました`);
+        }
       });
     })
     .catch(err => {
