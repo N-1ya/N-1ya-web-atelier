@@ -377,6 +377,9 @@
     }, 5000);
   }
 
+    // ✅ 修正：localStorageから読み込む
+  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  
   fetch('/works/works.json')
     .then(res => {
       if(!res.ok) throw new Error('作品データ取得失敗');
@@ -428,8 +431,7 @@
       console.error('ギャラリー読み込み失敗:', err);
     });
 
-  // ✅ 修正：localStorageから読み込む
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
 
   function updateCartDisplay() {
     localStorage.setItem('cart', JSON.stringify(cart)); // ← 追加済
