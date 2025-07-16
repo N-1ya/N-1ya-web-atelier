@@ -185,6 +185,26 @@
       transform: rotate(-45deg) translate(6px, -6px);
     }
 
+        /* カートボタン */
+  #cartButton {
+    position: fixed;
+    top: 1rem;
+    right: 4rem; /* メニューボタンの左隣 */
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 10003;
+    border: none;
+    background: none;
+    color: white;
+    font-size: 24px;
+    line-height: 32px;
+    text-align: center;
+  }
+  #cartButton:hover {
+    color: #ff6666;
+  }
+
     /* サイドバー */
     #sidebar {
       position: fixed;
@@ -210,26 +230,6 @@
       margin: 1rem 0;
       font-size: 1.2rem;
     }
-
-    /* カートボタン */
-  #cartButton {
-    position: fixed;
-    top: 1rem;
-    right: 4rem; /* メニューボタンの左隣 */
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    z-index: 10003;
-    border: none;
-    background: none;
-    color: white;
-    font-size: 24px;
-    line-height: 32px;
-    text-align: center;
-  }
-  #cartButton:hover {
-    color: #ff6666;
-  }
 
     /* カートモーダル */
     #cartModal {
