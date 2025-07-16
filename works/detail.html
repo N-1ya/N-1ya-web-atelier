@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>作品詳細 - 市屋 凪</title>
   <style>
+    /* 元の詳細ページスタイルはそのまま */
     @font-face {
       font-family: 'KokuMincho';
       src: url('/fonts/KokuMincho-Regular.woff2') format('woff2');
@@ -156,7 +157,7 @@
       padding-bottom: 1rem;
     }
 
-    /* メニュー三本線ボタン */
+    /* 三本線メニュー */
     #menuButton {
       position: fixed;
       top: 1rem;
@@ -164,7 +165,7 @@
       width: 32px;
       height: 24px;
       cursor: pointer;
-      z-index: 10002;
+      z-index: 10003;
       display: block;
     }
     #menuButton div {
@@ -210,33 +211,33 @@
       font-size: 1.2rem;
     }
 
-    /* --- ここからカート関連スタイル --- */
+    /* カートボタン */
     #cartButton {
       position: fixed;
       top: 1rem;
-      right: 4rem;
-      width: 40px;
-      height: 40px;
+      right: 4rem; /* メニューボタンの左隣 */
+      width: 32px;
+      height: 32px;
       cursor: pointer;
       z-index: 10003;
       border: none;
       background: none;
       color: white;
       font-size: 24px;
-      line-height: 40px;
+      line-height: 32px;
       text-align: center;
-      user-select: none;
     }
     #cartButton:hover {
       color: #ff6666;
     }
 
+    /* カートモーダル */
     #cartModal {
       display: none;
       position: fixed;
       top: 10vh;
       right: 10vw;
-      width: 320px;
+      width: 300px;
       max-height: 80vh;
       background: rgba(20,20,20,0.95);
       border: 1px solid #555;
@@ -254,7 +255,7 @@
       margin-bottom: 1rem;
       font-size: 1.3rem;
     }
-    #cartContents {
+    #cartItems {
       margin-bottom: 1rem;
     }
     .cart-item {
@@ -413,18 +414,17 @@
     </a>
   </div>
 
-  <!-- カートアイコン -->
+  <!-- カートボタン -->
   <button id="cartButton" aria-label="カートを開く" title="カートを開く">🛒</button>
 
   <!-- カートモーダル -->
   <div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
     <h2 id="cartTitle">カート</h2>
-    <div id="cartContents">
-      <p>カートに商品がありません。</p>
-    </div>
+    <div id="cartItems"></div>
+    <div id="cartTotal"></div>
     <div id="cartButtons">
       <button id="closeCartBtn">閉じる</button>
-      <a href="/purchase/" id="checkoutBtn">購入に進む</a>
+      <a href="/works/purchase.html" id="checkoutBtn">購入に進む</a>
     </div>
   </div>
 
@@ -437,7 +437,7 @@
 
     const id = getQueryParam('id');
     if (!id) {
-      document.getElementById('content').innerHTML = '<p>作品情報の読み込みに失敗しました。</p><a href="/works/">ギャラリーに戻る</a>';
+      document.getElementById('content').innerHTML = '<p>作品IDが指定されていません。</p><a href="/works/">ギャラリーに戻る</a>';
     } else {
       fetch('./works.json')
         .then(res => {
@@ -472,25 +472,6 @@
             image: work.image
           }).toString();
           document.querySelector('.purchase-btn').setAttribute('href', purchaseLink);
-
-          // 【ここから追加】詳細ページにカートに入れるボタンを追加（要素を作って追加）
-          // 既にあればスキップ（今回はpurchase-btnは購入ページリンクなのでそのまま）
-
-          // 代わりにカート追加用ボタンをproduct-infoに追加（スタイルは最低限）
-          const addCartBtn = document.createElement('button');
-          addCartBtn.textContent = 'カートに追加';
-          addCartBtn.style.marginTop = '1rem';
-          addCartBtn.style.padding = '0.8rem 2rem';
-          addCartBtn.style.borderRadius = '30px';
-          addCartBtn.style.backgroundColor = '#ff6666';
-          addCartBtn.style.color = '#fff';
-          addCartBtn.style.border = 'none';
-          addCartBtn.style.fontWeight = 'bold';
-          addCartBtn.style.cursor = 'pointer';
-          addCartBtn.addEventListener('click', () => {
-            addToCart(work);
-          });
-          document.querySelector('.product-info').appendChild(addCartBtn);
         })
         .catch(err => {
           console.error(err);
@@ -513,83 +494,65 @@
           header.setAttribute('aria-expanded', 'true');
         }
       });
+      // キーボード対応もそのまま維持（EnterとSpaceで開閉）
+      header.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          header.click();
+        }
+      });
     });
 
-    // ===== ここから三本線メニューのトグル処理 =====
+    // ===== 三本線メニューのトグル処理 =====
     const menuButton = document.getElementById('menuButton');
     const sidebar = document.getElementById('sidebar');
-
     menuButton.addEventListener('click', () => {
       sidebar.classList.toggle('open');
       menuButton.classList.toggle('open');
     });
-
+    menuButton.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        sidebar.classList.toggle('open');
+        menuButton.classList.toggle('open');
+      }
+    });
+    // 外クリックでメニュー閉じる
     document.addEventListener('click', (e) => {
-      if (sidebar.classList.contains('open') &&
-          !sidebar.contains(e.target) &&
-          !menuButton.contains(e.target)) {
+      if(sidebar.classList.contains('open') &&
+        !sidebar.contains(e.target) &&
+        !menuButton.contains(e.target)) {
         sidebar.classList.remove('open');
         menuButton.classList.remove('open');
       }
     });
-    // ===== ここまで三本線メニューのトグル処理 =====
 
-    // ===== ここからカート機能 =====
+    // ===== カート機能 =====
+
     const cartButton = document.getElementById('cartButton');
     const cartModal = document.getElementById('cartModal');
-    const cartContents = document.getElementById('cartContents');
+    const cartItemsContainer = document.getElementById('cartItems');
+    const cartTotal = document.getElementById('cartTotal');
     const closeCartBtn = document.getElementById('closeCartBtn');
     const checkoutBtn = document.getElementById('checkoutBtn');
 
-    cartButton.addEventListener('click', () => {
-      renderCart();
-      cartModal.classList.add('open');
-    });
-
-    closeCartBtn.addEventListener('click', () => {
-      cartModal.classList.remove('open');
-    });
-
-    // カート情報取得
+    // localStorageからカート情報取得
     function getCart() {
-      try {
-        const cart = JSON.parse(localStorage.getItem('cart'));
-        return Array.isArray(cart) ? cart : [];
-      } catch {
-        return [];
-      }
+      const cart = localStorage.getItem('cart');
+      return cart ? JSON.parse(cart) : [];
     }
-
-    // カート情報保存
+    // localStorageにカート情報保存
     function saveCart(cart) {
       localStorage.setItem('cart', JSON.stringify(cart));
     }
 
-    // カートに追加
-    function addToCart(work) {
-      let cart = getCart();
-      const index = cart.findIndex(item => item.id === work.id);
-      if (index !== -1) {
-        cart[index].quantity += 1;
-      } else {
-        cart.push({
-          id: work.id,
-          title: work.title,
-          price: work.price,
-          image: work.image,
-          quantity: 1
-        });
-      }
-      saveCart(cart);
-      alert('カートに追加しました。');
-      renderCart();
-    }
-
-    // カート描画
-    function renderCart() {
+    // カート表示を更新
+    function updateCartDisplay() {
       const cart = getCart();
-      if (cart.length === 0) {
-        cartContents.innerHTML = '<p>カートに商品がありません。</p>';
+      cartItemsContainer.innerHTML = '';
+      if(cart.length === 0) {
+        cartItemsContainer.innerHTML = '<p>カートに商品がありません。</p>';
+        cartTotal.textContent = '';
         checkoutBtn.style.pointerEvents = 'none';
         checkoutBtn.style.opacity = '0.5';
         return;
@@ -597,84 +560,141 @@
       checkoutBtn.style.pointerEvents = 'auto';
       checkoutBtn.style.opacity = '1';
 
-      cartContents.innerHTML = '';
       let total = 0;
-      cart.forEach(item => {
+      cart.forEach((item, index) => {
         total += item.price * item.quantity;
+        const div = document.createElement('div');
+        div.className = 'cart-item';
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.title}">
+          <div class="cart-item-info">
+            <p>${item.title}</p>
+            <p>¥${item.price.toLocaleString()}</p>
+          </div>
+          <div class="cart-item-qty">
+            <input type="number" min="1" value="${item.quantity}" data-index="${index}" aria-label="数量">
+            <span class="cart-item-remove" data-index="${index}" role="button" tabindex="0" aria-label="商品を削除">×</span>
+          </div>
+        `;
+        cartItemsContainer.appendChild(div);
+      });
+      cartTotal.textContent = `合計: ¥${total.toLocaleString()}`;
+    }
 
-        const itemDiv = document.createElement('div');
-        itemDiv.className = 'cart-item';
+    // カートモーダルの開閉
+    cartButton.addEventListener('click', () => {
+      if(cartModal.classList.contains('open')) {
+        cartModal.classList.remove('open');
+      } else {
+        updateCartDisplay();
+        cartModal.classList.add('open');
+      }
+    });
+    closeCartBtn.addEventListener('click', () => {
+      cartModal.classList.remove('open');
+    });
 
-        const img = document.createElement('img');
-        img.src = item.image;
-        img.alt = item.title;
-        itemDiv.appendChild(img);
+    // カート数量変更イベント（イベント委任）
+    cartItemsContainer.addEventListener('input', e => {
+      if(e.target.tagName === 'INPUT') {
+        const index = e.target.dataset.index;
+        let value = parseInt(e.target.value);
+        if(isNaN(value) || value < 1) {
+          value = 1;
+          e.target.value = '1';
+        }
+        const cart = getCart();
+        cart[index].quantity = value;
+        saveCart(cart);
+        updateCartDisplay();
+      }
+    });
 
-        const infoDiv = document.createElement('div');
-        infoDiv.className = 'cart-item-info';
-        const titleP = document.createElement('p');
-        titleP.textContent = item.title;
-        infoDiv.appendChild(titleP);
-        const priceP = document.createElement('p');
-        priceP.textContent = `¥${item.price.toLocaleString()} × `;
-        infoDiv.appendChild(priceP);
+    // カート商品削除イベント（クリック）
+    cartItemsContainer.addEventListener('click', e => {
+      if(e.target.classList.contains('cart-item-remove')) {
+        const index = e.target.dataset.index;
+        let cart = getCart();
+        cart.splice(index, 1);
+        saveCart(cart);
+        updateCartDisplay();
+      }
+    });
 
-        itemDiv.appendChild(infoDiv);
+    // カート商品削除イベント（キーボード対応）
+    cartItemsContainer.addEventListener('keydown', e => {
+      if(e.target.classList.contains('cart-item-remove') && (e.key === 'Enter' || e.key === ' ')) {
+        e.preventDefault();
+        const index = e.target.dataset.index;
+        let cart = getCart();
+        cart.splice(index, 1);
+        saveCart(cart);
+        updateCartDisplay();
+      }
+    });
 
-        const qtyDiv = document.createElement('div');
-        qtyDiv.className = 'cart-item-qty';
+    // --- 作品詳細ページに「カートに追加」ボタンを動的に追加 ---
+    // 現状の「購入に進む」リンクの代わりにボタンを付けたい場合、以下のコードを編集してください。
+    // ここでは例として「購入に進む」ボタンの後ろに「カートに追加」ボタンを出します。
 
-        const qtyInput = document.createElement('input');
-        qtyInput.type = 'number';
-        qtyInput.min = 1;
-        qtyInput.value = item.quantity;
-        qtyInput.addEventListener('change', () => {
-          let val = parseInt(qtyInput.value);
-          if (isNaN(val) || val < 1) val = 1;
-          qtyInput.value = val;
-          updateQuantity(item.id, val);
+    // works.jsonを読み込んで詳細作品情報を取得し、「カートに追加」ボタンを生成・設置
+    fetch('./works.json')
+      .then(res => {
+        if (!res.ok) throw new Error('HTTP error ' + res.status);
+        return res.json();
+      })
+      .then(data => {
+        const work = data.find(w => w.id === id);
+        if (!work) return;
+
+        const purchaseBtn = document.querySelector('.purchase-btn');
+        // カートに追加ボタン生成
+        const addToCartBtn = document.createElement('button');
+        addToCartBtn.textContent = 'カートに追加';
+        addToCartBtn.setAttribute('aria-label', `${work.title} をカートに追加`);
+        addToCartBtn.style.marginLeft = '1rem';
+        addToCartBtn.style.padding = '0.7rem 1.5rem';
+        addToCartBtn.style.fontWeight = 'bold';
+        addToCartBtn.style.borderRadius = '30px';
+        addToCartBtn.style.border = 'none';
+        addToCartBtn.style.cursor = 'pointer';
+        addToCartBtn.style.backgroundColor = '#ff6666';
+        addToCartBtn.style.color = '#fff';
+        addToCartBtn.style.transition = 'background-color 0.3s ease';
+        addToCartBtn.addEventListener('mouseenter', () => {
+          addToCartBtn.style.backgroundColor = '#ff4444';
         });
-        qtyDiv.appendChild(qtyInput);
-
-        const removeBtn = document.createElement('span');
-        removeBtn.className = 'cart-item-remove';
-        removeBtn.textContent = '×';
-        removeBtn.title = '削除';
-        removeBtn.addEventListener('click', () => {
-          removeFromCart(item.id);
+        addToCartBtn.addEventListener('mouseleave', () => {
+          addToCartBtn.style.backgroundColor = '#ff6666';
         });
-        qtyDiv.appendChild(removeBtn);
 
-        itemDiv.appendChild(qtyDiv);
+        // カートに追加処理
+        addToCartBtn.addEventListener('click', () => {
+          let cart = getCart();
+          const existingIndex = cart.findIndex(item => item.id === work.id);
+          if(existingIndex >= 0) {
+            cart[existingIndex].quantity++;
+          } else {
+            cart.push({
+              id: work.id,
+              title: work.title,
+              price: Number(work.price),
+              image: work.image,
+              quantity: 1
+            });
+          }
+          saveCart(cart);
+          alert(`${work.title} をカートに追加しました。`);
+        });
 
-        cartContents.appendChild(itemDiv);
+        // 購入ボタンの隣に追加
+        purchaseBtn.insertAdjacentElement('afterend', addToCartBtn);
+      })
+      .catch(err => {
+        console.error('作品詳細のカートボタン生成失敗:', err);
       });
 
-      const totalDiv = document.createElement('div');
-      totalDiv.id = 'cartTotal';
-      totalDiv.textContent = `合計: ¥${total.toLocaleString()}`;
-      cartContents.appendChild(totalDiv);
-    }
-
-    // 数量更新
-    function updateQuantity(id, quantity) {
-      let cart = getCart();
-      const index = cart.findIndex(item => item.id === id);
-      if (index !== -1) {
-        cart[index].quantity = quantity;
-        saveCart(cart);
-        renderCart();
-      }
-    }
-
-    // 削除
-    function removeFromCart(id) {
-      let cart = getCart();
-      cart = cart.filter(item => item.id !== id);
-      saveCart(cart);
-      renderCart();
-    }
-    // ===== ここまでカート機能 =====
   </script>
+
 </body>
 </html>
