@@ -442,6 +442,13 @@
       status.textContent = 'エラーが発生しました。ネット接続を確認してください。';
     }
   });
+  
+    window.addEventListener('DOMContentLoaded', () => {
+    const el = document.getElementById('target');
+    if (el) {
+      el.remove(); // 要素を丸ごと削除
+    }
+  });
 </script>
 
 </body>
