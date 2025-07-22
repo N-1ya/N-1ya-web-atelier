@@ -583,6 +583,40 @@ document.getElementById('autoFillBtn').addEventListener('click', () => {
       alert('住所の取得に失敗しました。ネットワーク接続を確認してください。');
     });
 });
-  </script>
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const cartList = document.getElementById('purchase-list');
+    const totalAmountElement = document.getElementById('total-amount');
+    let total = 0;
+
+    if (cartItems.length === 0) {
+      cartList.innerHTML = '<p>カートに商品がありません。</p>';
+      totalAmountElement.textContent = '0 円';
+      return;
+    }
+
+    cartItems.forEach(item => {
+      const itemTotal = item.price * item.quantity;
+      total += itemTotal;
+
+      const itemElement = document.createElement('div');
+      itemElement.classList.add('purchase-item');
+      itemElement.innerHTML = `
+        <img src="${item.image}" alt="${item.title}" />
+        <div class="purchase-details">
+          <h3>${item.title}</h3>
+          <p>単価：${item.price.toLocaleString()} 円</p>
+          <p>数量：${item.quantity}</p>
+          <p><strong>小計：${itemTotal.toLocaleString()} 円</strong></p>
+        </div>
+      `;
+      cartList.appendChild(itemElement);
+    });
+
+    totalAmountElement.textContent = total.toLocaleString() + ' 円';
+  });
+</script>
+
 </body>
 </html>
