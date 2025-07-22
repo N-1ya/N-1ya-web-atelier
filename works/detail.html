@@ -9,7 +9,7 @@
       font-family: 'KokuMincho';
       src: url('/fonts/KokuMincho-Regular.woff2') format('woff2');
     }
-    
+
     body {
       margin: 0;
       padding: 0;
@@ -17,7 +17,7 @@
       background-color: #000;
       color: #fff;
     }
-    
+
     {
       color: #fff;
       text-decoration: none;
@@ -75,6 +75,7 @@
       transition: background 0.3s;
       text-align: center;
       cursor: pointer;
+      user-select: none;
     }
     .purchase-btn:hover {
       background-color: #ddd;
@@ -89,6 +90,7 @@
       text-align: center;
       opacity: 0.8;
       cursor: not-allowed;
+      user-select: none;
     }
     .product-description {
       margin: 4rem 0 0 0;
@@ -185,6 +187,7 @@
     font-size: 24px;
     line-height: 32px;
     text-align: center;
+    user-select: none;
   }
   #cartButton:hover {
     color: #ff6666;
@@ -212,14 +215,14 @@
       text-decoration: none;
       margin: 1rem 0;
       font-size: 1.2rem;
-      
+    }
   /* カートモーダル */
   #cartModal {
     display: none;
     position: fixed;
     top: 10vh;
     right: 10vw;
-    width: 300px;
+    width: 320px;
     max-height: 80vh;
     background: rgba(20,20,20,0.95);
     border: 1px solid #555;
@@ -228,6 +231,7 @@
     box-sizing: border-box;
     overflow-y: auto;
     z-index: 10005;
+    color: white;
   }
   #cartModal.open {
     display: block;
@@ -260,6 +264,7 @@
   }
   .cart-item-info p {
     margin: 0 0 0.2rem 0;
+    font-size: 0.9rem;
   }
   .cart-item-qty {
     display: flex;
@@ -286,6 +291,7 @@
     font-weight: bold;
     text-align: right;
     margin-bottom: 1rem;
+    font-size: 1.1rem;
   }
 
   #cartButtons {
@@ -330,13 +336,14 @@
   <a href="/contact/">お問い合わせ</a>
 </div>
 
-<div id="cartModal">
-  <h2>カート</h2>
+<div id="cartModal" aria-modal="true" role="dialog" aria-labelledby="cartModalTitle" tabindex="-1">
+  <h2 id="cartModalTitle">カート</h2>
   <div id="cartItems">カートは空です</div>
-  <div style="margin-top:1rem;">
-    <a href="/works/purchase.html" style="display:inline-block;background:#fff;color:#000;padding:0.5rem 1rem;border-radius:5px;text-decoration:none;font-weight:bold;">購入へ進む</a>
+  <div id="cartTotal">合計: ¥0</div>
+  <div id="cartButtons">
+    <button id="closeCart">閉じる</button>
+    <a href="/works/purchase.html" id="purchaseLink">購入へ進む</a>
   </div>
-  <button id="closeCart">閉じる</button>
 </div>
 
 <div class="container" id="content">
@@ -385,7 +392,7 @@
     <div class="accordion-header" aria-controls="guaranteeContent" id="guaranteeHeader" tabindex="0">保証について</div>
     <div class="accordion-content" id="guaranteeContent">
       <p>作品はすべてNFCタグ内に保存された証明書により保証されます。</p>
-      <p>また、すべての作品はNFCタグを読み取っていただくことでwebページでも証明書をご確認いただけます。<p/>
+      <p>また、すべての作品はNFCタグを読み取っていただくことでwebページでも証明書をご確認いただけます。</p>
       <p>紙面タイプでの証明書をご希望される場合は、ご注文番号を記載の上、ご購入から３か月以内にお問合せフォームよりご連絡ください。</p>
     </div>
   </div>
@@ -396,6 +403,7 @@
 </div>
 
 <script>
+  // JSONから作品情報を取得して表示
   const id = new URLSearchParams(window.location.search).get('id');
   if (!id) {
     document.getElementById('content').innerHTML = '<p>作品情報の読み込みに失敗しました。</p>';
@@ -410,6 +418,7 @@
         }
         document.getElementById('title').textContent = work.title;
         document.getElementById('mainImage').src = work.image;
+        document.getElementById('mainImage').alt = work.title + 'の画像';
         document.getElementById('price').textContent = '¥' + Number(work.price).toLocaleString();
         document.getElementById('description').textContent = work.description || '説明文なし';
         document.getElementById('size').textContent = work.size || '-';
@@ -429,48 +438,139 @@
           soldLabel.style.display = 'inline-block';
         }
 
-        addBtn.addEventListener('click', () => {
+        addBtn.onclick = () => {
           const cart = JSON.parse(localStorage.getItem('cart')) || [];
           const exists = cart.find(item => item.id === work.id);
           if (exists) {
             alert('すでにカートに追加済みです');
             return;
           }
-          cart.push({ id: work.id, title: work.title, price: work.price, image: work.image, quantity: 1 });
+          cart.push({ id: work.id, title: work.title, price: Number(work.price), image: work.image, quantity: 1 });
           localStorage.setItem('cart', JSON.stringify(cart));
           alert('カートに追加しました');
-        });
+          updateCartModalContents();
+        };
+      })
+      .catch(() => {
+        document.getElementById('content').innerHTML = '<p>作品情報の読み込みに失敗しました。</p>';
       });
   }
 
-  // カート表示処理
-  document.getElementById('cartButton').onclick = () => {
-    const modal = document.getElementById('cartModal');
-    const items = JSON.parse(localStorage.getItem('cart')) || [];
-    const container = document.getElementById('cartItems');
-    if (items.length === 0) {
-      container.textContent = 'カートは空です';
-    } else {
-      container.innerHTML = items.map(i =>
-        `<div style="margin-bottom:1rem;">
-          <strong>${i.title}</strong><br/>
-          ¥${i.price.toLocaleString()} × ${i.quantity}
-          <button data-id="${i.id}" style="margin-left:1rem;color:red;">削除</button>
-        </div>`
-      ).join('');
-      container.querySelectorAll('button[data-id]').forEach(btn => {
-        btn.onclick = () => {
-          const id = btn.getAttribute('data-id');
-          const updated = items.filter(i => i.id !== id);
-          localStorage.setItem('cart', JSON.stringify(updated));
-          document.getElementById('cartButton').click(); // 再表示
-        };
-      });
+  // カートモーダル表示切替・内容更新
+  const cartButton = document.getElementById('cartButton');
+  const cartModal = document.getElementById('cartModal');
+  const cartItemsContainer = document.getElementById('cartItems');
+  const cartTotalDisplay = document.getElementById('cartTotal');
+  const closeCartBtn = document.getElementById('closeCart');
+  const purchaseLink = document.getElementById('purchaseLink');
+
+  // カート内の内容を表示・数量変更・削除対応
+  function updateCartModalContents() {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    if (cart.length === 0) {
+      cartItemsContainer.textContent = 'カートは空です';
+      cartTotalDisplay.textContent = '合計: ¥0';
+      purchaseLink.style.pointerEvents = 'none';
+      purchaseLink.style.opacity = '0.5';
+      return;
     }
-    modal.style.display = 'block';
+
+    purchaseLink.style.pointerEvents = 'auto';
+    purchaseLink.style.opacity = '1';
+
+    cartItemsContainer.innerHTML = '';
+    let total = 0;
+
+    cart.forEach(item => {
+      total += item.price * item.quantity;
+
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'cart-item';
+
+      const img = document.createElement('img');
+      img.src = item.image;
+      img.alt = item.title;
+      itemDiv.appendChild(img);
+
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'cart-item-info';
+
+      const titleP = document.createElement('p');
+      titleP.textContent = item.title;
+      infoDiv.appendChild(titleP);
+
+      const priceP = document.createElement('p');
+      priceP.textContent = '¥' + item.price.toLocaleString();
+      infoDiv.appendChild(priceP);
+
+      itemDiv.appendChild(infoDiv);
+
+      const qtyDiv = document.createElement('div');
+      qtyDiv.className = 'cart-item-qty';
+
+      const qtyLabel = document.createElement('label');
+      qtyLabel.textContent = '数量: ';
+      qtyLabel.setAttribute('for', 'qty-' + item.id);
+      qtyDiv.appendChild(qtyLabel);
+
+      const qtyInput = document.createElement('input');
+      qtyInput.type = 'number';
+      qtyInput.min = '1';
+      qtyInput.id = 'qty-' + item.id;
+      qtyInput.value = item.quantity;
+      qtyInput.addEventListener('change', (e) => {
+        let val = parseInt(e.target.value);
+        if (isNaN(val) || val < 1) {
+          val = 1;
+          e.target.value = val;
+        }
+        updateItemQuantity(item.id, val);
+      });
+      qtyDiv.appendChild(qtyInput);
+
+      itemDiv.appendChild(qtyDiv);
+
+      const removeBtn = document.createElement('span');
+      removeBtn.className = 'cart-item-remove';
+      removeBtn.textContent = '×';
+      removeBtn.title = '削除';
+      removeBtn.addEventListener('click', () => {
+        removeItemFromCart(item.id);
+      });
+      itemDiv.appendChild(removeBtn);
+
+      cartItemsContainer.appendChild(itemDiv);
+    });
+
+    cartTotalDisplay.textContent = '合計: ¥' + total.toLocaleString();
+  }
+
+  function updateItemQuantity(id, qty) {
+    const cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const item = cart.find(i => i.id === id);
+    if (item) {
+      item.quantity = qty;
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartModalContents();
+    }
+  }
+
+  function removeItemFromCart(id) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart = cart.filter(i => i.id !== id);
+    localStorage.setItem('cart', JSON.stringify(cart));
+    updateCartModalContents();
+  }
+
+  cartButton.onclick = () => {
+    updateCartModalContents();
+    cartModal.classList.add('open');
+    cartModal.focus();
   };
-  document.getElementById('closeCart').onclick = () => {
-    document.getElementById('cartModal').style.display = 'none';
+
+  closeCartBtn.onclick = () => {
+    cartModal.classList.remove('open');
   };
 
   // メニュー・アコーディオン
@@ -480,7 +580,15 @@
       h.classList.toggle('active');
       c.classList.toggle('open');
     };
+    // キーボード対応（Enter / Space）
+    h.addEventListener('keydown', (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        h.click();
+      }
+    });
   });
+
   const menuButton = document.getElementById('menuButton');
   const sidebar = document.getElementById('sidebar');
   menuButton.onclick = () => {
@@ -495,6 +603,7 @@
       menuButton.classList.remove('open');
     }
   });
+
 </script>
 
 </body>
