@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -10,6 +9,7 @@
       font-family: 'KokuMincho';
       src: url('/fonts/KokuMincho-Regular.woff2') format('woff2');
     }
+    
     body {
       margin: 0;
       padding: 0;
@@ -17,7 +17,8 @@
       background-color: #000;
       color: #fff;
     }
-    a {
+    
+    {
       color: #fff;
       text-decoration: none;
     }
@@ -169,6 +170,25 @@
     #menuButton.open div:nth-child(3) {
       transform: rotate(-45deg) translate(6px, -6px);
     }
+      /* カートボタン（メニュー左） */
+  #cartButton {
+    position: fixed;
+    top: 1rem;
+    right: 4rem; /* メニューボタンの左隣 */
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    z-index: 10003;
+    border: none;
+    background: none;
+    color: white;
+    font-size: 24px;
+    line-height: 32px;
+    text-align: center;
+  }
+  #cartButton:hover {
+    color: #ff6666;
+  }
     #sidebar {
       position: fixed;
       top: 0; right: 0;
