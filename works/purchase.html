@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -197,6 +196,33 @@
     }
     .price-info {
       text-align: right;
+      margin-top: 1rem;
+    }
+    /* カート内商品リスト表示 */
+    #productList {
+      background: #444;
+      padding: 1rem;
+      margin-top: 1rem;
+      border-radius: 8px;
+      max-height: 250px;
+      overflow-y: auto;
+    }
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 0.8rem;
+      align-items: center;
+      border-bottom: 1px solid #666;
+      padding-bottom: 0.5rem;
+    }
+    .cart-item img {
+      width: 60px;
+      height: auto;
+      border-radius: 5px;
+    }
+    .cart-item div p {
+      margin: 2px 0;
+      font-size: 0.9rem;
     }
   </style>
 </head>
@@ -217,22 +243,18 @@
     <h2>購入フォーム</h2>
     <div class="form-group order-number" id="orderNumberDisplay">注文番号: --</div>
 
-    <div class="form-group product-info">
-  <h2>カート内商品一覧</h2>
-  <div id="purchase-list"></div>
-  <div id="total-amount" style="text-align:right; font-weight:bold; margin-top:1rem;">0 円</div>
-      <img src="art-icon.jpg" alt="商品画像" id="productImage" />
-      <div class="price-info" id="priceInfo">
-        金額: ¥--<br />
-        合計: ¥--
-      </div>
+    <!-- 複数商品のカート情報一覧表示 -->
+    <div id="productList"></div>
+
+    <div class="price-info" id="priceInfo">
+      個数合計: --<br />
+      合計: ¥--
     </div>
 
     <div class="form-row">
       <div style="flex:1">
         <label for="lastNameKanji">姓（漢字）<span style="color:red; font-size:0.8em;">＊必須</span></label>
         <input type="text" id="lastNameKanji" name="lastNameKanji" />
-    </label>
       </div>
       <div style="flex:1">
         <label for="firstNameKanji">名（漢字）<span style="color:red; font-size:0.8em;">＊必須</span></label>
@@ -246,7 +268,7 @@
         <input type="text" id="lastNameKana" name="lastNameKana" />
       </div>
       <div style="flex:1">
-        <label for="firstNameKana">名（カタカナ）<span style="color:red; font-size:0.8em;">＊必須</span>
+        <label for="firstNameKana">名（カタカナ）<span style="color:red; font-size:0.8em;">＊必須</span></label>
         <input type="text" id="firstNameKana" name="firstNameKana" />
       </div>
     </div>
@@ -263,57 +285,57 @@
     </div>
 
     <div class="form-group">
-     <label for="prefecture">都道府県：<span style="color:red; font-size:0.8em;">＊必須</span></label>
-<select id="prefecture" name="prefecture" required>
-  <option value="">選択してください</option>
-  <option value="北海道">北海道</option>
-  <option value="青森県">青森県</option>
-  <option value="岩手県">岩手県</option>
-  <option value="宮城県">宮城県</option>
-  <option value="秋田県">秋田県</option>
-  <option value="山形県">山形県</option>
-  <option value="福島県">福島県</option>
-  <option value="茨城県">茨城県</option>
-  <option value="栃木県">栃木県</option>
-  <option value="群馬県">群馬県</option>
-  <option value="埼玉県">埼玉県</option>
-  <option value="千葉県">千葉県</option>
-  <option value="東京都">東京都</option>
-  <option value="神奈川県">神奈川県</option>
-  <option value="新潟県">新潟県</option>
-  <option value="富山県">富山県</option>
-  <option value="石川県">石川県</option>
-  <option value="福井県">福井県</option>
-  <option value="山梨県">山梨県</option>
-  <option value="長野県">長野県</option>
-  <option value="岐阜県">岐阜県</option>
-  <option value="静岡県">静岡県</option>
-  <option value="愛知県">愛知県</option>
-  <option value="三重県">三重県</option>
-  <option value="滋賀県">滋賀県</option>
-  <option value="京都府">京都府</option>
-  <option value="大阪府">大阪府</option>
-  <option value="兵庫県">兵庫県</option>
-  <option value="奈良県">奈良県</option>
-  <option value="和歌山県">和歌山県</option>
-  <option value="鳥取県">鳥取県</option>
-  <option value="島根県">島根県</option>
-  <option value="岡山県">岡山県</option>
-  <option value="広島県">広島県</option>
-  <option value="山口県">山口県</option>
-  <option value="徳島県">徳島県</option>
-  <option value="香川県">香川県</option>
-  <option value="愛媛県">愛媛県</option>
-  <option value="高知県">高知県</option>
-  <option value="福岡県">福岡県</option>
-  <option value="佐賀県">佐賀県</option>
-  <option value="長崎県">長崎県</option>
-  <option value="熊本県">熊本県</option>
-  <option value="大分県">大分県</option>
-  <option value="宮崎県">宮崎県</option>
-  <option value="鹿児島県">鹿児島県</option>
-  <option value="沖縄県">沖縄県</option>
-</select>
+      <label for="prefecture">都道府県：<span style="color:red; font-size:0.8em;">＊必須</span></label>
+      <select id="prefecture" name="prefecture" required>
+        <option value="">選択してください</option>
+        <option value="北海道">北海道</option>
+        <option value="青森県">青森県</option>
+        <option value="岩手県">岩手県</option>
+        <option value="宮城県">宮城県</option>
+        <option value="秋田県">秋田県</option>
+        <option value="山形県">山形県</option>
+        <option value="福島県">福島県</option>
+        <option value="茨城県">茨城県</option>
+        <option value="栃木県">栃木県</option>
+        <option value="群馬県">群馬県</option>
+        <option value="埼玉県">埼玉県</option>
+        <option value="千葉県">千葉県</option>
+        <option value="東京都">東京都</option>
+        <option value="神奈川県">神奈川県</option>
+        <option value="新潟県">新潟県</option>
+        <option value="富山県">富山県</option>
+        <option value="石川県">石川県</option>
+        <option value="福井県">福井県</option>
+        <option value="山梨県">山梨県</option>
+        <option value="長野県">長野県</option>
+        <option value="岐阜県">岐阜県</option>
+        <option value="静岡県">静岡県</option>
+        <option value="愛知県">愛知県</option>
+        <option value="三重県">三重県</option>
+        <option value="滋賀県">滋賀県</option>
+        <option value="京都府">京都府</option>
+        <option value="大阪府">大阪府</option>
+        <option value="兵庫県">兵庫県</option>
+        <option value="奈良県">奈良県</option>
+        <option value="和歌山県">和歌山県</option>
+        <option value="鳥取県">鳥取県</option>
+        <option value="島根県">島根県</option>
+        <option value="岡山県">岡山県</option>
+        <option value="広島県">広島県</option>
+        <option value="山口県">山口県</option>
+        <option value="徳島県">徳島県</option>
+        <option value="香川県">香川県</option>
+        <option value="愛媛県">愛媛県</option>
+        <option value="高知県">高知県</option>
+        <option value="福岡県">福岡県</option>
+        <option value="佐賀県">佐賀県</option>
+        <option value="長崎県">長崎県</option>
+        <option value="熊本県">熊本県</option>
+        <option value="大分県">大分県</option>
+        <option value="宮崎県">宮崎県</option>
+        <option value="鹿児島県">鹿児島県</option>
+        <option value="沖縄県">沖縄県</option>
+      </select>
     </div>
 
     <div class="form-group">
@@ -351,201 +373,57 @@
       </div>
       <div class="payment-fields" id="creditFields">
         <label for="cardNumber">カード番号</label>
-        <input type="text" id="cardNumber" name="cardNumber" />
-        <label for="expiry">有効期限</label>
-        <input type="text" id="expiry" name="expiry" placeholder="MM/YY" />
-        <label for="securityCode">セキュリティコード</label>
-        <input type="text" id="securityCode" name="securityCode" />
-        <label for="cardHolder">名義</label>
+        <input type="text" id="cardNumber" name="cardNumber" maxlength="19" placeholder="1234 5678 9012 3456" />
+        <div class="form-row">
+          <div style="flex:1">
+            <label for="expiry">有効期限 (MM/YY)</label>
+            <input type="text" id="expiry" name="expiry" maxlength="5" placeholder="12/34" />
+          </div>
+          <div style="flex:1">
+            <label for="securityCode">セキュリティコード</label>
+            <input type="text" id="securityCode" name="securityCode" maxlength="4" placeholder="123" />
+          </div>
+        </div>
+        <label for="cardHolder">カード名義人</label>
         <input type="text" id="cardHolder" name="cardHolder" />
-        <button type="button" id="registerCardBtn">登録</button>
       </div>
     </div>
 
-    <div class="form-group">
-      <button id="confirmButton" type="button">確認</button>
+    <div style="text-align: center;">
+      <button type="button" id="submitOrderBtn" class="small-button">注文を確定する</button>
     </div>
   </div>
 
-  <div class="confirm-dialog" id="confirmDialog" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-describedby="confirmDesc">
-    <h3 id="confirmTitle">注文を確認してください</h3>
-    <div id="confirmDesc">
-      <p id="confirmOrderNumber">注文番号: --</p>
-      <p id="confirmProduct">作品: --</p>
-      <p id="confirmQuantity">数量: 2</p>
-      <p id="confirmTotalPrice">合計金額: ¥--</p>
-      <p id="confirmPrefecture">配送先: --</p>
-      <p id="confirmPhone">電話番号: --</p>
-      <p id="confirmEmail">メールアドレス: --</p>
-      <p id="confirmPaymentMethod">決済方法: --</p>
-    </div>
-    <div class="dialog-buttons">
-      <button id="cancelDialogBtn" type="button">キャンセル</button>
-      <button id="submitOrderBtn" type="button">購入する</button>
-    </div>
+  <!-- 注文確認ダイアログ -->
+  <div class="confirm-dialog" id="confirmDialog" role="dialog" aria-modal="true" aria-labelledby="confirmDialogTitle" aria-describedby="confirmDialogDesc">
+    <h3 id="confirmDialogTitle">注文内容のご確認</h3>
+    <div id="confirmOrderNumber" style="margin-bottom:1rem; font-weight: bold;">注文番号: --</div>
+    <div id="confirmProductList" style="max-height: 200px; overflow-y: auto; text-align:left; border: 1px solid #666; padding: 0.5rem; background:#222; border-radius: 5px;"></div>
+    <div id="confirmQuantity" style="margin-top:1rem;">数量合計: --</div>
+    <div id="confirmTotalPrice" style="margin-bottom: 1rem;">合計金額: ¥--</div>
+    <button id="confirmBtn">注文を確定する</button>
+    <button id="cancelBtn">キャンセル</button>
   </div>
 
   <script>
-    // メニュー開閉処理（ホームページと同じ）
+    // サイドバー開閉処理
     const menuButton = document.getElementById('menuButton');
     const sidebar = document.getElementById('sidebar');
     menuButton.addEventListener('click', () => {
       sidebar.classList.toggle('open');
       menuButton.classList.toggle('open');
     });
-    document.addEventListener('click', (e) => {
-      if (sidebar.classList.contains('open') &&
-          !sidebar.contains(e.target) &&
-          !menuButton.contains(e.target)) {
-        sidebar.classList.remove('open');
-        menuButton.classList.remove('open');
-      }
-    });
 
-    // URLパラメータ取得関数
-    function getQueryParam(param) {
-      const urlParams = new URLSearchParams(window.location.search);
-      return urlParams.get(param);
-    }
-
-    window.addEventListener('DOMContentLoaded', () => {
-      // パラメータ取得
-      const id = getQueryParam('id');
-      const title = getQueryParam('title');
-      const priceStr = getQueryParam('price');
-      const quantity = 2; // 固定個数
-
-      if (!id || !title || !priceStr) {
-        alert('作品情報が不足しています。');
-        // location.href = '/works/'; // 必要ならリダイレクト
-        return;
-      }
-
-      const price = Number(priceStr);
-      if (isNaN(price)) {
-        alert('価格情報が不正です。');
-        return;
-      }
-
-      // 注文番号をランダム生成（例）
-      const orderNumber = '#' + Math.floor(Math.random() * 90000000 + 10000000);
-
-      // 表示反映
-      document.getElementById('orderNumberDisplay').textContent = `注文番号: ${orderNumber}`;
-      document.getElementById('confirmOrderNumber').textContent = `注文番号: ${orderNumber}`;
-      document.getElementById('confirmProduct').textContent = `作品: ${title}`;
-      document.getElementById('confirmQuantity').textContent = `数量: ${quantity}`;
-      document.getElementById('confirmTotalPrice').textContent = `合計金額: ¥${(price * quantity).toLocaleString()}`;
-
-      document.getElementById('priceInfo').innerHTML = `
-        個数: ${quantity}<br />
-        金額: ¥${price.toLocaleString()}<br />
-        合計: ¥${(price * quantity).toLocaleString()}
-      `;
-
-      // 商品画像はdetail.htmlに合わせてパラメータで渡すか固定画像を指定してください
-      // 例: ?image=xxx.jpg のように渡すと良い
-      const imageSrc = getQueryParam('image');
-      if(imageSrc) {
-        document.getElementById('productImage').src = decodeURIComponent(imageSrc);
-        document.getElementById('productImage').alt = title;
-      } else {
-        // デフォルト画像
-        document.getElementById('productImage').src = 'art-icon.jpg';
-        document.getElementById('productImage').alt = title;
-      }
-    });
-
-    // 決済方法選択でクレジットカード欄の表示切替
+    // 決済方法選択によるカード入力欄表示制御
     const paymentRadios = document.querySelectorAll('input[name="payment"]');
     const creditFields = document.getElementById('creditFields');
-
     paymentRadios.forEach(radio => {
       radio.addEventListener('change', () => {
-        if (radio.value === 'credit') {
+        if (radio.value === 'credit' && radio.checked) {
           creditFields.style.display = 'block';
         } else {
           creditFields.style.display = 'none';
         }
-      });
-    });
-
-    // 確認ボタン処理
-    const confirmButton = document.getElementById('confirmButton');
-    const confirmDialog = document.getElementById('confirmDialog');
-    const cancelDialogBtn = document.getElementById('cancelDialogBtn');
-    const submitOrderBtn = document.getElementById('submitOrderBtn');
-
-    confirmButton.addEventListener('click', () => {
-      // 入力内容反映
-      document.getElementById('confirmPrefecture').textContent = '配送先: ' + (document.getElementById('prefecture').value || '--');
-      document.getElementById('confirmPhone').textContent = '電話番号: ' + (document.getElementById('phone').value || '--');
-      document.getElementById('confirmEmail').textContent = 'メールアドレス: ' + (document.getElementById('email').value || '--');
-
-      const paymentLabel = document.querySelector('input[name="payment"]:checked')?.parentElement.textContent.trim() || '--';
-      document.getElementById('confirmPaymentMethod').textContent = `決済方法: ${paymentLabel}`;
-
-      confirmDialog.style.display = 'block';
-    });
-
-    cancelDialogBtn.addEventListener('click', () => {
-      confirmDialog.style.display = 'none';
-    });
-
-    // 購入ボタン押下（ダミーAPI連携）
-    submitOrderBtn.addEventListener('click', () => {
-      // 入力値まとめ
-      const orderData = {
-        orderNumber: document.getElementById('orderNumberDisplay').textContent.replace('注文番号: ', ''),
-        product: document.getElementById('confirmProduct').textContent.replace('作品: ', ''),
-        quantity: 2,
-        totalPrice: Number(getQueryParam('price')) * 2,
-        nameKanji: {
-          last: document.getElementById('lastNameKanji').value,
-          first: document.getElementById('firstNameKanji').value,
-        },
-        nameKana: {
-          last: document.getElementById('lastNameKana').value,
-          first: document.getElementById('firstNameKana').value,
-        },
-        postalCode: document.getElementById('postalCode').value,
-        prefecture: document.getElementById('prefecture').value,
-        city: document.getElementById('city').value,
-        address1: document.getElementById('address1').value,
-        address2: document.getElementById('address2').value,
-        phone: document.getElementById('phone').value,
-        email: document.getElementById('email').value,
-        paymentMethod: document.querySelector('input[name="payment"]:checked')?.value || '',
-        creditCardInfo: {},
-      };
-
-      if(orderData.paymentMethod === 'credit') {
-        orderData.creditCardInfo = {
-          cardNumber: document.getElementById('cardNumber').value,
-          expiry: document.getElementById('expiry').value,
-          securityCode: document.getElementById('securityCode').value,
-          cardHolder: document.getElementById('cardHolder').value,
-        };
-      }
-
-      // ダミーAPI送信（本番はKOMOJUなどに差し替え）
-      fetch('https://example.com/api/order', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify(orderData),
-      })
-      .then(response => {
-        if (!response.ok) throw new Error('ネットワークエラー');
-        return response.json();
-      })
-      .then(data => {
-        alert('注文が完了しました！');
-        confirmDialog.style.display = 'none';
-        window.location.href = '/thanks';
-      })
-      .catch(err => {
-        alert('注文処理に失敗しました。もう一度お試しください。');
-        console.error(err);
       });
     });
 
@@ -587,39 +465,206 @@ document.getElementById('autoFillBtn').addEventListener('click', () => {
     });
 });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
-    const cartList = document.getElementById('purchase-list');
-    const totalAmountElement = document.getElementById('total-amount');
-    let total = 0;
+    // ローカルストレージのカート情報読み込み＋表示
+    window.addEventListener('DOMContentLoaded', () => {
+      const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
 
-    if (cartItems.length === 0) {
-      cartList.innerHTML = '<p>カートに商品がありません。</p>';
-      totalAmountElement.textContent = '0 円';
-      return;
-    }
+      if (cartItems.length === 0) {
+        alert('カートに商品がありません。ギャラリーに戻ります。');
+        window.location.href = '/works/'; // ギャラリーへ戻す
+        return;
+      }
 
-    cartItems.forEach(item => {
-      const itemTotal = item.price * item.quantity;
-      total += itemTotal;
+      // 注文番号ランダム生成（8桁の数字）
+      const orderNumber = '#' + Math.floor(Math.random() * 90000000 + 10000000);
+      document.getElementById('orderNumberDisplay').textContent = `注文番号: ${orderNumber}`;
 
-      const itemElement = document.createElement('div');
-      itemElement.classList.add('purchase-item');
-      itemElement.innerHTML = `
-        <img src="${item.image}" alt="${item.title}" />
-        <div class="purchase-details">
-          <h3>${item.title}</h3>
-          <p>単価：${item.price.toLocaleString()} 円</p>
-          <p>数量：${item.quantity}</p>
-          <p><strong>小計：${itemTotal.toLocaleString()} 円</strong></p>
-        </div>
+      // 商品一覧表示用
+      const productListContainer = document.getElementById('productList');
+      productListContainer.innerHTML = '';
+
+      let totalQuantity = 0;
+      let totalPrice = 0;
+
+      cartItems.forEach(item => {
+        totalQuantity += item.quantity;
+        totalPrice += item.price * item.quantity;
+
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'cart-item';
+        itemDiv.innerHTML = `
+          <img src="${item.image}" alt="${item.title}" />
+          <div>
+            <p>${item.title}</p>
+            <p>単価: ¥${item.price.toLocaleString()}</p>
+            <p>数量: ${item.quantity}</p>
+            <p>小計: ¥${(item.price * item.quantity).toLocaleString()}</p>
+          </div>
+        `;
+        productListContainer.appendChild(itemDiv);
+      });
+
+      document.getElementById('priceInfo').innerHTML = `
+        個数合計: ${totalQuantity}<br />
+        合計: ¥${totalPrice.toLocaleString()}
       `;
-      cartList.appendChild(itemElement);
+
+      // 確認ダイアログの注文番号表示
+      document.getElementById('confirmOrderNumber').textContent = `注文番号: ${orderNumber}`;
+
+      // 確認ダイアログの商品リスト表示
+      const confirmProductList = document.getElementById('confirmProductList');
+      confirmProductList.innerHTML = '';
+      cartItems.forEach(item => {
+        const div = document.createElement('div');
+        div.style.marginBottom = '0.5rem';
+        div.textContent = `${item.title} × ${item.quantity} — ¥${(item.price * item.quantity).toLocaleString()}`;
+        confirmProductList.appendChild(div);
+      });
+
+      document.getElementById('confirmQuantity').textContent = `数量合計: ${totalQuantity}`;
+      document.getElementById('confirmTotalPrice').textContent = `合計金額: ¥${totalPrice.toLocaleString()}`;
     });
 
-    totalAmountElement.textContent = total.toLocaleString() + ' 円';
-  });
-</script>
+    // フォームの必須チェックと確認ダイアログ表示
+    const submitOrderBtn = document.getElementById('submitOrderBtn');
+    const confirmDialog = document.getElementById('confirmDialog');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
 
+    function validateForm() {
+      const requiredFields = [
+        'lastNameKanji', 'firstNameKanji',
+        'lastNameKana', 'firstNameKana',
+        'postalCode', 'prefecture',
+        'city', 'address1',
+        'phone', 'email'
+      ];
+
+      for(const id of requiredFields) {
+        const el = document.getElementById(id);
+        if(!el || el.value.trim() === '') {
+          alert('必須項目をすべて入力してください。');
+          el?.focus();
+          return false;
+        }
+      }
+
+      // メールアドレス簡易チェック
+      const email = document.getElementById('email').value.trim();
+      if(!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+        alert('正しいメールアドレスを入力してください。');
+        document.getElementById('email').focus();
+        return false;
+      }
+
+      // 郵便番号数字7桁チェック
+      const postal = document.getElementById('postalCode').value.trim();
+      if(!/^\d{7}$/.test(postal)) {
+        alert('郵便番号は7桁の数字で入力してください（ハイフンなし）。');
+        document.getElementById('postalCode').focus();
+        return false;
+      }
+
+      // 決済方法チェック
+      const payment = document.querySelector('input[name="payment"]:checked');
+      if(!payment) {
+        alert('決済方法を選択してください。');
+        return false;
+      }
+
+      // クレジットカードならカード情報も必須チェック
+      if(payment.value === 'credit') {
+        const cardFields = ['cardNumber', 'expiry', 'securityCode', 'cardHolder'];
+        for(const id of cardFields) {
+          const el = document.getElementById(id);
+          if(!el || el.value.trim() === '') {
+            alert('クレジットカード情報をすべて入力してください。');
+            el?.focus();
+            return false;
+          }
+        }
+      }
+
+      return true;
+    }
+
+    submitOrderBtn.addEventListener('click', () => {
+      if(!validateForm()) return;
+
+      // 確認ダイアログ表示
+      confirmDialog.style.display = 'block';
+    });
+
+    cancelBtn.addEventListener('click', () => {
+      confirmDialog.style.display = 'none';
+    });
+
+    confirmBtn.addEventListener('click', () => {
+      // 送信処理（ここではAPIのPOST送信を例示）
+      const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+      if(cartItems.length === 0) {
+        alert('カートに商品がありません。');
+        confirmDialog.style.display = 'none';
+        return;
+      }
+
+      const orderNumber = document.getElementById('orderNumberDisplay').textContent.replace('注文番号: ', '');
+
+      const orderData = {
+        orderNumber: orderNumber,
+        items: cartItems,
+        totalQuantity: cartItems.reduce((sum, item) => sum + item.quantity, 0),
+        totalPrice: cartItems.reduce((sum, item) => sum + item.price * item.quantity, 0),
+
+        nameKanji: {
+          last: document.getElementById('lastNameKanji').value.trim(),
+          first: document.getElementById('firstNameKanji').value.trim(),
+        },
+        nameKana: {
+          last: document.getElementById('lastNameKana').value.trim(),
+          first: document.getElementById('firstNameKana').value.trim(),
+        },
+        postalCode: document.getElementById('postalCode').value.trim(),
+        prefecture: document.getElementById('prefecture').value,
+        city: document.getElementById('city').value.trim(),
+        address1: document.getElementById('address1').value.trim(),
+        address2: document.getElementById('address2').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        paymentMethod: document.querySelector('input[name="payment"]:checked')?.value || '',
+      };
+
+      if(orderData.paymentMethod === 'credit') {
+        orderData.creditCardInfo = {
+          cardNumber: document.getElementById('cardNumber').value.trim(),
+          expiry: document.getElementById('expiry').value.trim(),
+          securityCode: document.getElementById('securityCode').value.trim(),
+          cardHolder: document.getElementById('cardHolder').value.trim(),
+        };
+      }
+
+      // ダミーのAPI送信例
+      fetch('https://example.com/api/order', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(orderData),
+      })
+      .then(response => {
+        if (!response.ok) throw new Error('ネットワークエラー');
+        return response.json();
+      })
+      .then(data => {
+        alert('注文が完了しました！');
+        // カートをクリアしてリダイレクトなど
+        localStorage.removeItem('cart');
+        window.location.href = '/thanks'; // 完了ページに遷移
+      })
+      .catch(err => {
+        alert('注文処理に失敗しました。再度お試しください。');
+        console.error(err);
+      });
+    });
+  </script>
 </body>
 </html>
