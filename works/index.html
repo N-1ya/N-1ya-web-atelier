@@ -555,14 +555,6 @@ fetch('./works.json')
       gallery.appendChild(item);
     });
 
- 
-<div id="addModal" style="
-  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  background: white; border-radius: 10px; padding: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  display: none; z-index: 9999; text-align: center;
-">
-  <p>カートに追加しました。</p>
-
     // 追加ボタンイベント登録
     document.querySelectorAll('.add-to-cart').forEach(button => {
       button.addEventListener('click', () => {
