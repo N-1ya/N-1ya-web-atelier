@@ -409,27 +409,6 @@
     }
   });
 
-  // ギャラリーをJSONから生成
-  fetch('./works.json')
-    .then(response => {
-      if(!response.ok) throw new Error('作品データの取得失敗');
-      return response.json();
-    })
-    .then(data => {
-      data.forEach(work => {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
-        item.innerHTML = `
-          <a href="detail.html?id=${encodeURIComponent(work.id)}">
-            <img src="${work.image}" alt="${work.title}">
-            <p>${work.title}</p>
-            <p style="font-size: 0.9rem; color: #ccc;">¥${Number(work.price).toLocaleString()}</p>
-          </a>
-          <button class="add-to-cart" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}" aria-label="カートに追加">カートに追加</button>
-        `;
-        gallery.appendChild(item);
-      });
-
       // 追加ボタンイベント登録
       document.querySelectorAll('.add-to-cart').forEach(button => {
         button.addEventListener('click', () => {
