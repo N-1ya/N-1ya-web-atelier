@@ -480,7 +480,7 @@
           }
           localStorage.setItem('cart', JSON.stringify(cart));
          const addModal = document.getElementById('addModal');
-addModal.querySelector('p').textContent = `「${title}」をカートに追加しました。購入に進みますか？`;
+addModal.querySelector('p').textContent = `「${title}」をカートに追加しました。`;
 addModal.style.display = 'block';
         }
       });
@@ -488,6 +488,10 @@ addModal.style.display = 'block';
     .catch(err => {
       console.error('ギャラリー読み込み失敗:', err);
     });
+
+      const addButtonHTML = work.stock > 0
+        ? `<button class="add-to-cart" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}" data-stock="${work.stock}" aria-label="カートに追加">カートに追加</button>`
+        : `<p style="color:#ff6666; font-weight:bold; margin-top:0.5rem;">SOLD OUT</p>`;
 
   function updateCartDisplay() {
     localStorage.setItem('cart', JSON.stringify(cart)); // ← 追加済
@@ -575,13 +579,7 @@ cartButton.addEventListener('click', () => {
     window.location.href = 'works/purchase.html';
   });
 </script>
-<!-- カート追加完了のモーダル -->
-<div id="addModal" style="
-  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-  background: white; border-radius: 10px; padding: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.3);
-  display: none; z-index: 9999; text-align: center;
-">
-  <p>カートに追加しました。</p>
+<!-- カートモーダル -->
 <div class="modal-buttons">
   <button class="buy-btn" onclick="window.location.href='works/purchase.html'">購入ページへ進む</button>
   <button onclick="document.getElementById('addModal').style.display='none'">閉じる</button>
