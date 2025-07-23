@@ -250,6 +250,10 @@
     <a href="/">ホーム</a>
   </nav>
 
+    <!-- JSONで自動生成されるギャラリー -->
+  <section class="gallery" id="gallery"></section>
+</div>
+  
 <!-- カートボタン -->
 <button id="cartButton" aria-label="カートを開く" title="カートを開く">🛒</button>
 
@@ -449,16 +453,6 @@
     .catch(error => {
       console.error('ギャラリーの読み込みに失敗しました:', error);
     });
-  // ギャラリーをJSONから生成
-fetch('./works.json')
-  .then(response => {
-    if(!response.ok) throw new Error('作品データの取得失敗');
-    return response.json();
-  })
-  .then(data => {
-    data.forEach(work => {
-      const item = document.createElement('div');
-      item.className = 'gallery-item';
 
       // カート追加ボタンの表示制御：在庫0なら非表示
       const addButtonHTML = work.stock > 0
