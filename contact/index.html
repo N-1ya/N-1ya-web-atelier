@@ -333,7 +333,7 @@
           <p>¥${item.price.toLocaleString()}</p>
         </div>
         <div class="cart-item-qty">
-          <input type="number" min="1" value="${item.quantity}" data-index="${index}" aria-label="数量">
+          <input type="number" min="1" value="${item.quantity}" data-index="${index}" aria-label="数量" readonly>
           <span class="cart-item-remove" data-index="${index}" role="button" tabindex="0" aria-label="商品を削除">×</span>
         </div>
       `;
