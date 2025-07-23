@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -101,8 +102,8 @@
   #cartButton:hover {
     color: #ff6666;
   }
-  
-   /* サイドバー */
+
+  /* サイドバー */
   #sidebar {
     position: fixed;
     top: 0; right: 0;
@@ -139,6 +140,7 @@
     text-decoration: none;
   }
 
+ /* ギャラリー */
   .gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -168,33 +170,13 @@
     color: #eee;
   }
 
-   /* カートモーダル */
-  #cartButton {
-    position: fixed;
-    top: 1rem;
-    right: 4rem;
-    width: 40px;
-    height: 40px;
-    cursor: pointer;
-    z-index: 10003;
-    border: none;
-    background: none;
-    color: white;
-    font-size: 24px;
-    line-height: 40px;
-    text-align: center;
-    user-select: none;
-  }
-  #cartButton:hover {
-    color: #ff6666;
-  }
-
+  /* カートモーダル */
   #cartModal {
     display: none;
     position: fixed;
     top: 10vh;
     right: 10vw;
-    width: 320px;
+    width: 300px;
     max-height: 80vh;
     background: rgba(20,20,20,0.95);
     border: 1px solid #555;
@@ -212,7 +194,7 @@
     margin-bottom: 1rem;
     font-size: 1.3rem;
   }
-  #cartContents {
+  #cartItems {
     margin-bottom: 1rem;
   }
   .cart-item {
@@ -290,7 +272,64 @@
     background: #ff4444;
   }
 
- #addModal {
+  .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #222;
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.modal-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.modal-buttons button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #444;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal-buttons button:hover {
+  background: red;
+}
+
+  .purchase-button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  background: #ff6666;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+}
+.purchase-button:hover {
+  background: #ff4444;
+}
+
+   #addModal {
   position: fixed;
   top: 50%;
   left: 50%;
@@ -316,7 +355,7 @@
 #addModal button {
   background-color: black;
   border: none;
-  color: rgba(0, 0, 0, 0.7);
+  color: white;
   font-weight: bold;
   padding: 10px 16px;
   border-radius: 8px;
@@ -359,10 +398,17 @@
   <section class="gallery" id="gallery"></section>
 </div>
 
+<!-- カートボタン -->
+<button id="cartButton" aria-label="カートを開く" title="カートを開く">🛒</button>
+
+<!-- 三本線メニュー -->
 <div id="menuButton" aria-label="メニュー" role="button" tabindex="0">
-  <div></div><div></div><div></div>
+  <div></div>
+  <div></div>
+  <div></div>
 </div>
 
+<!-- サイドバー -->
 <div id="sidebar">
   <a href="/">ホーム</a>
   <a href="/profile/">プロフィール</a>
@@ -370,16 +416,24 @@
   <a href="/contact/">お問い合わせ</a>
 </div>
 
-<button id="cartButton" aria-label="カートを開く" title="カートを開く">🛒</button>
-
+<!-- カートモーダル -->
 <div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
   <h2 id="cartTitle">カート</h2>
-  <div id="cartContents">
-    <p>カートに商品がありません。</p>
-  </div>
+  <div id="cartItems"></div>
+  <div id="cartTotal"></div>
   <div id="cartButtons">
     <button id="closeCartBtn">閉じる</button>
-    <a href="works/purchase.html" id="checkoutBtn">購入に進む</a>
+    <a href="purchase.html" id="checkoutBtn">購入に進む</a>
+  </div>
+</div>
+  
+  <div id="cart-modal" class="modal hidden">
+  <div class="modal-content">
+    <p id="addModalMessage">カートに追加しました</p>
+    <div class="modal-buttons">
+      <button id="close-modal">閉じる</button>
+      <a href="purchase.html" class="purchase-button">購入に進む</a>
+    </div>
   </div>
 </div>
 
@@ -433,7 +487,6 @@
     }, 5000);
   }
 
-    // ✅ 修正：localStorageから読み込む
   let cart = JSON.parse(localStorage.getItem('cart')) || [];
   
   fetch('/works/works.json')
@@ -486,15 +539,11 @@ addModal.style.display = 'block';
       });
     })
     .catch(err => {
-      console.error('ギャラリー読み込み失敗:', err);
+      console.error('ギャラリーの読み込みに失敗しました:', error);
     });
 
-      const addButtonHTML = work.stock > 0
-        ? `<button class="add-to-cart" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}" data-stock="${work.stock}" aria-label="カートに追加">カートに追加</button>`
-        : `<p style="color:#ff6666; font-weight:bold; margin-top:0.5rem;">SOLD OUT</p>`;
-
   function updateCartDisplay() {
-    localStorage.setItem('cart', JSON.stringify(cart)); // ← 追加済
+    localStorage.setItem('cart', JSON.stringify(cart)); 
 
     if(cart.length === 0) {
       cartContents.innerHTML = '<p>カートに商品がありません。</p>';
@@ -522,6 +571,80 @@ addModal.style.display = 'block';
       cartContents.appendChild(div);
     });
   }
+  
+      cartTotal.textContent = `合計: ¥${total.toLocaleString()}`;
+  }
+
+  // カートモーダル開閉
+  cartButton.addEventListener('click', () => {
+    if(cartModal.classList.contains('open')) {
+      cartModal.classList.remove('open');
+    } else {
+      updateCartDisplay();
+      cartModal.classList.add('open');
+    }
+  });
+  closeCartBtn.addEventListener('click', () => {
+    cartModal.classList.remove('open');
+  });
+
+  // カート数量変更・削除イベント（イベント委任）
+  cartItemsContainer.addEventListener('input', e => {
+    if(e.target.tagName === 'INPUT') {
+      const index = e.target.dataset.index;
+      let value = parseInt(e.target.value);
+      if(isNaN(value) || value < 1) {
+        value = 1;
+        e.target.value = '1';
+      }
+      const cart = getCart();
+      cart[index].quantity = value;
+      saveCart(cart);
+      updateCartDisplay();
+    }
+  });
+  cartItemsContainer.addEventListener('click', e => {
+    if(e.target.classList.contains('cart-item-remove')) {
+      const index = e.target.dataset.index;
+      let cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      updateCartDisplay();
+    }
+  });
+  // キーボードでも削除可能に
+  cartItemsContainer.addEventListener('keydown', e => {
+    if(e.target.classList.contains('cart-item-remove') && (e.key === 'Enter' || e.key === ' ')) {
+      e.preventDefault();
+      const index = e.target.dataset.index;
+      let cart = getCart();
+      cart.splice(index, 1);
+      saveCart(cart);
+      updateCartDisplay();
+    }
+  });
+
+  // 三本線メニュー開閉
+  menuButton.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    menuButton.classList.toggle('open');
+  });
+  menuButton.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      sidebar.classList.toggle('open');
+      menuButton.classList.toggle('open');
+    }
+  });
+  // 外クリックでメニュー閉じる
+  document.addEventListener('click', (e) => {
+    if(sidebar.classList.contains('open') &&
+       !sidebar.contains(e.target) &&
+       !menuButton.contains(e.target)) {
+      sidebar.classList.remove('open');
+      menuButton.classList.remove('open');
+    }
+  });
 
 updateCartDisplay();
   
@@ -552,7 +675,7 @@ cartButton.addEventListener('click', () => {
       if(item) {
         item.quantity = val;
         updateCartDisplay();
-        localStorage.setItem('cart', JSON.stringify(cart)); // ← 追加済
+        localStorage.setItem('cart', JSON.stringify(cart)); 
       }
     }
   });
@@ -561,7 +684,7 @@ cartButton.addEventListener('click', () => {
       const id = e.target.dataset.id;
       cart = cart.filter(i => i.id !== id);
       updateCartDisplay();
-      localStorage.setItem('cart', JSON.stringify(cart)); // ← 追加済
+      localStorage.setItem('cart', JSON.stringify(cart)); 
     }
   });
   cartContents.addEventListener('keydown', e => {
@@ -570,20 +693,83 @@ cartButton.addEventListener('click', () => {
       const id = e.target.dataset.id;
       cart = cart.filter(i => i.id !== id);
       updateCartDisplay();
-      localStorage.setItem('cart', JSON.stringify(cart)); // ← 追加済
+      localStorage.setItem('cart', JSON.stringify(cart)); 
     }
   });
 
   checkoutBtn.addEventListener('click', () => {
     if(cart.length === 0) return;
     window.location.href = 'works/purchase.html';
+    
+
   });
+  
+        // カート追加ボタンの表示制御：在庫0なら非表示
+      const addButtonHTML = work.stock > 0
+        ? `<button class="add-to-cart" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}" data-stock="${work.stock}" aria-label="カートに追加">カートに追加</button>`
+        : `<p style="color:#ff6666; font-weight:bold; margin-top:0.5rem;">SOLD OUT</p>`;
+
+      item.innerHTML = `
+        <a href="detail.html?id=${encodeURIComponent(work.id)}">
+          <img src="${work.image}" alt="${work.title}">
+          <p>${work.title}</p>
+          <p style="font-size: 0.9rem; color: #ccc;">¥${Number(work.price).toLocaleString()}</p>
+        </a>
+        ${addButtonHTML}
+      `;
+      gallery.appendChild(item);
+    });
+
+    // 追加ボタンイベント登録
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', () => {
+        const id = button.dataset.id;
+        const title = button.dataset.title;
+        const price = Number(button.dataset.price);
+        const image = button.dataset.image;
+        const stock = Number(button.dataset.stock);
+
+        let cart = getCart();
+        const existingIndex = cart.findIndex(item => item.id === id);
+        const currentQty = existingIndex >= 0 ? cart[existingIndex].quantity : 0;
+
+        // 在庫数チェック
+        if (currentQty + 1 > stock) {
+        showModal(`「${title}」の在庫が足りません。`);
+          return;
+        }
+
+if (existingIndex >= 0) {
+  cart[existingIndex].quantity++;
+} else {
+  cart.push({ id, title, price, image, quantity: 1 });
+}
+        function showModal(message) {
+  const modal = document.getElementById('cart-modal');
+  const messageP = document.getElementById('addModalMessage');
+  messageP.textContent = message;
+  modal.classList.remove('hidden');
+}
+saveCart(cart);
+showModal(`「${title}」をカートに追加しました`);
+
+      });
+    });
+  })
+  .catch(error => {
+    console.error('ギャラリーの読み込みに失敗しました:', error);
+  });
+
+  function showModal() {
+  document.getElementById('cart-modal').classList.remove('hidden');
+}
+
+document.getElementById('close-modal').addEventListener('click', () => {
+  document.getElementById('cart-modal').classList.add('hidden');
+});
+
+
 </script>
-<!-- カートモーダル -->
-<div class="modal-buttons">
-  <button class="buy-btn" onclick="window.location.href='works/purchase.html'">購入ページへ進む</button>
-  <button onclick="document.getElementById('addModal').style.display='none'">閉じる</button>
-</div>
 
 </body>
 </html>
