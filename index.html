@@ -316,7 +316,7 @@
 #addModal button {
   background-color: black;
   border: none;
-  color: black;
+  color: white;
   font-weight: bold;
   padding: 10px 16px;
   border-radius: 8px;
@@ -325,16 +325,20 @@
   transition: background-color 0.3s ease;
 }
 
-#addModal button:hover {
+/* 購入ボタン（最初のボタン）のホバーも赤 */
+#addModal button:first-child:hover {
   background-color: #ff4444;
 }
 
+/* 閉じるボタン（最後のボタン）通常グレー */
 #addModal button:last-child {
   background-color: #444;
+  color: white;
 }
 
+/* 閉じるボタンのホバーも赤 */
 #addModal button:last-child:hover {
-  background-color: #666;
+  background-color: #ff4444;
 }
 
   
