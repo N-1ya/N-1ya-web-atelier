@@ -430,30 +430,6 @@
         gallery.appendChild(item);
       });
 
-      // 追加ボタンイベント登録
-      document.querySelectorAll('.add-to-cart').forEach(button => {
-        button.addEventListener('click', () => {
-          const id = button.dataset.id;
-          const title = button.dataset.title;
-          const price = Number(button.dataset.price);
-          const image = button.dataset.image;
-
-          let cart = getCart();
-          const existingIndex = cart.findIndex(item => item.id === id);
-          if(existingIndex >= 0) {
-            cart[existingIndex].quantity++;
-          } else {
-            cart.push({id, title, price, image, quantity: 1});
-          }
-          saveCart(cart);
-          alert(`${title} をカートに追加しました。`);
-        });
-      });
-    })
-    .catch(error => {
-      console.error('ギャラリーの読み込みに失敗しました:', error);
-    });
-
       // カート追加ボタンの表示制御：在庫0なら非表示
       const addButtonHTML = work.stock > 0
         ? `<button class="add-to-cart" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}" data-stock="${work.stock}" aria-label="カートに追加">カートに追加</button>`
