@@ -574,12 +574,17 @@ fetch('./works.json')
           return;
         }
 
-        if(existingIndex >= 0) {
-          cart[existingIndex].quantity++;
-        } else {
-          cart.push({id, title, price, image, quantity: 1});
-        }
-        
+     if(existingIndex >= 0) {
+  cart[existingIndex].quantity++;
+} else {
+  cart.push({id, title, price, image, quantity: 1});
+}
+
+// ここで保存しないと反映されない
+saveCart(cart);
+
+// モーダル表示
+showModal(`「${title}」をカートに追加しました`);
       });
     });
   })
