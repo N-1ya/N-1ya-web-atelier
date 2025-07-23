@@ -453,6 +453,66 @@
     .catch(error => {
       console.error('ギャラリーの読み込みに失敗しました:', error);
     });
+  // ギャラリーをJSONから生成
+fetch('./works.json')
+  .then(response => {
+    if(!response.ok) throw new Error('作品データの取得失敗');
+    return response.json();
+  })
+  .then(data => {
+    data.forEach(work => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+
+      // カート追加ボタンの表示制御：在庫0なら非表示
+      const addButtonHTML = work.stock > 0
+        ? `<button class="add-to-cart" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}" data-stock="${work.stock}" aria-label="カートに追加">カートに追加</button>`
+        : `<p style="color:#ff6666; font-weight:bold; margin-top:0.5rem;">SOLD OUT</p>`;
+
+      item.innerHTML = `
+        <a href="detail.html?id=${encodeURIComponent(work.id)}">
+          <img src="${work.image}" alt="${work.title}">
+          <p>${work.title}</p>
+          <p style="font-size: 0.9rem; color: #ccc;">¥${Number(work.price).toLocaleString()}</p>
+        </a>
+        ${addButtonHTML}
+      `;
+      gallery.appendChild(item);
+    });
+
+    // 追加ボタンイベント登録
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', () => {
+        const id = button.dataset.id;
+        const title = button.dataset.title;
+        const price = Number(button.dataset.price);
+        const image = button.dataset.image;
+        const stock = Number(button.dataset.stock);
+
+        let cart = getCart();
+        const existingIndex = cart.findIndex(item => item.id === id);
+        const currentQty = existingIndex >= 0 ? cart[existingIndex].quantity : 0;
+
+        // 在庫数チェック
+        if (currentQty + 1 > stock) {
+          alert(`「${title}」の在庫が足りません。現在の在庫数は${stock}点です。`);
+          return;
+        }
+
+        if(existingIndex >= 0) {
+          cart[existingIndex].quantity++;
+        } else {
+          cart.push({id, title, price, image, quantity: 1});
+        }
+        saveCart(cart);
+        alert(`${title} をカートに追加しました。`);
+      });
+    });
+  })
+  .catch(error => {
+    console.error('ギャラリーの読み込みに失敗しました:', error);
+  });
+
 </script>
 
 </body>
