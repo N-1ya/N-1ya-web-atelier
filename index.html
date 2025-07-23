@@ -314,7 +314,7 @@
 }
 
 #addModal button {
-  background-color: #ff6666;
+  background-color: black;
   border: none;
   color: white;
   font-weight: bold;
@@ -580,9 +580,9 @@ cartButton.addEventListener('click', () => {
   background: white; border-radius: 10px; padding: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.3);
   display: none; z-index: 9999; text-align: center;
 ">
-  <p>カートに追加しました。購入に進みますか？</p>
+  <p>カートに追加しました。</p>
+    <button onclick="document.getElementById('addModal').style.display='none'">閉じる</button>
   <button onclick="window.location.href='purchase.html'">購入ページへ進む</button>
-  <button onclick="document.getElementById('addModal').style.display='none'">閉じる</button>
 </div>
 </body>
 </html>
