@@ -1,10 +1,9 @@
-
 <!DOCTYPE html>
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>市屋 凪</title>
+<title>ギャラリー - 市屋 凪</title>
 <style>
   @font-face {
     font-family: 'KokuMincho';
@@ -22,40 +21,7 @@
     text-align: center;
   }
 
-  #intro {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100vw; height: 100vh;
-    background-color: black;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    transition: opacity 1.5s ease;
-  }
-  #intro.fade-out {
-    opacity: 0;
-    pointer-events: none;
-  }
-  #intro img {
-    max-width: 80%;
-    max-height: 80%;
-    opacity: 0;
-    transition: opacity 1.5s ease;
-  }
-  #intro img.visible {
-    opacity: 1;
-  }
-
-  #main {
-    display: none;
-    padding: 2rem 1rem 3rem;
-    min-height: 100vh;
-    background-color: #000;
-    overflow-y: auto;
-    text-align: center;
-  }
-
+  /* 三本線メニュー */
   #menuButton {
     position: fixed;
     top: 1rem;
@@ -64,7 +30,7 @@
     height: 24px;
     cursor: pointer;
     z-index: 10003;
-    display: none;
+    display: block;
   }
   #menuButton div {
     background-color: white;
@@ -134,29 +100,18 @@
     font-size: 2.5rem;
   }
 
-  nav a {
-    margin: 0 1rem;
-    color: #ccc;
-    text-decoration: none;
-  }
-
- /* ギャラリー */
+  /* ギャラリー */
   .gallery {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1rem;
     max-width: 900px;
-    margin: 2rem auto 0;
+    margin: 2rem auto 3rem;
   }
   .gallery-item {
     background: rgba(255 255 255 / 0.1);
     border-radius: 8px;
     padding: 0.5rem;
-    transition: background-color 0.3s ease;
-    position: relative;
-  }
-  .gallery-item:hover {
-    background: rgba(255 255 255 / 0.2);
   }
   .gallery-item img {
     width: 100%;
@@ -168,6 +123,18 @@
     margin-top: 0.5rem;
     font-size: 1rem;
     color: #eee;
+  }
+
+  /* スマホでも3列維持 */
+  @media (max-width: 768px) {
+    .gallery {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 400px) {
+    .gallery {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   /* カートモーダル */
@@ -379,22 +346,19 @@
 #addModal button:last-child:hover {
   background-color: #ff4444;
 }
-  
 </style>
 </head>
 <body>
 
-<div id="intro">
-  <img id="catEye" src="plum-eye.png" alt="Cat Eye">
-</div>
-
+<!-- メインページ -->
 <div id="main">
-  <h1>市屋 凪</h1>
+  <h1>ギャラリー</h1>
+
   <nav>
-    <a href="/profile/">プロフィール</a>
-    <a href="/works/">ギャラリー</a>
-    <a href="/contact/">お問い合わせ</a>
+    <a href="/">ホーム</a>
   </nav>
+
+  <!-- JSONで自動生成されるギャラリー -->
   <section class="gallery" id="gallery"></section>
 </div>
 
@@ -437,142 +401,60 @@
   </div>
 </div>
 
+
 <script>
-  const intro = document.getElementById('intro');
-  const catEye = document.getElementById('catEye');
-  const main = document.getElementById('main');
   const menuButton = document.getElementById('menuButton');
   const sidebar = document.getElementById('sidebar');
   const cartButton = document.getElementById('cartButton');
   const cartModal = document.getElementById('cartModal');
+  const cartItemsContainer = document.getElementById('cartItems');
+  const cartTotal = document.getElementById('cartTotal');
   const closeCartBtn = document.getElementById('closeCartBtn');
   const checkoutBtn = document.getElementById('checkoutBtn');
-  const cartContents = document.getElementById('cartContents');
+  const gallery = document.getElementById('gallery');
 
-  menuButton.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
-    menuButton.classList.toggle('open');
-  });
-  menuButton.addEventListener('keydown', e => {
-    if(e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      sidebar.classList.toggle('open');
-      menuButton.classList.toggle('open');
-    }
-  });
-  document.addEventListener('click', e => {
-    if(sidebar.classList.contains('open') &&
-      !sidebar.contains(e.target) &&
-      !menuButton.contains(e.target)) {
-      sidebar.classList.remove('open');
-      menuButton.classList.remove('open');
-    }
-  });
-
-  function showMain() {
-    intro.style.display = 'none';
-    main.style.display = 'block';
-    menuButton.style.display = 'block';
+  // カート情報をlocalStorageで管理
+  function getCart() {
+    const cart = localStorage.getItem('cart');
+    return cart ? JSON.parse(cart) : [];
   }
-  if(localStorage.getItem('introShown') === 'true') {
-    showMain();
-  } else {
-    setTimeout(() => catEye.classList.add('visible'), 200);
-    setTimeout(() => {
-      intro.classList.add('fade-out');
-      setTimeout(() => {
-        localStorage.setItem('introShown', 'true');
-        showMain();
-      }, 1500);
-    }, 5000);
+  function saveCart(cart) {
+    localStorage.setItem('cart', JSON.stringify(cart));
   }
 
-  let cart = JSON.parse(localStorage.getItem('cart')) || [];
-  
-  fetch('/works/works.json')
-    .then(res => {
-      if(!res.ok) throw new Error('作品データ取得失敗');
-      return res.json();
-    })
-    .then(data => {
-      const gallery = document.getElementById('gallery');
-      data.slice(0,15).forEach((work, index) => {
-        const div = document.createElement('div');
-        div.className = 'gallery-item';
-
-        // 追加ボタンのHTML
-       const addToCartBtnHTML = 
-  `<button class="add-to-cart-btn" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}">カートに追加</button>`;
-
-
-        div.innerHTML = `
-          <a href="/works/detail.html?id=${encodeURIComponent(work.id)}">
-            <img src="/works/${work.image}" alt="${work.title}">
-            <p>${work.title}</p>
-          </a>
-          ${addToCartBtnHTML}
-        `;
-        gallery.appendChild(div);
-      });
-
-      // 「カートに追加」ボタンのクリックイベント設定
-      gallery.addEventListener('click', e => {
-        if(e.target.classList.contains('add-to-cart-btn')) {
-          const btn = e.target;
-          const id = btn.dataset.id;
-          const title = btn.dataset.title;
-          const price = Number(btn.dataset.price);
-          const image = btn.dataset.image;
-
-          // 既にカートにあるかチェック
-          const existingIndex = cart.findIndex(item => item.id === id);
-          if(existingIndex >= 0) {
-            cart[existingIndex].quantity++;
-          } else {
-            cart.push({ id, title, price, image, quantity: 1 });
-          }
-          localStorage.setItem('cart', JSON.stringify(cart));
-         const addModal = document.getElementById('addModal');
-addModal.querySelector('p').textContent = `「${title}」をカートに追加しました。`;
-addModal.style.display = 'block';
-        }
-      });
-    })
-    .catch(err => {
-      console.error('ギャラリーの読み込みに失敗しました:', error);
-    });
-
+  // カート表示更新
   function updateCartDisplay() {
-    localStorage.setItem('cart', JSON.stringify(cart)); 
-
+    const cart = getCart();
+    cartItemsContainer.innerHTML = '';
     if(cart.length === 0) {
-      cartContents.innerHTML = '<p>カートに商品がありません。</p>';
+      cartItemsContainer.innerHTML = '<p>カートに商品がありません。</p>';
+      cartTotal.textContent = '';
       checkoutBtn.style.pointerEvents = 'none';
       checkoutBtn.style.opacity = '0.5';
       return;
     }
     checkoutBtn.style.pointerEvents = 'auto';
     checkoutBtn.style.opacity = '1';
-    cartContents.innerHTML = '';
-    cart.forEach(item => {
+
+    let total = 0;
+    cart.forEach((item, index) => {
+      total += item.price * item.quantity;
       const div = document.createElement('div');
       div.className = 'cart-item';
       div.innerHTML = `
-        <img src="/${item.image}" alt="${item.title}">
+        <img src="${item.image}" alt="${item.title}">
         <div class="cart-item-info">
           <p>${item.title}</p>
           <p>¥${item.price.toLocaleString()}</p>
         </div>
         <div class="cart-item-qty">
           <input type="number" min="1" value="${item.quantity}" data-index="${index}" aria-label="数量" readonly>
-          <span class="cart-item-remove" data-id="${item.id}" role="button" tabindex="0" aria-label="商品を削除">×</span>
+          <span class="cart-item-remove" data-index="${index}" role="button" tabindex="0" aria-label="商品を削除">×</span>
         </div>
       `;
-      cartContents.appendChild(div);
+      cartItemsContainer.appendChild(div);
     });
-  }
-  
-      cartTotal.textContent = `合計: ¥${total.toLocaleString()}`;
+    cartTotal.textContent = `合計: ¥${total.toLocaleString()}`;
   }
 
   // カートモーダル開閉
@@ -646,65 +528,18 @@ addModal.style.display = 'block';
     }
   });
 
-updateCartDisplay();
-  
-cartButton.addEventListener('click', () => {
-  if(cartModal.classList.contains('open')) {
-    cartModal.classList.remove('open');
-  } else {
-    // ここで毎回 localStorage から最新の cart を読み込む
-    cart = JSON.parse(localStorage.getItem('cart')) || [];
-    updateCartDisplay();
-    cartModal.classList.add('open');
-  }
-});
+  // ギャラリーをJSONから生成
+fetch('./works.json')
+  .then(response => {
+    if(!response.ok) throw new Error('作品データの取得失敗');
+    return response.json();
+  })
+  .then(data => {
+    data.forEach(work => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
 
-  closeCartBtn.addEventListener('click', () => {
-    cartModal.classList.remove('open');
-  });
-
-  cartContents.addEventListener('input', e => {
-    if(e.target.tagName === 'INPUT') {
-      const id = e.target.dataset.id;
-      let val = parseInt(e.target.value);
-      if(isNaN(val) || val < 1) {
-        val = 1;
-        e.target.value = '1';
-      }
-      const item = cart.find(i => i.id === id);
-      if(item) {
-        item.quantity = val;
-        updateCartDisplay();
-        localStorage.setItem('cart', JSON.stringify(cart)); 
-      }
-    }
-  });
-  cartContents.addEventListener('click', e => {
-    if(e.target.classList.contains('cart-item-remove')) {
-      const id = e.target.dataset.id;
-      cart = cart.filter(i => i.id !== id);
-      updateCartDisplay();
-      localStorage.setItem('cart', JSON.stringify(cart)); 
-    }
-  });
-  cartContents.addEventListener('keydown', e => {
-    if(e.target.classList.contains('cart-item-remove') && (e.key === 'Enter' || e.key === ' ')) {
-      e.preventDefault();
-      const id = e.target.dataset.id;
-      cart = cart.filter(i => i.id !== id);
-      updateCartDisplay();
-      localStorage.setItem('cart', JSON.stringify(cart)); 
-    }
-  });
-
-  checkoutBtn.addEventListener('click', () => {
-    if(cart.length === 0) return;
-    window.location.href = 'works/purchase.html';
-    
-
-  });
-  
-        // カート追加ボタンの表示制御：在庫0なら非表示
+      // カート追加ボタンの表示制御：在庫0なら非表示
       const addButtonHTML = work.stock > 0
         ? `<button class="add-to-cart" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}" data-stock="${work.stock}" aria-label="カートに追加">カートに追加</button>`
         : `<p style="color:#ff6666; font-weight:bold; margin-top:0.5rem;">SOLD OUT</p>`;
@@ -770,6 +605,6 @@ document.getElementById('close-modal').addEventListener('click', () => {
 
 
 </script>
-
+  
 </body>
 </html>
