@@ -427,7 +427,9 @@
             cart.push({ id, title, price, image, quantity: 1 });
           }
           localStorage.setItem('cart', JSON.stringify(cart));
-          alert(`「${title}」をカートに追加しました`);
+         const addModal = document.getElementById('addModal');
+addModal.querySelector('p').textContent = `「${title}」をカートに追加しました。購入に進みますか？`;
+addModal.style.display = 'block';
         }
       });
     })
@@ -523,6 +525,15 @@ cartButton.addEventListener('click', () => {
     window.location.href = 'works/purchase.html';
   });
 </script>
-
+<!-- カート追加完了のモーダル -->
+<div id="addModal" style="
+  position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+  background: white; border-radius: 10px; padding: 20px; box-shadow: 0 0 20px rgba(0,0,0,0.3);
+  display: none; z-index: 9999; text-align: center;
+">
+  <p>カートに追加しました。購入に進みますか？</p>
+  <button onclick="window.location.href='purchase.html'">購入ページへ進む</button>
+  <button onclick="document.getElementById('addModal').style.display='none'">閉じる</button>
+</div>
 </body>
 </html>
