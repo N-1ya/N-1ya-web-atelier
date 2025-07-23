@@ -296,6 +296,56 @@
   background: #ff4444;
 }
 
+   #addModal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.7);
+  color: #eee;                /* 文字色は薄いグレー */
+  border-radius: 15px;
+  padding: 25px 30px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.8);
+  width: 320px;
+  max-width: 90vw;
+  text-align: center;
+  z-index: 9999;
+  display: none;              /* 最初は非表示 */
+  font-family: 'KokuMincho', serif;
+}
+
+#addModal p {
+  margin-bottom: 1.5rem;
+  font-size: 1.1rem;
+}
+
+#addModal button {
+  background-color: black;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+}
+
+/* 購入ボタン（最初のボタン）のホバーも赤 */
+#addModal button:first-child:hover {
+  background-color: #ff4444;
+}
+
+/* 閉じるボタン（最後のボタン）通常グレー */
+#addModal button:last-child {
+  background-color: #444;
+  color: white;
+}
+
+/* 閉じるボタンのホバーも赤 */
+#addModal button:last-child:hover {
+  background-color: #ff4444;
+}
 </style>
 </head>
 <body>
@@ -547,6 +597,11 @@ document.getElementById('close-modal').addEventListener('click', () => {
 
 
 </script>
-
+  
+  <p>カートに追加しました。</p>
+<div class="modal-buttons">
+  <button class="buy-btn" onclick="window.location.href='purchase.html'">購入ページへ進む</button>
+  <button onclick="document.getElementById('addModal').style.display='none'">閉じる</button>
+  
 </body>
 </html>
