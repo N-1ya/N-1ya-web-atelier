@@ -238,6 +238,64 @@
   #cartButtons a:hover {
     background: #ff4444;
   }
+
+  .modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: #222;
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.modal-buttons {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.modal-buttons button {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #444;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.modal-buttons button:hover {
+  background: red;
+}
+
+  .purchase-button {
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  background: #ff6666;
+  color: white;
+  text-decoration: none;
+  display: inline-block;
+}
+.purchase-button:hover {
+  background: #ff4444;
+}
+
 </style>
 </head>
 <body>
@@ -282,6 +340,17 @@
     <a href="works/purchase.html" id="checkoutBtn">購入に進む</a>
   </div>
 </div>
+  
+  <div id="cart-modal" class="modal hidden">
+  <div class="modal-content">
+    <p>カートに追加しました</p>
+    <div class="modal-buttons">
+      <button id="close-modal">閉じる</button>
+      <a href="works/purchase.html" class="purchase-button">購入に進む</a>
+    </div>
+  </div>
+</div>
+
 
 <script>
   const menuButton = document.getElementById('menuButton');
@@ -451,7 +520,7 @@ fetch('./works.json')
 
         // 在庫数チェック
         if (currentQty + 1 > stock) {
-          alert(`「${title}」の在庫が足りません。現在の在庫数は${stock}点です。`);
+        showModal(`「${title}」の在庫が足りません。`);
           return;
         }
 
@@ -460,14 +529,22 @@ fetch('./works.json')
         } else {
           cart.push({id, title, price, image, quantity: 1});
         }
-        saveCart(cart);
-        alert(`${title} をカートに追加しました。`);
+        
       });
     });
   })
   .catch(error => {
     console.error('ギャラリーの読み込みに失敗しました:', error);
   });
+
+  function showModal() {
+  document.getElementById('cart-modal').classList.remove('hidden');
+}
+
+document.getElementById('close-modal').addEventListener('click', () => {
+  document.getElementById('cart-modal').classList.add('hidden');
+});
+
 
 </script>
 
