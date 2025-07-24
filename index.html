@@ -768,10 +768,6 @@ showModal(`「${title}」をカートに追加しました`);
     console.error('ギャラリーの読み込みに失敗しました:', error);
   });
 
-  function showModal() {
-  document.getElementById('cart-modal').classList.remove('hidden');
-}
-
 document.getElementById('close-modal').addEventListener('click', () => {
   document.getElementById('cart-modal').classList.add('hidden');
 });
