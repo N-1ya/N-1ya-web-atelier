@@ -97,6 +97,7 @@
     font-size: 24px;
     line-height: 32px;
     text-align: center;
+    display: none;
   }
   #cartButton:hover {
     color: #ff6666;
@@ -571,6 +572,7 @@
     intro.style.display = 'none';
     main.style.display = 'block';
     menuButton.style.display = 'block';
+    cartButton.style.display = 'block'; 
   }
   if(localStorage.getItem('introShown') === 'true') {
     showMain();
