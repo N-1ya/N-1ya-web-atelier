@@ -716,7 +716,7 @@ fetch('./works/works.json')
         : `<p style="color:#ff6666; font-weight:bold; margin-top:0.5rem;">SOLD OUT</p>`;
 
       item.innerHTML = `
-        <a href="detail.html?id=${encodeURIComponent(work.id)}">
+        <a href="works/detail.html?id=${encodeURIComponent(work.id)}">
           <img src="${work.image}" alt="${work.title}">
           <p>${work.title}</p>
           <p style="font-size: 0.9rem; color: #ccc;">¥${Number(work.price).toLocaleString()}</p>
