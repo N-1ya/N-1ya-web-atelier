@@ -700,18 +700,7 @@
       menuButton.classList.remove('open');
     }
   });
-
-  // ギャラリーをJSONから生成
-fetch('./works.json')
-  .then(response => {
-    if(!response.ok) throw new Error('作品データの取得失敗');
-    return response.json();
-  })
-  .then(data => {
-    data.forEach(work => {
-      const item = document.createElement('div');
-      item.className = 'gallery-item';
-
+  
       // カート追加ボタンの表示制御：在庫0なら非表示
       const addButtonHTML = work.stock > 0
         ? `<button class="add-to-cart" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}" data-stock="${work.stock}" aria-label="カートに追加">カートに追加</button>`
