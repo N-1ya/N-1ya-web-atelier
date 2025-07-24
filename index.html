@@ -509,6 +509,7 @@
 
 <button id="cartButton" aria-label="カートを開く" title="カートを開く">🛒</button>
 
+<!-- カートモーダル -->
 <div id="cartModal" role="dialog" aria-modal="true" aria-labelledby="cartTitle">
   <h2 id="cartTitle">カート</h2>
   <div id="cartItems"></div>
@@ -537,9 +538,10 @@
   const sidebar = document.getElementById('sidebar');
   const cartButton = document.getElementById('cartButton');
   const cartModal = document.getElementById('cartModal');
+  const cartItemsContainer = document.getElementById('cartItems');
+  const cartTotal = document.getElementById('cartTotal');
   const closeCartBtn = document.getElementById('closeCartBtn');
   const checkoutBtn = document.getElementById('checkoutBtn');
-  const cartContents = document.getElementById('cartContents');
 
   menuButton.addEventListener('click', () => {
     sidebar.classList.toggle('open');
@@ -709,7 +711,18 @@
       menuButton.classList.remove('open');
     }
   });
-  
+
+  // ギャラリーをJSONから生成
+fetch('./works.json')
+  .then(response => {
+    if(!response.ok) throw new Error('作品データの取得失敗');
+    return response.json();
+  })
+  .then(data => {
+    data.forEach(work => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+
       // カート追加ボタンの表示制御：在庫0なら非表示
       const addButtonHTML = work.stock > 0
         ? `<button class="add-to-cart" data-id="${work.id}" data-title="${work.title}" data-price="${work.price}" data-image="${work.image}" data-stock="${work.stock}" aria-label="カートに追加">カートに追加</button>`
