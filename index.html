@@ -548,26 +548,7 @@
   const closeCartBtn = document.getElementById('closeCartBtn');
   const checkoutBtn = document.getElementById('checkoutBtn');
 
-  menuButton.addEventListener('click', () => {
-    sidebar.classList.toggle('open');
-    menuButton.classList.toggle('open');
-  });
-  menuButton.addEventListener('keydown', e => {
-    if(e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      sidebar.classList.toggle('open');
-      menuButton.classList.toggle('open');
-    }
-  });
-  document.addEventListener('click', e => {
-    if(sidebar.classList.contains('open') &&
-      !sidebar.contains(e.target) &&
-      !menuButton.contains(e.target)) {
-      sidebar.classList.remove('open');
-      menuButton.classList.remove('open');
-    }
-  });
-
+//イントロ後に表示
   function showMain() {
     intro.style.display = 'none';
     main.style.display = 'block';
