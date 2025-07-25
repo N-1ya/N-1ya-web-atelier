@@ -45,6 +45,45 @@
       margin-bottom: 0.8em;
       white-space: pre-wrap; /* 改行反映 */
     }
+
+          footer {
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #222;
+      color: #eee;
+      padding: 10px 0;
+      font-size: 14px;
+      box-sizing: border-box;
+      text-align: center;
+      z-index: 1000;
+    }
+    footer nav {
+      display: inline-block;
+    }
+    footer nav a {
+      color: #eee;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    footer nav a:hover {
+      text-decoration: underline;
+    }
+
+  @media screen and (max-width: 600px) {
+  footer nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer nav a {
+    display: block;
+    margin: 8px 0;
+  }
+}
+    
   </style>
 </head>
 <body>
@@ -87,6 +126,14 @@
     <dt>販売価格</dt>
     <dd>各商品の記載の金額となります。</dd>
   </dl>
+
+            <footer>
+    <nav>
+      <a href="privacy.html">プライバシーポリシー</a>
+      <a href="terms.html">利用規約</a>
+      <a href="legal.html">特定商取引法に基づく表示</a>
+    </nav>
+  </footer>
 </body>
 </html>
 
