@@ -149,7 +149,7 @@ fetch('archive.json')
       document.getElementById('material').textContent = work.material;
       document.getElementById('description').textContent = work.description;
 
-      const thumbnailList = document.getElementById('thumbnailList');
+      const thumbnailList = document.getElementById('thumbnails');
       if (work.images && Array.isArray(work.images)) {
         work.images.forEach(src => {
           const thumb = document.createElement('img');
