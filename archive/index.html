@@ -71,38 +71,33 @@
 </div>
 
 <script>
-fetch('archive.json')
-  .then(response => {
-    if(!response.ok) throw new Error('作品データの取得失敗');
-    return response.json();
-  })
-  .then(data => {
-    data.forEach(work => {
-      const item = document.createElement('div');
-      item.className = 'gallery-item';
+.then(data => {
+  data.forEach(work => {
+    const item = document.createElement('div');
+    item.className = 'gallery-item';
 
-      // 画像を作る
-      const img = document.createElement('img');
-      img.src = work.images[0];   // 画像配列の最初の画像だけ使う
-      img.alt = work.title;
+    // <a>タグを作成
+    const link = document.createElement('a');
+    link.href = `detail.html?id=${encodeURIComponent(work.id)}`;
 
-      // タイトルを作る
-      const title = document.createElement('p');
-      title.textContent = work.title;
+    // 画像を作成してリンク内に入れる
+    const img = document.createElement('img');
+    img.src = work.images[0];  // 代表画像を1枚目にする
+    img.alt = work.title;
+    link.appendChild(img);
 
-      // itemに画像とタイトルを入れる
-      item.appendChild(img);
-      item.appendChild(title);
+    // タイトルの<p>を作成してリンク内に入れる
+    const title = document.createElement('p');
+    title.textContent = work.title;
+    link.appendChild(title);
 
-      // galleryにitemを追加
-      gallery.appendChild(item);
-    });
-  })
-  .catch(error => {
-    console.error(error);
-    gallery.textContent = '作品データの読み込みに失敗しました';
+    // <a>タグをgallery-itemに入れる
+    item.appendChild(link);
+
+    // galleryに追加
+    gallery.appendChild(item);
   });
-
+});
 
 </script>
 
