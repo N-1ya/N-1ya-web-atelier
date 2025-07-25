@@ -1,1 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ARCHIVE</title>
+<style>
+  @font-face {
+    font-family: 'KokuMincho';
+    src: url('fonts/KokuMincho-Regular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  body, html {
+    margin: 0; padding: 0;
+    background: black;
+    height: 100%;
+    font-family: 'KokuMincho', serif;
+    color: #fff;
+    text-align: center;
+  }
+
+  /* ギャラリー */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 900px;
+    margin: 2rem auto 3rem;
+  }
+  .gallery-item {
+    background: rgba(255 255 255 / 0.1);
+    border-radius: 8px;
+    padding: 0.5rem;
+  }
+  .gallery-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    display: block;
+  }
+  .gallery-item p {
+    margin-top: 0.5rem;
+    font-size: 1rem;
+    color: #eee;
+  }
+
+  /* スマホでも3列維持 */
+  @media (max-width: 768px) {
+    .gallery {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 400px) {
+    .gallery {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  
+</style>
+</head>
+<body>
+
+<!-- メインページ -->
+<div id="main">
+  <h1>ARCHIVE</h1>
+
+  <!-- JSONで自動生成されるギャラリー -->
+  <section class="gallery" id="gallery"></section>
+</div>
+
+<script>
+
+  const gallery = document.getElementById('gallery');
+
+
+  // ギャラリーをJSONから生成
+fetch('archive.json')
+  .then(response => {
+    if(!response.ok) throw new Error('作品データの取得失敗');
+    return response.json();
+  })
+  .then(data => {
+    data.forEach(work => {
+      const item = document.createElement('div');
+      item.className = 'gallery-item';
+    });
+  });
+
+
+</script>
+
+</body>
+</html>
 
