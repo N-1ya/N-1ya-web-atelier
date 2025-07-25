@@ -3,8 +3,8 @@
     "id": "neko-ragdoll",
     "title": "猫　オレンジ伯爵",
     "images": [
-      "/archive-images/IMG_3670.JPG",
-      "/archive-images/IMG_3671.JPG"
+      "archive-images/IMG_3670.JPG",
+      "archive-images/IMG_3671.JPG"
     ],
     "description": "ぐるぐる目の猫シリーズの１作目。ラグドールの目の青さと愛らしさを描きたかった。モデルはお迎えできなかった、オレンジ伯爵",
     "size": "22×16cm",
@@ -14,8 +14,8 @@
     "id": "neko-BS",
     "title": "猫",
     "images": [
-      "/archive-images/IMG_3807.JPG",
-      "/archive-images/IMG_3808.JPG"
+      "archive-images/IMG_3807.JPG",
+      "archive-images/IMG_3808.JPG"
     ],
     "description": "ぐるぐる目の猫シリーズの2作目。ブリティッシュショートヘアのもちもち感のある愛らしさを描きたかった。",
     "size": "30×22.5cm",
@@ -25,8 +25,8 @@
     "id": "neko-RB",
     "title": "猫",
     "images": [
-      "/archive-images/IMG_3867.JPG",
-      "/archive-images/IMG_3868.JPG"
+      "archive-images/IMG_3867.JPG",
+      "archive-images/IMG_3868.JPG"
     ],
     "description": "ぐるぐる目の猫シリーズの3作目。ロシアンブルーのエメラルドのような瞳を描きたかった。",
     "size": "30×22.5cm",
@@ -36,9 +36,9 @@
     "id": "neko-AS",
     "title": "猫",
     "images": [
-      "/archive-images/IMG_3809.JPG",
-      "/archive-images/IMG_3810.JPG",
-      "/archive-images/IMG_3811.JPG"
+      "archive-images/IMG_3809.JPG",
+      "archive-images/IMG_3810.JPG",
+      "archive-images/IMG_3811.JPG"
     ],
     "description": "ぐるぐる目の猫シリーズの4作目。アメリカンショートヘアの模様を描きたかった。",
     "size": "15×10.5×3.5cm",
@@ -48,7 +48,7 @@
     "id": "bell",
     "title": "ベル",
     "images": [
-      "/archive-images/IMG_3709.JPG"
+      "archive-images/IMG_3709.JPG"
     ],
     "description": "ベルという名のサイベリアンが描きごたえがあり、毛並みと寝顔、寝姿を描きたかった。",
     "size": "30×22.5cm",
@@ -58,7 +58,7 @@
     "id": "prt",
     "title": "試作品",
     "images": [
-      "/archive-images/IMG_3962.JPG"
+      "archive-images/IMG_3962.JPG"
     ],
     "description": "識閾領域と猫を描く、その模索",
     "size": "A4",
@@ -68,7 +68,7 @@
     "id": "utau",
     "title": "うたう",
     "images": [
-      "/archive-images/IMG_3817.JPG"
+      "archive-images/IMG_3817.JPG"
     ],
     "description": "飾り方も解釈も自由。それを優雅にうたい泳ぐ、くじらで表現。",
     "size": "F0　18×14×2cm",
