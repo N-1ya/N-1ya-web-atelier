@@ -1,0 +1,48 @@
+[
+  "works": [
+    {
+      "id": "neko-ragdoll",
+      "title": "猫",
+      "images": [
+        "images/art1_main.jpg",
+        "images/art1_detail1.jpg",
+        "images/art1_detail2.jpg"
+      ],
+      "size": "30x40cm",
+      "material": "キャンバス・アクリル",
+      "description": "ラグドールの青い目と愛らしさを書きたかった。モデルはオレンジ伯爵"
+    }
+  ]
+}
+
+    {
+      "id": "neko-ragdoll",
+      "title": "猫",
+      "images": [
+        "images/art1_main.jpg",
+        "images/art1_detail1.jpg",
+        "images/art1_detail2.jpg"
+      ],
+      "size": "30x40cm",
+      "material": "キャンバス・アクリル",
+      "description": "幻想的な世界を描いた作品です。"
+    }
+  ]
+}
+
+    {
+      "id": "neko-ragdoll",
+      "title": "猫",
+      "images": [
+        "images/art1_main.jpg",
+        "images/art1_detail1.jpg",
+        "images/art1_detail2.jpg"
+      ],
+      "size": "30x40cm",
+      "material": "キャンバス・アクリル",
+      "description": "幻想的な世界を描いた作品です。"
+    }
+  ]
+}
+
+]
