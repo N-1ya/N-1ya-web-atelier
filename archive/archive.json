@@ -1,44 +1,39 @@
+
 [
-    {
-      "id": "neko-ragdoll",
-      "title": "猫",
-      "images": [
+  {
+    "id": "reflect",
+    "title": "RE:FLECT",
+    "images": [
         "images/art1_main.jpg",
         "images/art1_detail1.jpg",
         "images/art1_detail2.jpg"
       ],
-      "size": "30x40cm",
-      "material": "キャンバス・アクリル",
-      "description": "ラグドールの青い目と愛らしさを書きたかった。モデルはオレンジ伯爵"
-    }
-  
-
-    {
-      "id": "neko-ragdoll",
-      "title": "猫",
-      "images": [
+    "description": "漆黒の闇と宇宙の神秘をテーマに描かれたアクリル絵画です。繊細な色彩と質感で、見る者を深遠な世界へ誘います。",
+    "size": "30×22.5cm",
+    "material": "アクリル／MDFボード",
+  },
+  {
+    "id": "dream-manifestation",
+    "title": "Dream Manifestation",
+    "images": [
         "images/art1_main.jpg",
         "images/art1_detail1.jpg",
         "images/art1_detail2.jpg"
       ],
-      "size": "30x40cm",
-      "material": "キャンバス・アクリル",
-      "description": "幻想的な世界を描いた作品です。"
-    }
-  
-
-    {
-      "id": "neko-ragdoll",
-      "title": "猫",
-      "images": [
+    "description": "夢の具現化を表現した幻想的な作品。繊細なタッチで描かれた幻想風景。",
+    "size": "40×30cm",
+    "material": "アクリル／キャンバス",
+  },
+  {
+    "id": "silent-whisper",
+    "title": "Silent Whisper",
+    "images": [
         "images/art1_main.jpg",
         "images/art1_detail1.jpg",
         "images/art1_detail2.jpg"
       ],
-      "size": "30x40cm",
-      "material": "キャンバス・アクリル",
-      "description": "幻想的な世界を描いた作品です。"
-    }
-  
-
+    "description": "静かな囁きを感じる作品。柔らかな色調と優しい光の表現が特徴です。",
+    "size": "25×25cm",
+    "material": "水彩／紙",
+  }
 ]
