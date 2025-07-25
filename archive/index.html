@@ -71,11 +71,6 @@
 </div>
 
 <script>
-
-  const gallery = document.getElementById('gallery');
-
-
-  // ギャラリーをJSONから生成
 fetch('archive.json')
   .then(response => {
     if(!response.ok) throw new Error('作品データの取得失敗');
@@ -85,7 +80,27 @@ fetch('archive.json')
     data.forEach(work => {
       const item = document.createElement('div');
       item.className = 'gallery-item';
+
+      // 画像を作る
+      const img = document.createElement('img');
+      img.src = work.images[0];   // 画像配列の最初の画像だけ使う
+      img.alt = work.title;
+
+      // タイトルを作る
+      const title = document.createElement('p');
+      title.textContent = work.title;
+
+      // itemに画像とタイトルを入れる
+      item.appendChild(img);
+      item.appendChild(title);
+
+      // galleryにitemを追加
+      gallery.appendChild(item);
     });
+  })
+  .catch(error => {
+    console.error(error);
+    gallery.textContent = '作品データの読み込みに失敗しました';
   });
 
 
