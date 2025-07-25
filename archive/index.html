@@ -71,34 +71,37 @@
 </div>
 
 <script>
-.then(data => {
-  data.forEach(work => {
-    const item = document.createElement('div');
-    item.className = 'gallery-item';
+  const gallery = document.getElementById('gallery');
 
-    // <a>タグを作成
-    const link = document.createElement('a');
-    link.href = `detail.html?id=${encodeURIComponent(work.id)}`;
+  fetch('archive.json')
+    .then(response => {
+      if (!response.ok) throw new Error('作品データの取得失敗');
+      return response.json();
+    })
+    .then(data => {
+      data.forEach(work => {
+        const item = document.createElement('div');
+        item.className = 'gallery-item';
 
-    // 画像を作成してリンク内に入れる
-    const img = document.createElement('img');
-    img.src = work.images[0];  // 代表画像を1枚目にする
-    img.alt = work.title;
-    link.appendChild(img);
+        const link = document.createElement('a');
+        link.href = `detail.html?id=${encodeURIComponent(work.id)}`;
 
-    // タイトルの<p>を作成してリンク内に入れる
-    const title = document.createElement('p');
-    title.textContent = work.title;
-    link.appendChild(title);
+        const img = document.createElement('img');
+        img.src = work.images[0];
+        img.alt = work.title;
+        link.appendChild(img);
 
-    // <a>タグをgallery-itemに入れる
-    item.appendChild(link);
+        const title = document.createElement('p');
+        title.textContent = work.title;
+        link.appendChild(title);
 
-    // galleryに追加
-    gallery.appendChild(item);
-  });
-});
-
+        item.appendChild(link);
+        gallery.appendChild(item);
+      });
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
 </script>
 
 </body>
