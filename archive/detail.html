@@ -114,7 +114,7 @@ fetch('archive.json')
   .then(data => {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
-    const work = data.works.find(w => w.id === id);
+    const work = data.find(w => w.id === id);
 
     if (work) {
       document.getElementById('title').textContent = work.title;
