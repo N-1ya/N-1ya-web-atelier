@@ -337,8 +337,7 @@
   text-decoration: none;
 }
 
-        footer {
-      position: fixed;
+      footer {
       bottom: 0;
       left: 0;
       width: 100%;
@@ -362,6 +361,19 @@
     footer nav a:hover {
       text-decoration: underline;
     }
+
+  @media screen and (max-width: 600px) {
+  footer nav {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  footer nav a {
+    display: block;
+    margin: 8px 0;
+  }
+}
 
   </style>
 </head>
